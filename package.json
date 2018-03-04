@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db_purge" : "node bin/db_purge_database.js",
+    "db_create" :" node bin/db_create.js",
+    "db_purge"  : "node bin/db_purge_database.js",
     "db_import" : "node bin/db_import_data.js"
   },
   "author": "Daniel Wahl",
