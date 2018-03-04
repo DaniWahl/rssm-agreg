@@ -1,0 +1,2 @@
+#Aktienregister Schulgebäude RSSM
+
