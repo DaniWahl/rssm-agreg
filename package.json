@@ -1,0 +1,16 @@
+{
+  "name": "aktienregisterrssm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db_purge" : "node bin/db_purge_database.js",
+    "db_import" : "node bin/db_import_data.js"
+  },
+  "author": "Daniel Wahl",
+  "license": "ISC",
+  "dependencies": {
+    "excel": "^0.1.7",
+    "sqlite3": "^3.1.13"
+  }
+}
