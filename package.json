@@ -1,17 +1,23 @@
 {
   "name": "aktienregisterrssm",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Aktienregister der AG Schulgebäude RSSM",
+  "main": "main.js",
   "scripts": {
-    "db_create" :" node bin/db_create.js",
-    "db_purge"  : "node bin/db_purge_database.js",
-    "db_import" : "node bin/db_import_data.js"
+    "start"       : "electron .",
+    "db_create"   : "node bin/db_create.js",
+    "db_purge"    : "node bin/db_purge_database.js",
+    "db_import"   : "node bin/db_import_data.js",
+    "postinstall" : "install-app-deps"
   },
   "author": "Daniel Wahl",
   "license": "ISC",
   "dependencies": {
+    "electron": "^1.8.2",
     "excel": "^0.1.7",
     "sqlite3": "^3.1.13"
+  },
+  "devDependencies": {
+    "electron-builder": "^20.2.0"
   }
 }

@@ -3,6 +3,11 @@
 Datenbank und Applikation zur Verwaltung des Aktienregisters der AG Schulgebäude RSSM. 
 
 
+**Installation**
+1. clone from Github 
+2. _"npm install required packages"_
+3. npm run postinstall
+
 **Build & load the database:**
 1. make sure database path is set correctly in _bin/db_create.js_ and _bin/db_import_data.js_
 2. make sure workbook path is set correctly in _bin/db_import_data.js_
