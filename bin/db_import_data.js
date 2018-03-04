@@ -1,3 +1,13 @@
+/**
+ * db_import_data.js
+ *
+ * reads the specified Excel workbook and imports the all data into the RSSMShares SQLite database.
+ *
+ * Note: all existing data will be purged from the database before loading!
+ */
+
+
+
 const excel = require('excel')
 const RSSMShares = require('../lib/db.rssm.shares').RSSMShares
 const excel_to_date_string = require('../lib/app.helpers.js').excel_to_date_string
@@ -87,9 +97,11 @@ async function import_data() {
 }
 
 
-
-
-
+/**
+ * reads raw data from Excel Sheets specified in WBPATH, CERTIF_SHEET and JOURNAL_SHEET
+ * variables. Data is returned as an  array reference holding both sheets as two-dimensional arrays.
+ * @returns {Promise}  promise resolving to array holding data sheets
+ */
 function readFiles() {
     const data_sheets = []
 
@@ -110,6 +122,13 @@ function readFiles() {
 }
 
 
+/**
+ * updates all share records with their current share holders
+ * @param {Object} certificates
+ * @param share_ids
+ * @param person_ids
+ * @returns {Promise<any>}
+ */
 function updateShareHolders(certificates, share_ids, person_ids) {
 
     console.log('updating shares with their current share holders...')
@@ -157,6 +176,13 @@ function updateShareHolders(certificates, share_ids, person_ids) {
 }
 
 
+/**
+ * analyse share list from journal entries and generate share_chunk records
+ * @param journals
+ * @param share_ids
+ * @param journal_ids
+ * @returns {Promise<any>}
+ */
 function insertShareJunks(journals, share_ids, journal_ids ) {
 
     console.log('inserting SHARE_CHUNK records...')
@@ -207,6 +233,12 @@ function insertShareJunks(journals, share_ids, journal_ids ) {
 }
 
 
+/**
+ * inserts journal entries from journal data
+ * @param journal_data
+ * @param person_ids
+ * @returns {Promise<any>}
+ */
 function insertJournal(journal_data, person_ids) {
 
     console.log('inserting JOURNAL records...')
@@ -247,6 +279,11 @@ function insertJournal(journal_data, person_ids) {
 
 }
 
+/**
+ * inserts family entries
+ * @param families
+ * @returns {Promise<any>}
+ */
 function insertFamilies(families) {
 
     console.log('inserting FAMILIY records...')
@@ -280,6 +317,12 @@ function insertFamilies(families) {
     })
 }
 
+/**
+ * insert person entries
+ * @param persons
+ * @param family_ids
+ * @returns {Promise<any>}
+ */
 function insertPersons(persons, family_ids) {
 
     console.log('inserting PERSON records...')
@@ -326,7 +369,14 @@ function insertPersons(persons, family_ids) {
 }
 
 
-
+/**
+ * insert certificate entries and links them to shares, persons and journal entries
+ * @param certificates
+ * @param person_ids
+ * @param share_ids
+ * @param journal_ids
+ * @returns {Promise<any>}
+ */
 function insertCertificates(certificates, person_ids, share_ids, journal_ids) {
 
     console.log('inserting CERTIFICATE records...')
@@ -389,7 +439,11 @@ function insertCertificates(certificates, person_ids, share_ids, journal_ids) {
 }
 
 
-
+/**
+ * extracts journal objects from journal raw data
+ * @param rawdata
+ * @returns {{}}
+ */
 function extractJournal(rawdata) {
     const journal = {}
     const headers = getSheetHeaders('journal')
@@ -467,6 +521,11 @@ function extractJournal(rawdata) {
 }
 
 
+/**
+ * extracts share, person and family entries from share raw data
+ * @param rawdata
+ * @returns {*[]}
+ */
 function extractShares(rawdata) {
     const persons = {}
     const families = {}

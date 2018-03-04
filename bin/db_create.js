@@ -1,3 +1,11 @@
+/**
+ * db_create.js
+ *
+ * runs DDL statements to generate the RSSMShares SQLite database.
+ *
+ */
+
+
 
 const RSSMShares = require('../lib/db.rssm.shares').RSSMShares
 const RSSMDBPATH = './db/agregRSSM_test.db'
