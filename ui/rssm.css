@@ -5,9 +5,13 @@ html {
 }
 
 .rssm-header-logo {
-    height: 100px;
+    -height: 100px;
+    width: 150px;
 }
 
 .rssm-header {
     margin-bottom: 50px;
+}
+.rssm-header h4 {
+    margin-top: 44px;
 }
