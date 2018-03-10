@@ -5,7 +5,6 @@ html {
 }
 
 .rssm-header-logo {
-    -height: 100px;
     width: 150px;
 }
 
@@ -13,5 +12,28 @@ html {
     margin-bottom: 50px;
 }
 .rssm-header h4 {
-    margin-top: 44px;
+    margin-top: 54px;
+}
+.rssm-header img {
+margin : 20px;
+}
+
+.rssm-owner td {
+    color: #000033;
+    background-color: rgba(0, 90, 255, 0.1);
+}
+
+.rssm-table td {
+    font-size: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.rssm-hidden {
+    display: none;
+}
+
+.rssm-highlight td {
+
+    background-color : #EEEEEE;
 }
