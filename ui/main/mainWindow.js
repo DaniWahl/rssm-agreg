@@ -5,8 +5,9 @@ const pad0 = require('../../lib/app.helpers').pad0
 let row_group
 let last_share_no
 
-ipcRenderer.on('holders:current:show', showShareHoldersCurrent)
-ipcRenderer.on('holders:all:show', showShareHoldersAll)
+ipcRenderer.on('holders:current:show',  showShareHoldersCurrent)
+ipcRenderer.on('holders:all:show',      showShareHoldersAll)
+ipcRenderer.on('journal:show',          showJournal)
 
 
 // register event handlers for all elements
@@ -23,7 +24,7 @@ function showShareHoldersCurrent(e, holders) {
     // make sure list is empty
     tbody.innerHTML = ''
     holders.forEach(person => {
-        tbody.appendChild( makeTableItem(person, 'current') )
+        tbody.appendChild( makeTableItem(person, 'holders_current') )
     })
 }
 
@@ -33,7 +34,17 @@ function showShareHoldersAll(e, holders) {
     // make sure list is empty
     tbody.innerHTML = ''
     holders.forEach(person => {
-        tbody.appendChild( makeTableItem(person, 'all') )
+        tbody.appendChild( makeTableItem(person, 'holders_all') )
+    })
+}
+
+function showJournal(e, journal) {
+    const tbody = document.querySelector('#table-journal > tbody')
+
+    // make sure list is empty
+    tbody.innerHTML = ''
+    journal.forEach(entry => {
+        tbody.appendChild( makeTableItem(entry, 'journal') )
     })
 }
 
@@ -72,29 +83,36 @@ function showElement(element_id) {
 
 
 
-function makeTableItem(person, type) {
+function makeTableItem(row, type) {
     const tr = document.createElement('tr')
-    const share_no = pad0(person.share_no, 3);
     const columns = getColumms(type)
     let row_html = ''
+    let share_no
 
 
-    if(person.a_code === '999010' && type === 'current') {
+    if( type === 'holders_current' && row.a_code === '999010') {
         tr.className = 'rssm-owner'
     }
 
+    if( row.share_no ) {
+        share_no = pad0(row.share_no, 3);
 
-    // toggle row group stripe for each share no
-    if (last_share_no !== share_no) {
+        // toggle row group stripe for each share no
+        if (last_share_no !== share_no) {
 
-        if (row_group === 'row-type-plain') {
-            row_group = 'row-type-highlight'
-        } else {
-            row_group = 'row-type-plain'
+            if (row_group === 'row-type-plain') {
+                row_group = 'row-type-highlight'
+            } else {
+                row_group = 'row-type-plain'
+            }
         }
+
+
+        tr.className = row_group
+        last_share_no = share_no
     }
-    tr.className = row_group
-    last_share_no = share_no
+
+
 
     columns.forEach(col => {
 
@@ -103,26 +121,51 @@ function makeTableItem(person, type) {
                 row_html += `<td><b>${share_no}</b></td>`
                 break;
             case 'level':
-                row_html += `<td>${person.level}</td>`
+                row_html += `<td>${row.level}</td>`
                 break
             case 'transaction':
-                row_html += `<td>${person.transaction_date}</td>`
+                row_html += `<td>${row.transaction_date}</td>`
                 break
             case 'a_code':
-                row_html += `<td>${person.a_code}</td>`
+                row_html += `<td>${row.a_code}</td>`
                 break
             case 'name':
-                row_html += `<td>${person.name}</td>`
+                row_html += `<td>${row.name}</td>`
                 break
             case 'fist_name':
-                row_html += `<td>${person.first_name}</td>`
+                row_html += `<td>${row.first_name}</td>`
                 break
             case 'address':
-                row_html += `<td>${person.address}</td>`
+                row_html += `<td>${row.address}</td>`
                 break
             case 'city':
-                row_html += `<td>${person.post_code} ${person.city}</td>`
+                row_html += `<td>${row.post_code} ${row.city}</td>`
                 break
+
+            case 'journal_no':
+                row_html += `<td><b>${row.journal_no}</b></td>`
+                break
+
+            case 'shares':
+                row_html += `<td>${row.shares}</td>`
+                break
+
+            case 'transaction_type':
+                row_html += `<td>${row.transaction_type}</td>`
+                break
+
+            case 'action':
+                row_html += `<td>${row.action}</td>`
+                break
+
+            case 'number':
+                row_html += `<td>${row.number}</td>`
+                break
+
+            case 'share_stock':
+                row_html += `<td>${row.share_stock}</td>`
+                break
+
         }
     })
 
@@ -134,7 +177,7 @@ function makeTableItem(person, type) {
 function getColumms(type) {
 
     const columns = {
-        all     : [
+        holders_all     : [
             'share_holder',
             'level',
             'transaction',
@@ -144,14 +187,26 @@ function getColumms(type) {
             'address',
             'city'
         ],
-        current : [
+        holders_current : [
             'share_holder',
             'a_code',
             'name',
             'fist_name',
             'address',
             'city'
+        ],
+        journal : [
+            'journal_no',
+            'transaction',
+            'a_code',
+            'name',
+            'shares',
+            'transaction_type',
+            'action',
+            'number',
+            'share_stock'
         ]
+
     }
 
     return columns[type]

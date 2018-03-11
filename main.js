@@ -38,6 +38,7 @@ function loadContentData(e, element_id) {
             break
 
         case 'content-journal':
+            loadJournal()
             break
 
         case 'content-purchase':
@@ -79,7 +80,15 @@ function loadShareHoldersHistory() {
     })
 }
 
+function loadJournal() {
+    rssm.getJournal().then(journal => {
 
+        mainWindow.webContents.send('journal:show', journal)
+
+    }).catch(err => {
+        console.error(err)
+    })
+}
 
 
 
