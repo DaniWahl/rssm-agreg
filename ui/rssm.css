@@ -1,22 +1,43 @@
 
 
-html {
+/* make sure we use all vertical space and use proper font */
+html, body, #content, #container, .content-element, #sidenav {
+    height: 100%;
     font-family: Helvetica;
 }
 
-.rssm-header-logo {
+.logo-container {
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.logo-container img {
     width: 150px;
 }
 
-.rssm-header {
-    margin-bottom: 50px;
+.menu-category {
+
+    font-weight: bold;
+    font-size: 16px;
+    color: #666666;
 }
-.rssm-header h4 {
-    margin-top: 54px;
+#nav-menu a {
+    padding-left: 40px;
+    color: #333333;
 }
-.rssm-header img {
-margin : 20px;
+
+.content-element {
+    margin: 20px;
 }
+
+.hidden {
+    display: none;
+}
+
+
+
+
+
+/**
 
 .rssm-owner td {
     color: #000033;
@@ -29,11 +50,11 @@ margin : 20px;
     padding-bottom: 10px;
 }
 
-.rssm-hidden {
-    display: none;
-}
+
 
 .rssm-highlight td {
 
     background-color : #EEEEEE;
 }
+
+*/

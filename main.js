@@ -6,20 +6,56 @@ const RSSM_DB = 'db/agregRSSM_test.db'
 
 // create application objects
 const rssm = new RSSMShares(RSSM_DB)
-const windows = {
-    main                : null,
-    shareHoldersCurrent : null,
-    shareHoldersHistory : null,
-    sharesList          : null
-}
+let mainWindow = null
+
 
 
 // handle application events
 app.on('ready', app_init)
-ipcMain.on('main:click:holders-current-btn', createShareHoldersCurrentWindow )
-ipcMain.on('main:click:holders-history-btn', createShareHoldersHistoryWindow )
-ipcMain.on('main:click:shares-btn',          createSharesListWindow )
+//ipcMain.on('main:click:holders-current-btn', createShareHoldersCurrentWindow )
+//ipcMain.on('main:click:holders-history-btn', createShareHoldersHistoryWindow )
+//ipcMain.on('main:click:shares-btn',          createSharesListWindow )
+ipcMain.on('content:show',                   loadContentData)
 
+
+
+
+
+
+
+/**
+ * handler for the main window content:show event.
+ * send appropriate data to element
+ * @param {Event} e
+ * @param {String} element_id
+ */
+function loadContentData(e, element_id) {
+
+    switch(element_id) {
+        case 'content-share-holders-current':
+            break
+
+        case 'content-share-holders-all':
+            break
+
+        case 'content-journal':
+            break
+
+        case 'content-purchase':
+            break
+
+        case 'content-repurchase':
+            break
+
+        case 'content-transfer':
+            break
+
+        case 'content-mutation':
+            break
+
+    }
+
+}
 
 
 function loadShares() {
@@ -60,87 +96,19 @@ function loadShareHoldersHistory() {
 }
 
 
-/**
- * handler creating the shares  ui
- */
-function createSharesListWindow() {
-
-    if(windows.sharesList) {
-        windows.sharesList.show()
-        return
-    }
-
-    windows.sharesList = new BrowserWindow({
-        width  : 800,
-        height : 800,
-        title  : 'Aktien'
-       // show   : false
-    })
-
-    windows.sharesList.loadURL(`file://${__dirname}/ui/shares_list/sharesList.html`)
-
-    windows.sharesList.on('close', function() {
-        windows.sharesList = null;
-    })
-
-
-    windows.sharesList.webContents.on('did-finish-load', loadShares)
-
-}
-
-
-
-
-
-/**
- * handler creating the shareholder current ui
- */
-function createShareHoldersCurrentWindow() {
-
-    windows.shareHoldersCurrent = new BrowserWindow({
-        width  : 1200,
-        height : 800,
-        title  : 'Aktionäre - Aktuell'
-    })
-
-    windows.shareHoldersCurrent.loadURL(`file://${__dirname}/ui/share_holders/shareHolderWindow.html`)
-
-    windows.shareHoldersCurrent.on('close', function() {
-        windows.shareHoldersCurrent = null;
-    })
-
-    windows.shareHoldersCurrent.webContents.on('did-finish-load', loadShareHoldersCurrent)
-}
-
-/**
- * handler creating the shareholder current ui
- */
-function createShareHoldersHistoryWindow() {
-
-    windows.shareHoldersHistory = new BrowserWindow({
-        width  : 1200,
-        height : 800,
-        title  : 'Aktionäre - Historie'
-    })
-
-    windows.shareHoldersHistory.loadURL(`file://${__dirname}/ui/share_holders/shareholderWindow.html`)
-
-    windows.shareHoldersHistory.on('close', function() {
-        windows.shareHoldersHistory = null;
-    })
-
-    windows.shareHoldersHistory.webContents.on('did-finish-load', loadShareHoldersHistory)
-}
 
 
 /**
  * application startup handler
  */
 function app_init() {
-    windows.main = new BrowserWindow()
-    windows.main.loadURL(`file://${__dirname}/ui/main/mainWindow.html`)
+    mainWindow = new BrowserWindow({
+        width  : 1200,
+        height : 800
+    })
+    mainWindow.loadURL(`file://${__dirname}/ui/main/mainWindow.html`)
 
-    windows.main.on('closed', app_quit)
+    mainWindow.on('closed', app_quit)
 
     // build menu from template
     const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
@@ -241,3 +209,79 @@ function getMainMenuTemplate() {
 
     return mainMenuTemplate
 }
+
+
+
+/*
+
+/!**
+ * handler creating the shares  ui
+ *!/
+function createSharesListWindow() {
+
+    if(windows.sharesList) {
+        windows.sharesList.show()
+        return
+    }
+
+    windows.sharesList = new BrowserWindow({
+        width  : 800,
+        height : 800,
+        title  : 'Aktien'
+       // show   : false
+    })
+
+    windows.sharesList.loadURL(`file://${__dirname}/ui/shares_list/sharesList.html`)
+
+    windows.sharesList.on('close', function() {
+        windows.sharesList = null;
+    })
+
+
+    windows.sharesList.webContents.on('did-finish-load', loadShares)
+
+}
+
+
+
+
+
+/!**
+ * handler creating the shareholder current ui
+ *!/
+function createShareHoldersCurrentWindow() {
+
+    windows.shareHoldersCurrent = new BrowserWindow({
+        width  : 1200,
+        height : 800,
+        title  : 'Aktionäre - Aktuell'
+    })
+
+    windows.shareHoldersCurrent.loadURL(`file://${__dirname}/ui/share_holders/shareHolderWindow.html`)
+
+    windows.shareHoldersCurrent.on('close', function() {
+        windows.shareHoldersCurrent = null;
+    })
+
+    windows.shareHoldersCurrent.webContents.on('did-finish-load', loadShareHoldersCurrent)
+}
+
+/!**
+ * handler creating the shareholder current ui
+ *!/
+function createShareHoldersHistoryWindow() {
+
+    windows.shareHoldersHistory = new BrowserWindow({
+        width  : 1200,
+        height : 800,
+        title  : 'Aktionäre - Historie'
+    })
+
+    windows.shareHoldersHistory.loadURL(`file://${__dirname}/ui/share_holders/shareholderWindow.html`)
+
+    windows.shareHoldersHistory.on('close', function() {
+        windows.shareHoldersHistory = null;
+    })
+
+    windows.shareHoldersHistory.webContents.on('did-finish-load', loadShareHoldersHistory)
+}*/
