@@ -12,7 +12,7 @@
 <body>
 
     <div class="row" id="container" >
-        <div class="col s3 z-depth-1" id="sidenav">
+        <div class="col s2 z-depth-1" id="sidenav">
             <div class="logo-container center-align">
                 <img src="../../assets/linden.png">
             </div>
@@ -32,48 +32,38 @@
             </div>
         </div>
 
-        <div class="col s9" id="content">
+        <div class="col s10" id="content">
 
 
-            <div id="content-share-holders-current" class="content-element ">
+            <div id="content-share-holders-current" class="content-element hidden">
 
-
-                <h5>Aktienregister - Aktionäre</h5>
-
-                <table id="shareholders-current-table" class="bordered highlight rssm-table rssm-hidden">
+                <h5>Aktienregister - Aktionäre Aktuell</h5>
+                <table id="table-share-holders-current" class="bordered highlight">
                     <thead>
                     <tr>
-                        <th>
-                            Aktien Nr
-                        </th>
-                        <th>
-                            A-Code
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th>
-                            Vorname
-                        </th>
-                        <th>
-                            Adresse
-                        </th>
-
-                        <th>
-                            Ort
-                        </th>
+                        <th width="80">Aktien Nr</th><th>A-Code</th><th>Name</th><th>Vorname</th><th>Adresse</th><th>Ort</th>
                     </tr>
                     </thead>
-                    <tbody>
-
-                    </tbody>
+                    <tbody></tbody>
                 </table>
 
             </div>
 
             <div id="content-share-holders-all" class="content-element hidden">
-                share holders - all
+
+                <h5>Aktienregister - Aktionäre Historie</h5>
+                <table id="table-share-holders-all" class="bordered highlight">
+                    <thead>
+                    <tr>
+                        <th width="80">Aktien Nr</th><th>Level</th><th>Datum</th><th>A-Code</th><th>Name</th><th>Vorname</th><th>Adresse</th><th>Ort</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
             </div>
+
+
 
             <div id="content-journal" class="content-element hidden">
                 journal

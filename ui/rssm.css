@@ -27,6 +27,13 @@ html, body, #content, #container, .content-element, #sidenav {
 
 .content-element {
     margin: 20px;
+    overflow: auto;
+}
+
+.content-element table td {
+    font-size: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .hidden {
@@ -37,24 +44,20 @@ html, body, #content, #container, .content-element, #sidenav {
 
 
 
-/**
 
 .rssm-owner td {
     color: #000033;
     background-color: rgba(0, 90, 255, 0.1);
 }
 
-.rssm-table td {
-    font-size: 12px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+
+
+
+.row-type-highlight td {
+    background-color : #f6f6f6;
 }
 
-
-
-.rssm-highlight td {
-
-    background-color : #EEEEEE;
+.row-type-plain td {
+    background-color : #f0f0f0;
 }
 
-*/

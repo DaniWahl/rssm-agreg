@@ -11,11 +11,8 @@ let mainWindow = null
 
 
 // handle application events
-app.on('ready', app_init)
-//ipcMain.on('main:click:holders-current-btn', createShareHoldersCurrentWindow )
-//ipcMain.on('main:click:holders-history-btn', createShareHoldersHistoryWindow )
-//ipcMain.on('main:click:shares-btn',          createSharesListWindow )
-ipcMain.on('content:show',                   loadContentData)
+app.on('ready',             app_init)
+ipcMain.on('content:show',  loadContentData)
 
 
 
@@ -33,9 +30,11 @@ function loadContentData(e, element_id) {
 
     switch(element_id) {
         case 'content-share-holders-current':
+            loadShareHoldersCurrent()
             break
 
         case 'content-share-holders-all':
+            loadShareHoldersHistory()
             break
 
         case 'content-journal':
@@ -58,42 +57,32 @@ function loadContentData(e, element_id) {
 }
 
 
-function loadShares() {
-
-    // load shares and send to window
-    rssm.getAllShares().then(shares => {
-
-        windows.sharesList.webContents.send('shares:show', shares)
-
-    }).catch(err => {
-        console.error(err)
-    })
-}
-
-
-
 function loadShareHoldersCurrent() {
 
     rssm.getCurrentShareHolders().then(holders => {
 
-        windows.shareHoldersCurrent.webContents.send('holders:current:show', holders)
+        mainWindow.webContents.send('holders:current:show', holders)
 
     }).catch(err => {
         console.error(err)
     })
 }
-
 
 function loadShareHoldersHistory() {
 
     rssm.getAllShareHolders().then(holders => {
 
-        windows.shareHoldersHistory.webContents.send('holders:all:show', holders)
+        mainWindow.webContents.send('holders:all:show', holders)
 
     }).catch(err => {
         console.error(err)
     })
 }
+
+
+
+
+
 
 
 
@@ -139,15 +128,15 @@ function getMainMenuTemplate() {
             submenu: [
                 {
                     label: 'Aktionäre Aktuell',
-                    click() { createShareHoldersCurrentWindow() }
+                    click() {  }
                 },
                 {
                     label: 'Aktionäre Historie ',
-                    click() { createShareHoldersHistoryWindow() }
+                    click() {  }
                 },
                 {
                     label: 'Aktien',
-                    click() { createSharesListWindow() }
+                    click() {  }
                 },{
                     label: 'Journal',
                     click() {}
@@ -210,78 +199,3 @@ function getMainMenuTemplate() {
     return mainMenuTemplate
 }
 
-
-
-/*
-
-/!**
- * handler creating the shares  ui
- *!/
-function createSharesListWindow() {
-
-    if(windows.sharesList) {
-        windows.sharesList.show()
-        return
-    }
-
-    windows.sharesList = new BrowserWindow({
-        width  : 800,
-        height : 800,
-        title  : 'Aktien'
-       // show   : false
-    })
-
-    windows.sharesList.loadURL(`file://${__dirname}/ui/shares_list/sharesList.html`)
-
-    windows.sharesList.on('close', function() {
-        windows.sharesList = null;
-    })
-
-
-    windows.sharesList.webContents.on('did-finish-load', loadShares)
-
-}
-
-
-
-
-
-/!**
- * handler creating the shareholder current ui
- *!/
-function createShareHoldersCurrentWindow() {
-
-    windows.shareHoldersCurrent = new BrowserWindow({
-        width  : 1200,
-        height : 800,
-        title  : 'Aktionäre - Aktuell'
-    })
-
-    windows.shareHoldersCurrent.loadURL(`file://${__dirname}/ui/share_holders/shareHolderWindow.html`)
-
-    windows.shareHoldersCurrent.on('close', function() {
-        windows.shareHoldersCurrent = null;
-    })
-
-    windows.shareHoldersCurrent.webContents.on('did-finish-load', loadShareHoldersCurrent)
-}
-
-/!**
- * handler creating the shareholder current ui
- *!/
-function createShareHoldersHistoryWindow() {
-
-    windows.shareHoldersHistory = new BrowserWindow({
-        width  : 1200,
-        height : 800,
-        title  : 'Aktionäre - Historie'
-    })
-
-    windows.shareHoldersHistory.loadURL(`file://${__dirname}/ui/share_holders/shareholderWindow.html`)
-
-    windows.shareHoldersHistory.on('close', function() {
-        windows.shareHoldersHistory = null;
-    })
-
-    windows.shareHoldersHistory.webContents.on('did-finish-load', loadShareHoldersHistory)
-}*/
