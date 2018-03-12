@@ -45,6 +45,7 @@ function loadContentData(e, element_id) {
             break
 
         case 'content-repurchase':
+            prepareUI()
             break
 
         case 'content-transfer':
@@ -56,6 +57,14 @@ function loadContentData(e, element_id) {
     }
 
 }
+
+
+
+function prepareUI() {
+    // send rssm object to window
+    mainWindow.webContents.send('receive:data', rssm)
+}
+
 
 
 function loadShareHoldersCurrent() {
@@ -100,13 +109,15 @@ function loadJournal() {
  * application startup handler
  */
 function app_init() {
+
+    // create UI window
     mainWindow = new BrowserWindow({
-        width  : 1200,
-        height : 800
+        width  : 1600,
+        height : 1000
     })
     mainWindow.loadURL(`file://${__dirname}/ui/main/mainWindow.html`)
-
     mainWindow.on('closed', app_quit)
+
 
     // build menu from template
     const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )

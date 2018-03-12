@@ -2,12 +2,15 @@
 const electron = require('electron')
 const {ipcRenderer} = electron
 const pad0 = require('../../lib/app.helpers').pad0
+let rssm
 let row_group
 let last_share_no
 
+ipcRenderer.on('receive:data',          receiveData)
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent)
 ipcRenderer.on('holders:all:show',      showShareHoldersAll)
 ipcRenderer.on('journal:show',          showJournal)
+
 
 
 // register event handlers for all elements
@@ -17,6 +20,42 @@ document.querySelectorAll('a').forEach(el => {
     }
 })
 
+
+function receiveData(e, obj) {
+    rssm = obj
+
+
+    const a_codes = {}
+    Object.keys(rssm.data.a_codes).forEach(a_code => {
+        let suggest = rssm.data.a_codes[a_code].name
+        suggest += ' '
+        suggest += rssm.data.a_codes[a_code].first_name
+        suggest += ' (' + a_code + ')'
+
+        a_codes[suggest] = null;
+    })
+
+
+    $('#a_code_input').autocomplete({
+        data: a_codes,
+        limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+        onAutocomplete: function(val) {
+
+            const regex = /.+ \((.+)\)$/g
+            const matches = regex.exec(val)
+            loadRepurchaseShares(matches[1])
+        },
+        minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+    });
+
+
+
+}
+
+
+function loadRepurchaseShares(a_code) {
+    console.log('display', rssm.data.a_codes[a_code])
+}
 
 function showShareHoldersCurrent(e, holders) {
     const tbody = document.querySelector('#table-share-holders-current > tbody')
