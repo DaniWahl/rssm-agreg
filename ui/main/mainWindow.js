@@ -4,15 +4,14 @@ const {ipcRenderer} = electron
 const pad0 = require('../../lib/app.helpers').pad0
 const dateToString  = require('../../lib/app.helpers').dateToString
 
-let selected_shares = {}
 let row_group
 let last_share_no
 
+// register IPC event handlers
 ipcRenderer.on('repurchase:show',       showRepurchase)
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent)
 ipcRenderer.on('holders:all:show',      showShareHoldersAll)
 ipcRenderer.on('journal:show',          showJournal)
-
 
 
 // register event handlers for all elements
@@ -23,108 +22,6 @@ document.querySelectorAll('a').forEach(el => {
 })
 
 
-function showRepurchase(e, data) {
-
-    document.querySelector('#repurchase-date').innerHTML = dateToString()
-    document.querySelector('#repurchase-journal').innerHTML = data.nextJournal
-    document.querySelector('#repurchase-shares').innerHTML = 0
-
-
-    const a_codes = {}
-    Object.keys(data.a_codes).forEach(a_code => {
-        let suggest = data.a_codes[a_code].name
-        suggest += ' '
-        suggest += data.a_codes[a_code].first_name
-        suggest += ' (' + a_code + ')'
-
-        a_codes[suggest] = null;
-    })
-
-
-    $('#a_code_input').autocomplete({
-        data: a_codes,
-        limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-        onAutocomplete: function(val) {
-
-            // extract a_code part from selection
-            const regex = /.+ \((.+)\)$/g
-            const matches = regex.exec(val)
-            const a_code = matches[1]
-
-            // get share holder with a_code
-            const holder = data.a_codes[a_code]
-
-            // prepare array of shares from that share holders
-            const shares = []
-            holder.shares.forEach(share_no => {
-                shares.push( data.shares[share_no] )
-            })
-
-
-            // create table rows
-            listRepurchaseShares(shares)
-        },
-        minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
-    });
-
-
-
-}
-
-function updateSelectedShares(e) {
-
-    const formData = new FormData(document.querySelector('form[name=repurchase]'))
-    document.querySelector('#repurchase-shares').innerHTML = formData.getAll('repurchase_share').length
-
-}
-
-
-function listRepurchaseShares(shares) {
-    const tbody = document.querySelector('#table-repurchase-share-list > tbody')
-
-    tbody.innerHTML = ''
-    shares.forEach(share => {
-        tbody.appendChild(makeTableItem(share, 'share_list'))
-
-        // store checkbox status in object
-        const chkId = `share_no_${share.share_no}`
-        selected_shares[chkId] = false;
-    })
-
-    document.querySelectorAll('#table-repurchase-share-list > tbody > tr > td > input').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedShares)
-    })
-}
-
-function showShareHoldersCurrent(e, holders) {
-    const tbody = document.querySelector('#table-share-holders-current > tbody')
-
-    // make sure list is empty
-    tbody.innerHTML = ''
-    holders.forEach(person => {
-        tbody.appendChild( makeTableItem(person, 'holders_current') )
-    })
-}
-
-function showShareHoldersAll(e, holders) {
-    const tbody = document.querySelector('#table-share-holders-all > tbody')
-
-    // make sure list is empty
-    tbody.innerHTML = ''
-    holders.forEach(person => {
-        tbody.appendChild( makeTableItem(person, 'holders_all') )
-    })
-}
-
-function showJournal(e, journal) {
-    const tbody = document.querySelector('#table-journal > tbody')
-
-    // make sure list is empty
-    tbody.innerHTML = ''
-    journal.forEach(entry => {
-        tbody.appendChild( makeTableItem(entry, 'journal') )
-    })
-}
 
 
 /**
@@ -137,7 +34,7 @@ function handleLinkClicks(e) {
     // show target element
     showElement(e.target.target)
 
-    // send message to main
+    // send message to main to load the data
     ipcRenderer.send('content:show',  e.target.target)
 }
 
@@ -160,7 +57,13 @@ function showElement(element_id) {
 }
 
 
-
+/**
+ * generates table rows and td elements for a specified table type
+ * TODO: may have to refactor this into individual functions for different table types
+ * @param {Object} row  object holding data
+ * @param {String} type   table type
+ * @returns {HTMLTableRowElement}
+ */
 function makeTableItem(row, type) {
     const tr = document.createElement('tr')
     const columns = getColumms(type)
@@ -191,7 +94,7 @@ function makeTableItem(row, type) {
     }
 
 
-
+    // generate <td> elements holding data values
     columns.forEach(col => {
 
         switch(col) {
@@ -204,44 +107,13 @@ function makeTableItem(row, type) {
             case 'transaction':
                 row_html += `<td>${row.transaction_date}</td>`
                 break
-            case 'a_code':
-                row_html += `<td>${row.a_code}</td>`
-                break
-            case 'name':
-                row_html += `<td>${row.name}</td>`
-                break
-            case 'first_name':
-                row_html += `<td>${row.first_name}</td>`
-                break
-            case 'address':
-                row_html += `<td>${row.address}</td>`
-                break
+
             case 'city':
                 row_html += `<td>${row.post_code} ${row.city}</td>`
                 break
 
             case 'journal_no':
                 row_html += `<td><b>${row.journal_no}</b></td>`
-                break
-
-            case 'shares':
-                row_html += `<td>${row.shares}</td>`
-                break
-
-            case 'transaction_type':
-                row_html += `<td>${row.transaction_type}</td>`
-                break
-
-            case 'action':
-                row_html += `<td>${row.action}</td>`
-                break
-
-            case 'number':
-                row_html += `<td>${row.number}</td>`
-                break
-
-            case 'share_stock':
-                row_html += `<td>${row.share_stock}</td>`
                 break
 
             case 'checkbox':
@@ -253,6 +125,10 @@ function makeTableItem(row, type) {
                 `
                 break
 
+            default:
+                row_html += `<td>${row[col]}</td>`
+                break
+
         }
     })
 
@@ -261,6 +137,11 @@ function makeTableItem(row, type) {
 }
 
 
+/**
+ * returns array of columns for a certain table type
+ * @param {String} type  table type
+ * @returns {Array}
+ */
 function getColumms(type) {
 
     const columns = {
@@ -306,5 +187,4 @@ function getColumms(type) {
     }
 
     return columns[type]
-
 }
