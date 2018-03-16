@@ -63,3 +63,11 @@ html, body, #content, #container, .content-element, #sidenav {
     background-color : #f0f0f0;
 }
 
+.summary span {
+    margin-left : 100px;
+    font-weight: bold;
+}
+
+.autocomplete-content {
+    position: absolute !important;
+}

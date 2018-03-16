@@ -20,6 +20,7 @@ ipcMain.on('content:show',  loadContentData)
 
 
 
+
 /**
  * handler for the main window content:show event.
  * send appropriate data to element
@@ -45,7 +46,7 @@ function loadContentData(e, element_id) {
             break
 
         case 'content-repurchase':
-            prepareUI()
+            loadRepurchase()
             break
 
         case 'content-transfer':
@@ -60,9 +61,16 @@ function loadContentData(e, element_id) {
 
 
 
-function prepareUI() {
-    // send rssm object to window
-    mainWindow.webContents.send('receive:data', rssm)
+function loadRepurchase() {
+
+    // prepare data for form
+    const data = {
+        nextJournal : rssm.getNextJounalNo(),
+        a_codes     : rssm.data.a_codes,
+        shares      : rssm.data.shares
+    }
+
+    mainWindow.webContents.send('repurchase:show', data)
 }
 
 

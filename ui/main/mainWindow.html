@@ -11,102 +11,129 @@
 </head>
 <body>
 
-    <div class="row" id="container" >
-        <div class="col s2 z-depth-1" id="sidenav">
-            <div class="logo-container center-align">
-                <img src="../../assets/linden.png">
-            </div>
-
-            <div class="collection" id="nav-menu">
-
-                <div class="collection-item menu-category">Aktienregister</div>
-                <a target="content-share-holders-current" class="collection-item" href="#">Aktionäre Aktuell</a>
-                <a target="content-share-holders-all" class="collection-item" href="#">Aktionäre Historie</a>
-                <a target="content-journal" class="collection-item" href="#">Journal</a>
-
-                <div class="collection-item menu-category">Aktionen</div>
-                <a target="content-purchase" class="collection-item" href="#">Kauf</a>
-                <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
-                <a target="content-transfer" class="collection-item" href="#">Übertrag</a>
-                <a target="content-mutation" class="collection-item" href="#">Mutation</a>
-            </div>
+<div class="row" id="container">
+    <div class="col s2 z-depth-1" id="sidenav">
+        <div class="logo-container center-align">
+            <img src="../../assets/linden.png">
         </div>
 
-        <div class="col s10" id="content">
+        <div class="collection" id="nav-menu">
+
+            <div class="collection-item menu-category">Aktienregister</div>
+            <a target="content-share-holders-current" class="collection-item" href="#">Aktionäre Aktuell</a>
+            <a target="content-share-holders-all" class="collection-item" href="#">Aktionäre Historie</a>
+            <a target="content-journal" class="collection-item" href="#">Journal</a>
+
+            <div class="collection-item menu-category">Aktionen</div>
+            <a target="content-purchase" class="collection-item" href="#">Kauf</a>
+            <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
+            <a target="content-transfer" class="collection-item" href="#">Übertrag</a>
+            <a target="content-mutation" class="collection-item" href="#">Mutation</a>
+        </div>
+    </div>
+
+    <div class="col s10" id="content">
 
 
-            <div id="content-share-holders-current" class="content-element hidden">
+        <div id="content-share-holders-current" class="content-element hidden">
 
-                <h5>Aktienregister - Aktionäre Aktuell</h5>
-                <table id="table-share-holders-current" class="bordered highlight">
-                    <thead>
-                    <tr>
-                        <th width="80">Aktien Nr</th><th>A-Code</th><th>Name</th><th>Vorname</th><th>Adresse</th><th>Ort</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <h5>Aktienregister - Aktionäre Aktuell</h5>
+            <table id="table-share-holders-current" class="bordered highlight">
+                <thead>
+                <tr>
+                    <th width="80">Aktien Nr</th>
+                    <th>A-Code</th>
+                    <th>Name</th>
+                    <th>Vorname</th>
+                    <th>Adresse</th>
+                    <th>Ort</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
-            </div>
+        </div>
 
-            <div id="content-share-holders-all" class="content-element hidden">
+        <div id="content-share-holders-all" class="content-element hidden">
 
-                <h5>Aktienregister - Aktionäre Historie</h5>
-                <table id="table-share-holders-all" class="bordered highlight">
-                    <thead>
-                    <tr>
-                        <th width="80">Aktien Nr</th><th>Level</th><th>Datum</th><th>A-Code</th><th>Name</th><th>Vorname</th><th>Adresse</th><th>Ort</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <h5>Aktienregister - Aktionäre Historie</h5>
+            <table id="table-share-holders-all" class="bordered highlight">
+                <thead>
+                <tr>
+                    <th width="80">Aktien Nr</th>
+                    <th>Level</th>
+                    <th>Datum</th>
+                    <th>A-Code</th>
+                    <th>Name</th>
+                    <th>Vorname</th>
+                    <th>Adresse</th>
+                    <th>Ort</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
-            </div>
-
-
-
-            <div id="content-journal" class="content-element hidden">
-
-                <h5>Aktienregister - Journal</h5>
-                <table id="table-journal" class="bordered highlight">
-                    <thead>
-                        <tr><th>Journal</th><th width="100">Datum</th><th>A-Code</th><th width="200">Name</th><th width="100">Zertifikate</th><th width="150">Transaktion</th><th>Aktion</th><th>Anzahl</th><th>Bestand</th></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+        </div>
 
 
-            </div>
+        <div id="content-journal" class="content-element hidden">
 
-            <div id="content-purchase" class="content-element hidden">
-                sale
-            </div>
+            <h5>Aktienregister - Journal</h5>
+            <table id="table-journal" class="bordered highlight">
+                <thead>
+                <tr>
+                    <th>Journal</th>
+                    <th width="100">Datum</th>
+                    <th>A-Code</th>
+                    <th width="200">Name</th>
+                    <th width="100">Zertifikate</th>
+                    <th width="150">Transaktion</th>
+                    <th>Aktion</th>
+                    <th>Anzahl</th>
+                    <th>Bestand</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
-            <div id="content-repurchase" class="content-element ">
 
-                <h5>Aktien Rückkauf</h5>
+        </div>
 
-                <div class="form-container">
+        <div id="content-purchase" class="content-element hidden">
+            sale
+        </div>
+
+        <div id="content-repurchase" class="content-element">
+
+            <h5>Aktien Rückkauf</h5>
+
+            <div class="form-container">
+
+                <form name="repurchase">
+
+
                     <div class="row">
-                        <form class="col s10">
-                            <div class="row">
-                                <div class="input-field col s5">
-                                    <label for="a_code_input">Aktionär</label>
-                                    <input type="text" id="a_code_input" class=autocomplete">
-                                </div>
-                                <div class="input-field col s5">
-                                    <input type="text" id="share_list" placeholder="10 11 12 13">
-                                    <label for="share_list">Aktien</label>
-                                </div>
+                        <div class="row">
+                            <div class="input-field col s7">
+                                <label for="a_code_input">Aktionär</label>
+                                <input type="text" id="a_code_input" class=autocomplete">
                             </div>
-                        </form>
+                        </div>
+
                     </div>
 
                     <div class="row" style="min-height: 400px">
-                        <table >
+                        <table id="table-repurchase-share-list">
                             <thead>
-                                <th> </th>
-                                <tr><th>Akien Nr</th><th>A-Code</th><th>Name</th><th>Vorname</th><th>Adresse</th><th>Ort</th></tr>
+                            <tr>
+                                <th>Auswahl</th>
+                                <th>Akien Nr</th>
+                                <th>A-Code</th>
+                                <th>Name</th>
+                                <th>Vorname</th>
+                                <th>Adresse</th>
+                                <th>Ort</th>
+                            </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -114,43 +141,47 @@
 
                     <div class="row">
                         <div class="col s5 collection">
-                            <div class="collection-item">Datum</div>
-                            <div class="collection-item">Journal Nr</div>
-                            <div class="collection-item">Anzahl Aktien</div>
+                            <div class="collection-item summary">Datum <span class="secondary-content" id="repurchase-date"></span></div>
+                            <div class="collection-item summary">Journal Nr <span class="secondary-content" id="repurchase-journal"></span></div>
+                            <div class="collection-item summary">Anzahl Aktien <span class="secondary-content" id="repurchase-shares"></span>
+                            </div>
                         </div>
-                        <div class="col s7 center-align" style="height: 100%;">
-                            <button style="margin-top: 50px" class="btn-large waves-effect waves-light " type="submit">Rückkauf</button>
+                        <div class="col s7 right-align" style="height: 100%;">
+                            <button style="margin-top: 50px" class="btn-large waves-effect waves-light " type="submit">
+                                Rückkauf
+                            </button>
                         </div>
 
                     </div>
 
-                </div>
-
+                </form>
             </div>
 
-            <div id="content-transfer" class="content-element hidden">
-                transfer
-            </div>
+        </div>
 
-            <div id="content-mutation" class="content-element hidden">
-                mutation
-            </div>
+        <div id="content-transfer" class="content-element hidden">
+            transfer
+        </div>
 
-            <div id="content-administration" class="content-element hidden">
-                mutation
-            </div>
+        <div id="content-mutation" class="content-element hidden">
+            mutation
+        </div>
 
-
+        <div id="content-administration" class="content-element hidden">
+            mutation
         </div>
 
 
     </div>
 
-    <script type="text/javascript" src="../hammer.min.js"></script>
-    <script type="text/javascript" src="../jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="../materialize.js"></script>
+
+</div>
+
+<script type="text/javascript" src="../hammer.min.js"></script>
+<script type="text/javascript" src="../jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../materialize.js"></script>
 
 
-    <script src="mainWindow.js"></script>
+<script src="mainWindow.js"></script>
 </body>
 </html>

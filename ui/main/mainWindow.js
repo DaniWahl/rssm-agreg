@@ -2,11 +2,13 @@
 const electron = require('electron')
 const {ipcRenderer} = electron
 const pad0 = require('../../lib/app.helpers').pad0
-let rssm
+const dateToString  = require('../../lib/app.helpers').dateToString
+
+let selected_shares = {}
 let row_group
 let last_share_no
 
-ipcRenderer.on('receive:data',          receiveData)
+ipcRenderer.on('repurchase:show',       showRepurchase)
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent)
 ipcRenderer.on('holders:all:show',      showShareHoldersAll)
 ipcRenderer.on('journal:show',          showJournal)
@@ -21,15 +23,18 @@ document.querySelectorAll('a').forEach(el => {
 })
 
 
-function receiveData(e, obj) {
-    rssm = obj
+function showRepurchase(e, data) {
+
+    document.querySelector('#repurchase-date').innerHTML = dateToString()
+    document.querySelector('#repurchase-journal').innerHTML = data.nextJournal
+    document.querySelector('#repurchase-shares').innerHTML = 0
 
 
     const a_codes = {}
-    Object.keys(rssm.data.a_codes).forEach(a_code => {
-        let suggest = rssm.data.a_codes[a_code].name
+    Object.keys(data.a_codes).forEach(a_code => {
+        let suggest = data.a_codes[a_code].name
         suggest += ' '
-        suggest += rssm.data.a_codes[a_code].first_name
+        suggest += data.a_codes[a_code].first_name
         suggest += ' (' + a_code + ')'
 
         a_codes[suggest] = null;
@@ -41,9 +46,23 @@ function receiveData(e, obj) {
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function(val) {
 
+            // extract a_code part from selection
             const regex = /.+ \((.+)\)$/g
             const matches = regex.exec(val)
-            loadRepurchaseShares(matches[1])
+            const a_code = matches[1]
+
+            // get share holder with a_code
+            const holder = data.a_codes[a_code]
+
+            // prepare array of shares from that share holders
+            const shares = []
+            holder.shares.forEach(share_no => {
+                shares.push( data.shares[share_no] )
+            })
+
+
+            // create table rows
+            listRepurchaseShares(shares)
         },
         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
     });
@@ -52,9 +71,29 @@ function receiveData(e, obj) {
 
 }
 
+function updateSelectedShares(e) {
 
-function loadRepurchaseShares(a_code) {
-    console.log('display', rssm.data.a_codes[a_code])
+    const formData = new FormData(document.querySelector('form[name=repurchase]'))
+    document.querySelector('#repurchase-shares').innerHTML = formData.getAll('repurchase_share').length
+
+}
+
+
+function listRepurchaseShares(shares) {
+    const tbody = document.querySelector('#table-repurchase-share-list > tbody')
+
+    tbody.innerHTML = ''
+    shares.forEach(share => {
+        tbody.appendChild(makeTableItem(share, 'share_list'))
+
+        // store checkbox status in object
+        const chkId = `share_no_${share.share_no}`
+        selected_shares[chkId] = false;
+    })
+
+    document.querySelectorAll('#table-repurchase-share-list > tbody > tr > td > input').forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedShares)
+    })
 }
 
 function showShareHoldersCurrent(e, holders) {
@@ -156,7 +195,7 @@ function makeTableItem(row, type) {
     columns.forEach(col => {
 
         switch(col) {
-            case 'share_holder':
+            case 'share_no':
                 row_html += `<td><b>${share_no}</b></td>`
                 break;
             case 'level':
@@ -171,7 +210,7 @@ function makeTableItem(row, type) {
             case 'name':
                 row_html += `<td>${row.name}</td>`
                 break
-            case 'fist_name':
+            case 'first_name':
                 row_html += `<td>${row.first_name}</td>`
                 break
             case 'address':
@@ -205,6 +244,15 @@ function makeTableItem(row, type) {
                 row_html += `<td>${row.share_stock}</td>`
                 break
 
+            case 'checkbox':
+                row_html += `
+                    <td>
+                        <input type="checkbox" name="repurchase_share" value="${row.share_no}" class="filled-in" id="share_no_${row.share_no}" />
+                        <label for="share_no_${row.share_no}"></label>
+                    </td>
+                `
+                break
+
         }
     })
 
@@ -217,20 +265,20 @@ function getColumms(type) {
 
     const columns = {
         holders_all     : [
-            'share_holder',
+            'share_no',
             'level',
             'transaction',
             'a_code',
             'name',
-            'fist_name',
+            'first_name',
             'address',
             'city'
         ],
         holders_current : [
-            'share_holder',
+            'share_no',
             'a_code',
             'name',
-            'fist_name',
+            'first_name',
             'address',
             'city'
         ],
@@ -244,6 +292,15 @@ function getColumms(type) {
             'action',
             'number',
             'share_stock'
+        ],
+        share_list : [
+            'checkbox',
+            'share_no',
+            'a_code',
+            'name',
+            'first_name',
+            'address',
+            'city'
         ]
 
     }
