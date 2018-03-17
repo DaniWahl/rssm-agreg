@@ -11,13 +11,19 @@ let mainWindow = null
 
 
 // handle application events
-app.on('ready',             app_init)
-ipcMain.on('content:show',  loadContentData)
+app.on('ready',                  app_init)
+ipcMain.on('content:show',       loadContentData)
+ipcMain.on('repurchase:execute', executeRepurchase)
+
+
+function executeRepurchase(e, data) {
 
 
 
 
 
+    console.log('executing repurchase', data)
+}
 
 
 
@@ -71,6 +77,8 @@ function loadRepurchase() {
     }
 
     mainWindow.webContents.send('repurchase:show', data)
+
+
 }
 
 
@@ -130,6 +138,8 @@ function app_init() {
     // build menu from template
     const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
     Menu.setApplicationMenu(mainMenu)
+
+
 }
 
 /**
