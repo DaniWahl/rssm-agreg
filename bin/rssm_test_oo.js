@@ -6,13 +6,12 @@ const RSSM_DB_PATH = '../db/agregRSSM_test.db'
 
 // setup some test data
 const shares_no = [623, 624, 625, 626]
-const a_code_wahl = '918001'
+const a_code_wahl = '928001'
 const a_code_rssm = '999010'
 
 const rssm = new RSSM( RSSM_DB_PATH )
 
 run()
-
 
 
 
@@ -32,6 +31,19 @@ async function run() {
     console.log(me)
 
 
+    const journal_no = rssm.getLastJournalNo()
+    console.log(journal_no)
+
+
+    const next_journal_no = rssm.getNextJournalNo()
+    console.log(next_journal_no)
+
+
+    console.log(rssm.today)
+
+    console.log(rssm.getRSSMHolder())
+
+    console.log(rssm.getShareStock())
 }
 
 
