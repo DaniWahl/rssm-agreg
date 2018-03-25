@@ -1,11 +1,12 @@
 const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain} = electron
-const RSSMShares = require('./lib/db.rssm.shares').RSSMShares
+const RSSM = require('./lib/RSSM').RSSM
 const RSSM_DB = 'db/agregRSSM_test.db'
 
 
 // create application objects
-const rssm = new RSSMShares(RSSM_DB)
+const rssm = new RSSM(RSSM_DB)
+rssm.init();
 let mainWindow = null
 
 
@@ -60,13 +61,16 @@ function loadContentData(e, element_id) {
 
 function loadShareHoldersCurrent() {
 
-    rssm.getCurrentShareHolders().then(holders => {
 
-        mainWindow.webContents.send('holders:current:show', holders)
+    const holders = rssm.getShareHolders()
 
-    }).catch(err => {
-        console.error(err)
-    })
+    // rssm.getCurrentShareHolders().then(holders => {
+    //
+         mainWindow.webContents.send('holders:current:show', holders)
+    //
+    // }).catch(err => {
+    //     console.error(err)
+    // })
 }
 
 function loadShareHoldersHistory() {

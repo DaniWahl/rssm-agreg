@@ -44,6 +44,9 @@ async function run() {
     console.log(rssm.getRSSMHolder())
 
     console.log(rssm.getShareStock())
+
+
+    console.log("current shareholders ", rssm.getCurrentShareHolders().length )
 }
 
 
