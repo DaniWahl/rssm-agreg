@@ -54,8 +54,11 @@ function doRepurchase(e) {
     repurchase.shares = formData.getAll('repurchase_share')
     repurchase.holder = formData.get('holder')
 
+    // extract a_code
+    let reg = /.+ \((.+)\)$/
+    let matches = reg.exec(repurchase.holder)
+    repurchase.a_code = matches[1]
 
-    console.log('firing ipc repurchase:execute')
     ipcRenderer.send('repurchase:execute', repurchase)
 
 }
@@ -153,6 +156,7 @@ function updateSelectedShares(e) {
 
     const formData = new FormData(document.querySelector('form[name=repurchase]'))
     const share_no = formData.getAll('repurchase_share').length
+
 
     document.querySelector('#repurchase-shares').innerHTML = share_no
 

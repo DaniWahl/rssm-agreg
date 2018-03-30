@@ -20,9 +20,9 @@ function executeRepurchase(e, data) {
 
 
 
+    //2DO: need to evaluate the returned promises and update the UI
+    rssm.repurchase(data.shares, data.a_code)
 
-
-    console.log('executing repurchase', data)
 }
 
 
