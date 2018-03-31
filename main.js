@@ -6,6 +6,7 @@ const RSSM_DB = 'db/agregRSSM_test.db'
 
 // create application objects
 const rssm = new RSSMShares(RSSM_DB)
+rssm.init();
 let mainWindow = null
 
 
@@ -18,10 +19,10 @@ ipcMain.on('repurchase:execute', executeRepurchase)
 
 function executeRepurchase(e, data) {
 
-
-
     //2DO: need to evaluate the returned promises and update the UI
     rssm.repurchase(data.shares, data.a_code)
+
+    //2DO: need to await for the above call to return and then re-initialize the repurchase form
 
 }
 
