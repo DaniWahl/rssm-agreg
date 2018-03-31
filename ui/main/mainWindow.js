@@ -147,7 +147,7 @@ function getColumms(type) {
     const columns = {
         holders_all     : [
             'share_no',
-            'level',
+            'generation',
             'transaction',
             'a_code',
             'name',

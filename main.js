@@ -138,9 +138,8 @@ function app_init() {
     // build menu from template
     const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
     Menu.setApplicationMenu(mainMenu)
-
-
 }
+
 
 /**
  * application shutdown handler
