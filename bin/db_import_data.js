@@ -83,8 +83,8 @@ async function import_data() {
     console.log(`  inserted ${Object.keys(cert_ids).length} certificate records`)
     console.log('')
 
-    // update shares to link them to current holders
-    await updateShareHolders(certificates, share_ids, person_ids)
+    // update shares to link them to current certificates
+    await updateShareCertificates(certificates, share_ids, cert_ids)
     console.log(`  updated all shares`)
     console.log('')
 
@@ -123,15 +123,15 @@ function readFiles() {
 
 
 /**
- * updates all share records with their current share holders
+ * updates all share records with their current certificate
  * @param {Object} certificates
  * @param share_ids
- * @param person_ids
+ * @param cert_ids
  * @returns {Promise<any>}
  */
-function updateShareHolders(certificates, share_ids, person_ids) {
+function updateShareCertificates(certificates, share_ids, cert_ids) {
 
-    console.log('updating shares with their current share holders...')
+    console.log('updating shares with their current certificates...')
 
     return new Promise(resolve => {
 
@@ -141,11 +141,14 @@ function updateShareHolders(certificates, share_ids, person_ids) {
 
             // get certificate object
             const cert = certificates[cert_code]
+            const shareid_gen = cert.share_id + '_' + cert.generation
+            const cert_id = cert_ids[shareid_gen]
 
             // prepare update object
             const update = {
-                person_id : cert.person_id
+                certificate_id : cert_id
             }
+
 
             update_promises.push( rssmShares.updateRecord('share', cert.share_id, update) )
 
@@ -389,8 +392,6 @@ function insertCertificates(certificates, person_ids, share_ids, journal_ids) {
 
         Object.keys(certificates).forEach(cert_code => {
 
-            //console.log(cert_code)
-
             // prepare object for insert
             const cert = certificates[cert_code]
 
@@ -420,8 +421,8 @@ function insertCertificates(certificates, person_ids, share_ids, journal_ids) {
             const cert_ids = {}
             responses.forEach(response => {
 
-                // build unique cert_code from share_id and level
-                let cert_code = response.params[6] + response.params[0]
+                // build unique cert_code from share_id and generation
+                let cert_code = response.params[6] + '_' + response.params[0]
                 cert_ids[cert_code] = response.lastID
 
             })
@@ -614,13 +615,16 @@ function extractShares(rawdata) {
         let a_first_name = row[headers.sh_first_name]
         if(a_first_name === '-') { a_first_name = '' }
 
-
-        // create a certificate id code
-        let cert_code = row[headers.share_no] + row[headers.level]
-
         // convert transaction date to date string from Excel date number
         const transaction_date = excel_to_date_string( row[headers.transaction] )
 
+        // convert level into an integer number
+        let level = row[headers.level];
+        let generation = level.match(/[0-9]/);
+        generation = generation[0]
+
+        // create a certificate id code like shareno_generation
+        let cert_code = row[headers.share_no] + '_' +  generation
 
         // store data in structures
         families[f_code] = {
@@ -642,7 +646,7 @@ function extractShares(rawdata) {
 
         certificates[cert_code] = {
             share_no         : row[headers.share_no],
-            level            : row[headers.level],
+            generation       : generation,
             a_code           : a_code,
             journal_no       : row[headers.journal],
             transaction_date : transaction_date,

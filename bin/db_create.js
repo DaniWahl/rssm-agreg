@@ -48,16 +48,17 @@ indices.push(`CREATE INDEX person_i2 ON person(a_code)`)
 
 // 3. create table SHARE
 tables.push(`CREATE TABLE share (
-    share_id      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    person_id     INTEGER,
-    share_no      INTEGER NOT NULL UNIQUE,
-    type          TEXT NOT NULL,
-    value         REAL NOT NULL,
-    emission_date TEXT NOT NULL,
-    FOREIGN KEY (person_id) REFERENCES person(person_id)
+    share_id        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    certificate_id  INTEGER,
+    share_no        INTEGER NOT NULL UNIQUE,
+    type            TEXT NOT NULL,
+    value           REAL NOT NULL,
+    emission_date   TEXT NOT NULL
 )`)
-indices.push(`CREATE INDEX share_i1 ON share(person_id)`)
+indices.push(`CREATE INDEX share_i1 ON share(certificate_id)`)
 indices.push(`CREATE INDEX share_i2 ON share(share_no)`)
+// certificate_id references the currently valid certificate.
+// integrity is not enforced with a foreign key to avoid issues when purging the database
 
 
 // 4. create table CERTIFICATE
@@ -69,7 +70,7 @@ tables.push(`CREATE TABLE certificate (
     a_first_name     TEXT,
     a_name           TEXT,
     transaction_date TEXT,
-    level            TEXT,
+    generation       INTEGER,
     status           TEXT,
     FOREIGN KEY (person_id) REFERENCES person(person_id),
     FOREIGN KEY (share_id) REFERENCES share(share_id)
