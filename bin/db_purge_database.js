@@ -1,5 +1,5 @@
 
-const RSSMShares = require('../lib/db.rssm.shares').RSSMShares
+const RSSMShares = require('../lib/RSSMShares').RSSMShares
 const RSSMDBPATH = '../db/agregRSSM_test.db'
 
 

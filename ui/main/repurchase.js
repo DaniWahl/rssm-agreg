@@ -1,8 +1,8 @@
 
 
 // setup repurchase ui specific event handlers
-document.querySelector('#repurchase-submit').addEventListener('click', submitRepurchase)
-document.querySelector('#confirmation-modal-ok').addEventListener('click', doRepurchase)
+document.querySelector('#repurchase-submit').addEventListener('click', submitRepurchase);
+document.querySelector('#confirmation-modal-ok').addEventListener('click', doRepurchase);
 
 
 
@@ -12,33 +12,33 @@ document.querySelector('#confirmation-modal-ok').addEventListener('click', doRep
  * @param e
  */
 function submitRepurchase(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     // get form data
-    const formData = new FormData(document.querySelector('form[name=repurchase]'))
-    const shares = formData.getAll('repurchase_share')
-    const holder = formData.get('holder')
+    const formData = new FormData(document.querySelector('form[name=repurchase]'));
+    const shares = formData.getAll('repurchase_share');
+    const holder = formData.get('holder');
 
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden <b>${shares.length}</b> Aktien zurückgekauft, 
          welche in den Besitz des <b>Schulvereins der RSSM (999010)</b> zurück gehen: <br> 
-         <ul style="list-style-type:disc"><b>`
+         <ul style="list-style-type:disc"><b>`;
     shares.forEach(share_no => {
-        msg += `<li>${helpers.pad0(share_no, 3)}</li>`
+        msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
     })
-    msg += '<b><ul>'
+    msg += '<b><ul>';
         
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal')
-    dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Rückkauf'
-    dialog.querySelector('div > div.modal-content > p').innerHTML = msg
+    const dialog = document.querySelector('#confirmation-modal');
+    dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Rückkauf';
+    dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
 
 
 
-    $('#confirmation-modal').modal()
-    $('#confirmation-modal').modal('open')
+    $('#confirmation-modal').modal();
+    $('#confirmation-modal').modal('open');
 
 }
 
@@ -50,16 +50,16 @@ function submitRepurchase(e) {
 function doRepurchase(e) {
 
     const repurchase = {}
-    const formData = new FormData(document.querySelector('form[name=repurchase]'))
-    repurchase.shares = formData.getAll('repurchase_share')
-    repurchase.holder = formData.get('holder')
+    const formData = new FormData(document.querySelector('form[name=repurchase]'));
+    repurchase.shares = formData.getAll('repurchase_share');
+    repurchase.holder = formData.get('holder');
 
     // extract a_code
-    let reg = /.+ \((.+)\)$/
-    let matches = reg.exec(repurchase.holder)
-    repurchase.a_code = matches[1]
+    let reg = /.+ \((.+)\)$/;
+    let matches = reg.exec(repurchase.holder);
+    repurchase.a_code = matches[1];
 
-    ipcRenderer.send('repurchase:execute', repurchase)
+    ipcRenderer.send('repurchase:execute', repurchase);
 
 }
 
@@ -81,12 +81,12 @@ function showRepurchase(e, data) {
     // prepare the a_codes suggestion list
     const a_codes = {}
     Object.keys(data.a_codes).forEach(a_code => {
-        let suggest = data.a_codes[a_code].name
-        suggest += ' '
-        suggest += data.a_codes[a_code].first_name
-        suggest += ' (' + a_code + ')'
+        let suggest = data.a_codes[a_code].name;
+        suggest += ' ';
+        suggest += data.a_codes[a_code].first_name;
+        suggest += ' (' + a_code + ')';
 
-        a_codes[suggest] = null
+        a_codes[suggest] = null;
     })
 
 
@@ -96,28 +96,28 @@ function showRepurchase(e, data) {
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
 
-            initRepurchaseSummary(data)
+            initRepurchaseSummary(data);
 
             // extract a_code part from selection
-            const regex = /.+ \((.+)\)$/g
-            const matches = regex.exec(val)
-            const a_code = matches[1]
+            const regex = /.+ \((.+)\)$/g;
+            const matches = regex.exec(val);
+            const a_code = matches[1];
 
             // get share holder with a_code
-            const holder = data.a_codes[a_code]
+            const holder = data.a_codes[a_code];
 
             // prepare array of shares from that share holders
             const shares = []
             holder.shares.forEach(share_no => {
-                shares.push(data.shares[share_no])
+                shares.push(data.shares[share_no]);
             })
 
 
             // create table rows
-            listRepurchaseShares(shares)
+            listRepurchaseShares(shares);
         },
         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
-    })
+    });
 
 }
 
@@ -126,9 +126,9 @@ function showRepurchase(e, data) {
  */
 function initRepurchaseSummary(data) {
     // initialize the summary table
-    document.querySelector('#repurchase-date').innerHTML = helpers.dateToString()
-    document.querySelector('#repurchase-journal').innerHTML = data.nextJournal
-    document.querySelector('#repurchase-shares').innerHTML = 0
+    document.querySelector('#repurchase-date').innerHTML = helpers.dateToString();
+    document.querySelector('#repurchase-journal').innerHTML = data.nextJournal;
+    document.querySelector('#repurchase-shares').innerHTML = '0';
 }
 
 function initRepurchaseForm() {
@@ -141,16 +141,15 @@ function initRepurchaseForm() {
  * @param {Array} shares
  */
 function listRepurchaseShares(shares) {
-    const tbody = document.querySelector('#table-repurchase-share-list > tbody')
+    const tbody = document.querySelector('#table-repurchase-share-list > tbody');
 
-    tbody.innerHTML = ''
+    tbody.innerHTML = '';
     shares.forEach(share => {
-        tbody.appendChild(makeTableItem(share, 'share_list'))
-
+        tbody.appendChild(makeTableItem(share, 'share_list'));
     })
 
     document.querySelectorAll('#table-repurchase-share-list > tbody > tr > td > input').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedShares)
+        checkbox.addEventListener('change', updateSelectedShares);
     })
 }
 
@@ -161,17 +160,16 @@ function listRepurchaseShares(shares) {
  */
 function updateSelectedShares(e) {
 
-    const formData = new FormData(document.querySelector('form[name=repurchase]'))
-    const share_no = formData.getAll('repurchase_share').length
+    const formData = new FormData(document.querySelector('form[name=repurchase]'));
+    const share_no = formData.getAll('repurchase_share').length;
 
-
-    document.querySelector('#repurchase-shares').innerHTML = share_no
+    document.querySelector('#repurchase-shares').innerHTML = share_no;
 
     // handle button status
     if(share_no !== 0) {
-        document.querySelector('#repurchase-submit').classList.remove('disabled')
+        document.querySelector('#repurchase-submit').classList.remove('disabled');
     } else {
-        document.querySelector('#repurchase-submit').classList.add('disabled')
+        document.querySelector('#repurchase-submit').classList.add('disabled');
     }
 
 

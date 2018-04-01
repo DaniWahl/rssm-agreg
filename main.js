@@ -1,6 +1,6 @@
 const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
-const RSSMShares = require('./lib/db.rssm.shares').RSSMShares
+const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSM_DB = 'db/agregRSSM_test.db'
 
 
@@ -10,7 +10,6 @@ rssm.init();
 let mainWindow = null
 
 
-
 // handle application events
 app.on('ready',                  app_init)
 ipcMain.on('content:show',       loadContentData)
@@ -18,8 +17,6 @@ ipcMain.on('repurchase:execute', executeRepurchase)
 
 
 function executeRepurchase(e, data) {
-
-
 
     rssm.repurchase(data.shares, data.a_code)
         .then(res => {

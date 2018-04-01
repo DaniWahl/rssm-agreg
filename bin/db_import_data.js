@@ -9,7 +9,7 @@
 
 
 const excel = require('excel')
-const RSSMShares = require('../lib/db.rssm.shares').RSSMShares
+const RSSMShares = require('../lib/RSSMShares').RSSMShares
 const excel_to_date_string = require('../lib/app.helpers.js').excel_to_date_string
 const parse_share_no = require('../lib/app.helpers').parse_share_no
 

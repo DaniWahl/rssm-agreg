@@ -3,14 +3,14 @@ const electron = require('electron');
 const {ipcRenderer} = electron;
 const helpers = require('../../lib/app.helpers');
 
-let row_group
-let last_share_no
+let row_group;
+let last_share_no;
 
 // register IPC event handlers
-ipcRenderer.on('repurchase:show',       showRepurchase)
-ipcRenderer.on('holders:current:show',  showShareHoldersCurrent)
-ipcRenderer.on('holders:all:show',      showShareHoldersAll)
-ipcRenderer.on('journal:show',          showJournal)
+ipcRenderer.on('repurchase:show',       showRepurchase);
+ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
+ipcRenderer.on('holders:all:show',      showShareHoldersAll);
+ipcRenderer.on('journal:show',          showJournal);
 
 
 // register event handlers for all elements
@@ -20,7 +20,7 @@ document.querySelectorAll('a').forEach(el => {
     }
 })
 
-console.log('mainWindow: started')
+console.log('mainWindow: started');
 
 
 /**
@@ -28,10 +28,10 @@ console.log('mainWindow: started')
  * @param {Event} e
  */
 function handleLinkClicks(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     // send message to main to load the data
-    ipcRenderer.send('content:show',  e.target.target)
+    ipcRenderer.send('content:show',  e.target.target);
 }
 
 
@@ -43,7 +43,7 @@ function showElement(element_id) {
 
     // hide all elements
     document.querySelectorAll('.content-element').forEach(div => {
-        div.classList.add('hidden')
+        div.classList.add('hidden');
     })
 
     // show selected element
@@ -62,14 +62,14 @@ function showElement(element_id) {
  * @returns {HTMLTableRowElement}
  */
 function makeTableItem(row, type) {
-    const tr = document.createElement('tr')
-    const columns = getColumms(type)
-    let row_html = ''
-    let share_no
+    const tr = document.createElement('tr');
+    const columns = getColumms(type);
+    let row_html = '';
+    let share_no;
 
 
     if( type === 'holders_current' && row.a_code === '999010') {
-        tr.className = 'rssm-owner'
+        tr.className = 'rssm-owner';
     }
 
     if( row.share_no ) {
@@ -79,15 +79,14 @@ function makeTableItem(row, type) {
         if (last_share_no !== share_no) {
 
             if (row_group === 'row-type-plain') {
-                row_group = 'row-type-highlight'
+                row_group = 'row-type-highlight';
             } else {
-                row_group = 'row-type-plain'
+                row_group = 'row-type-plain';
             }
         }
 
-
-        tr.className = row_group
-        last_share_no = share_no
+        tr.className = row_group;
+        last_share_no = share_no;
     }
 
 
@@ -96,22 +95,22 @@ function makeTableItem(row, type) {
 
         switch(col) {
             case 'share_no':
-                row_html += `<td><b>${share_no}</b></td>`
+                row_html += `<td><b>${share_no}</b></td>`;
                 break;
             case 'level':
-                row_html += `<td>${row.level}</td>`
-                break
+                row_html += `<td>${row.level}</td>`;
+                break;
             case 'transaction':
-                row_html += `<td>${row.transaction_date}</td>`
-                break
+                row_html += `<td>${row.transaction_date}</td>`;
+                break;
 
             case 'city':
-                row_html += `<td>${row.post_code} ${row.city}</td>`
-                break
+                row_html += `<td>${row.post_code} ${row.city}</td>`;
+                break;
 
             case 'journal_no':
-                row_html += `<td><b>${row.journal_no}</b></td>`
-                break
+                row_html += `<td><b>${row.journal_no}</b></td>`;
+                break;
 
             case 'checkbox':
                 row_html += `
@@ -119,18 +118,18 @@ function makeTableItem(row, type) {
                         <input type="checkbox" name="repurchase_share" value="${row.share_no}" class="filled-in" id="share_no_${row.share_no}" />
                         <label for="share_no_${row.share_no}"></label>
                     </td>
-                `
-                break
+                `;
+                break;
 
             default:
-                row_html += `<td>${row[col]}</td>`
-                break
+                row_html += `<td>${row[col]}</td>`;
+                break;
 
         }
     })
 
     tr.innerHTML = row_html;
-    return tr
+    return tr;
 }
 
 
@@ -181,7 +180,7 @@ function getColumms(type) {
             'city'
         ]
 
-    }
+    };
 
-    return columns[type]
+    return columns[type];
 }
