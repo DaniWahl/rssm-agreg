@@ -4,7 +4,7 @@ const {ipcRenderer} = electron;
 const helpers = require('../../lib/app.helpers');
 
 let row_group;
-let last_share_no;
+let row_group_value;
 
 // register IPC event handlers
 ipcRenderer.on('repurchase:show',       showRepurchase);
@@ -67,27 +67,22 @@ function makeTableItem(row, type) {
     let row_html = '';
     let share_no;
 
+    // styling the rows based on column values
+    switch(type) {
+        case 'holders_current':
+            share_no = helpers.pad0(row.share_no, 3);
+            tr.className = getRowClass(share_no);
+            break;
 
-    if( type === 'holders_current' && row.a_code === '999010') {
-        tr.className = 'rssm-owner';
+        case 'holders_all':
+            share_no = helpers.pad0(row.share_no, 3);
+            tr.className = getRowClass(share_no);
+            break;
+        case 'journal':
+            tr.className = getRowClass(row.journal_no);
+            break;
     }
 
-    if( row.share_no ) {
-        share_no = helpers.pad0(row.share_no, 3);
-
-        // toggle row group stripe for each share no
-        if (last_share_no !== share_no) {
-
-            if (row_group === 'row-type-plain') {
-                row_group = 'row-type-highlight';
-            } else {
-                row_group = 'row-type-plain';
-            }
-        }
-
-        tr.className = row_group;
-        last_share_no = share_no;
-    }
 
 
     // generate <td> elements holding data values
@@ -132,6 +127,25 @@ function makeTableItem(row, type) {
     return tr;
 }
 
+
+/**
+ * returns the row class based on the previous and current values passed in.
+ * will toggle the classes if previous and current are different,
+ * @param current
+ * @returns {String} css class
+ */
+function getRowClass(current) {
+    if(row_group_value !== current) {
+        // need to toggle the row group
+        if (row_group === 'row-type-plain') {
+            row_group = 'row-type-highlight';
+        } else {
+            row_group = 'row-type-plain';
+        }
+    }
+    row_group_value = current;
+    return row_group;
+}
 
 /**
  * returns array of columns for a certain table type
