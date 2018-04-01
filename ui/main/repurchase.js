@@ -25,7 +25,7 @@ function submitRepurchase(e) {
          welche in den Besitz des <b>Schulvereins der RSSM (999010)</b> zurück gehen: <br> 
          <ul style="list-style-type:disc"><b>`
     shares.forEach(share_no => {
-        msg += `<li>${share_no}</li>`
+        msg += `<li>${helpers.pad0(share_no, 3)}</li>`
     })
     msg += '<b><ul>'
         
@@ -126,7 +126,7 @@ function showRepurchase(e, data) {
  */
 function initRepurchaseSummary(data) {
     // initialize the summary table
-    document.querySelector('#repurchase-date').innerHTML = dateToString()
+    document.querySelector('#repurchase-date').innerHTML = helpers.dateToString()
     document.querySelector('#repurchase-journal').innerHTML = data.nextJournal
     document.querySelector('#repurchase-shares').innerHTML = 0
 }

@@ -1,8 +1,7 @@
 
-const electron = require('electron')
-const {ipcRenderer} = electron
-const pad0 = require('../../lib/app.helpers').pad0
-const dateToString  = require('../../lib/app.helpers').dateToString
+const electron = require('electron');
+const {ipcRenderer} = electron;
+const helpers = require('../../lib/app.helpers');
 
 let row_group
 let last_share_no
@@ -74,7 +73,7 @@ function makeTableItem(row, type) {
     }
 
     if( row.share_no ) {
-        share_no = pad0(row.share_no, 3);
+        share_no = helpers.pad0(row.share_no, 3);
 
         // toggle row group stripe for each share no
         if (last_share_no !== share_no) {
