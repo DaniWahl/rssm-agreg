@@ -26,11 +26,11 @@ function executeRepurchase(e, data) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal)
 
-            // dialog.showMessageBox({
-            //     type: 'info',
-            //     title: 'Rückkauf',
-            //     message: 'Rückkauf erfolgreich durchgeführt.'
-            // })
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Rückkauf',
+                message: 'Rückkauf erfolgreich durchgeführt.'
+            });
 
         })
         .catch(err => {
