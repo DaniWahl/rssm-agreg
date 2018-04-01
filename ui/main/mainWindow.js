@@ -79,6 +79,12 @@ function makeTableItem(row, type) {
             share_no = helpers.pad0(row.share_no, 3);
             tr.className = getRowClass(share_no);
             break;
+
+        case 'share_list':
+            share_no = helpers.pad0(row.share_no, 3);
+            tr.className = getRowClass(share_no);
+            break;
+
         case 'journal':
             tr.className = getRowClass(row.journal_no);
             break;
