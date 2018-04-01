@@ -31,9 +31,6 @@ console.log('mainWindow: started')
 function handleLinkClicks(e) {
     e.preventDefault()
 
-    // show target element
-    showElement(e.target.target)
-
     // send message to main to load the data
     ipcRenderer.send('content:show',  e.target.target)
 }

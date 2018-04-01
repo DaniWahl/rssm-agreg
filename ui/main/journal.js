@@ -5,11 +5,14 @@
  * @param {Array} journal
  */
 function showJournal(e, journal) {
-    const tbody = document.querySelector('#table-journal > tbody')
 
-    // make sure list is empty
-    tbody.innerHTML = ''
+    // show target element
+    showElement('content-journal');
+
+    // load joural table
+    const tbody = document.querySelector('#table-journal > tbody');
+    tbody.innerHTML = '';
     journal.forEach(entry => {
-        tbody.appendChild( makeTableItem(entry, 'journal') )
+        tbody.appendChild( makeTableItem(entry, 'journal') );
     })
 }

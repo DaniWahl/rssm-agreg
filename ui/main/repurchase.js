@@ -72,6 +72,9 @@ function doRepurchase(e) {
  */
 function showRepurchase(e, data) {
 
+    // show target element
+    showElement('content-repurchase');
+
     initRepurchaseSummary(data);
     initRepurchaseForm();
 
