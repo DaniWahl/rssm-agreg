@@ -165,7 +165,71 @@
         </div>
 
         <div id="content-transfer" class="content-element hidden">
-            transfer
+            <h5>Aktien Übertrag</h5>
+
+            <div class="form-container">
+
+                <form name="transfer">
+
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s7">
+                                <label for="transfer-a-code-source-input">Aktionär Alt</label>
+                                <input type="text" id="transfer-a-code-source-input" class=autocomplete" name="source">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s7">
+                                <label for="transfer-a-code-reciever-input">Aktionär Neu</label>
+                                <input type="text" id="transfer-a-code-reciever-input" class=autocomplete" name="reciever">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s7">
+                                <label for="transfer-a-code-reciever-input">Begründung</label>
+                                <input type="text" id="transfer-a-code-comment" name="comment">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="min-height: 400px">
+                        <table id="table-transfer-share-list">
+                            <thead>
+                            <tr>
+                                <th>Auswahl</th>
+                                <th>Akien Nr</th>
+                                <th>A-Code</th>
+                                <th>Name</th>
+                                <th>Vorname</th>
+                                <th>Adresse</th>
+                                <th>Ort</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s5 collection">
+                            <div class="collection-item summary">Datum <span class="secondary-content" id="transfer-date"></span></div>
+                            <div class="collection-item summary">Journal Nr <span class="secondary-content" id="transfer-journal"></span></div>
+                            <div class="collection-item summary">Anzahl Aktien <span class="secondary-content" id="transfer-shares"></span>
+                            </div>
+                        </div>
+                        <div class="col s7 right-align" style="height: 100%;">
+                            <button style="margin-top: 50px" id="transfer-submit" class="btn-large waves-effect waves-light disabled" type="submit">
+                                Übertrag
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
         </div>
 
         <div id="content-mutation" class="content-element hidden">
@@ -204,6 +268,7 @@
 <script src="shareHoldersAll.js"></script>
 <script src="journal.js"></script>
 <script src="repurchase.js"></script>
+<script src="transfer.js"></script>
 <script src="mainWindow.js"></script>
 </body>
 </html>

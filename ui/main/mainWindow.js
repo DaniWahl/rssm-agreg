@@ -11,6 +11,7 @@ ipcRenderer.on('repurchase:show',       showRepurchase);
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
 ipcRenderer.on('holders:all:show',      showShareHoldersAll);
 ipcRenderer.on('journal:show',          showJournal);
+ipcRenderer.on('transfer:show',         showTransfer);
 
 
 // register event handlers for all elements
