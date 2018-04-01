@@ -1,5 +1,5 @@
 const electron = require('electron')
-const {app, BrowserWindow, Menu, ipcMain} = electron
+const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
 const RSSMShares = require('./lib/db.rssm.shares').RSSMShares
 const RSSM_DB = 'db/agregRSSM_test.db'
 
@@ -19,8 +19,45 @@ ipcMain.on('repurchase:execute', executeRepurchase)
 
 function executeRepurchase(e, data) {
 
-    //2DO: need to evaluate the returned promises and update the UI
+
+
     rssm.repurchase(data.shares, data.a_code)
+        .then(res => {
+            console.log("repurchase ok:", res);
+
+            //2DO: initialize (and hide) the repuchase form
+            //2DO: load journal ?
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'info',
+                title: 'Rückkauf',
+                message: 'Rückkauf erfolgreich durchgeführt.'
+            })
+
+        })
+        .catch(err => {
+            console.log("repurchase error:", err);
+
+            //2DO: roll back transaction
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Rückkauf',
+                message: 'Rückkauf fehler!',
+                detail: err.message
+            })
+
+        });
+
+
+
+    //2DO: need to evaluate the returned promises and update the UI
+
+    //const updates = await rssm.repurchase(data.shares, data.a_code);
+    //console.log(updates);
+
+
+
 
     //2DO: need to await for the above call to return and then re-initialize the repurchase form
 
