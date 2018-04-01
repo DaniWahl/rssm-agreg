@@ -21,7 +21,7 @@ document.querySelectorAll('a').forEach(el => {
     }
 })
 
-
+console.log('mainWindow: started')
 
 
 /**
@@ -53,6 +53,7 @@ function showElement(element_id) {
     // show selected element
     if(element_id) {
         document.querySelector(`#${element_id}`).classList.remove('hidden');
+        console.log(`mainWindow.showElement: element '${element_id}' showed`);
     }
 }
 

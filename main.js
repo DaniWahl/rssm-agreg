@@ -23,22 +23,19 @@ function executeRepurchase(e, data) {
 
     rssm.repurchase(data.shares, data.a_code)
         .then(res => {
-            console.log("repurchase ok:", res);
 
-            //2DO: initialize (and hide) the repuchase form
-            //2DO: load journal ?
+            mainWindow.webContents.send('journal:show', rssm.data.journal)
 
-            dialog.showMessageBox(mainWindow, {
-                type: 'info',
-                title: 'Rückkauf',
-                message: 'Rückkauf erfolgreich durchgeführt.'
-            })
+            // dialog.showMessageBox({
+            //     type: 'info',
+            //     title: 'Rückkauf',
+            //     message: 'Rückkauf erfolgreich durchgeführt.'
+            // })
 
         })
         .catch(err => {
-            console.log("repurchase error:", err);
 
-            //2DO: roll back transaction
+            console.error(err);
 
             dialog.showMessageBox(mainWindow, {
                 type: 'error',
@@ -48,18 +45,6 @@ function executeRepurchase(e, data) {
             })
 
         });
-
-
-
-    //2DO: need to evaluate the returned promises and update the UI
-
-    //const updates = await rssm.repurchase(data.shares, data.a_code);
-    //console.log(updates);
-
-
-
-
-    //2DO: need to await for the above call to return and then re-initialize the repurchase form
 
 }
 
@@ -75,23 +60,27 @@ function loadContentData(e, element_id) {
 
     switch(element_id) {
         case 'content-share-holders-current':
-            loadShareHoldersCurrent()
-            break
+            mainWindow.webContents.send('holders:current:show', rssm.data.shareHolders);
+            break;
 
         case 'content-share-holders-all':
-            loadShareHoldersHistory()
-            break
+            mainWindow.webContents.send('holders:all:show', rssm.data.history);
+            break;
 
         case 'content-journal':
-            loadJournal()
-            break
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+            break;
 
         case 'content-purchase':
-            break
+            break;
 
         case 'content-repurchase':
-            loadRepurchase()
-            break
+            mainWindow.webContents.send('repurchase:show', {
+                nextJournal : rssm.getNextJounalNo(),
+                a_codes     : rssm.data.a_codes,
+                shares      : rssm.data.shares
+            });
+            break;
 
         case 'content-transfer':
             break
@@ -102,61 +91,6 @@ function loadContentData(e, element_id) {
     }
 
 }
-
-
-
-function loadRepurchase() {
-
-    // prepare data for form
-    const data = {
-        nextJournal : rssm.getNextJounalNo(),
-        a_codes     : rssm.data.a_codes,
-        shares      : rssm.data.shares
-    }
-
-    mainWindow.webContents.send('repurchase:show', data)
-
-
-}
-
-
-
-function loadShareHoldersCurrent() {
-
-    rssm.getCurrentShareHolders().then(holders => {
-
-        mainWindow.webContents.send('holders:current:show', holders)
-
-    }).catch(err => {
-        console.error(err)
-    })
-}
-
-function loadShareHoldersHistory() {
-
-    rssm.getAllShareHolders().then(holders => {
-
-        mainWindow.webContents.send('holders:all:show', holders)
-
-    }).catch(err => {
-        console.error(err)
-    })
-}
-
-function loadJournal() {
-    rssm.getJournal().then(journal => {
-
-        mainWindow.webContents.send('journal:show', journal)
-
-    }).catch(err => {
-        console.error(err)
-    })
-}
-
-
-
-
-
 
 
 /**

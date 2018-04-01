@@ -72,8 +72,8 @@ function doRepurchase(e) {
  */
 function showRepurchase(e, data) {
 
-    initRepurchaseSummary(data)
-
+    initRepurchaseSummary(data);
+    initRepurchaseForm();
 
     // prepare the a_codes suggestion list
     const a_codes = {}
@@ -88,7 +88,7 @@ function showRepurchase(e, data) {
 
 
     // initialize the a_code autocomplete field with suggestion list event handler
-    $('#a_code_input').autocomplete({
+    $('#repurchase-a-code-input').autocomplete({
         data: a_codes,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
@@ -128,6 +128,10 @@ function initRepurchaseSummary(data) {
     document.querySelector('#repurchase-shares').innerHTML = 0
 }
 
+function initRepurchaseForm() {
+    document.querySelector('#table-repurchase-share-list > tbody').innerHTML = '';
+    document.querySelector('#repurchase-a-code-input').value = '';
+}
 
 /**
  * pupulate shares table with shares from selected share holder
