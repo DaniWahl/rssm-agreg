@@ -104,6 +104,7 @@ tables.push(`CREATE TABLE journal (
     booking_no           TEXT,
     booking_date         TEXT,
     vr_protocol_date     TEXT,
+    comment              TEXT,
     FOREIGN KEY (person_id) REFERENCES person(person_id)
 )`)
 indices.push(`CREATE INDEX journal_i1 ON journal(person_id)`)

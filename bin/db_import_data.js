@@ -475,6 +475,12 @@ function extractJournal(rawdata) {
         // convert vr_protocol date date to date string from Excel date number
         const vr_protocol_date = excel_to_date_string( row[headers.vr_protocol_date] )
 
+        // correct action
+        let action = row[headers.action];
+        if(action === 'Übertragung') {
+            action = 'Übertrag';
+        }
+
         // get a_code
         let a_code = row[headers.a_code];
 
@@ -482,6 +488,8 @@ function extractJournal(rawdata) {
         if(!a_code) {
             a_code = row[headers.name].toUpperCase()
         }
+
+
 
         // handle empty lines
         if( !journal_no || !journal_date ) {
@@ -499,7 +507,7 @@ function extractJournal(rawdata) {
             checked          : row[headers.checked],
             shares           : row[headers.shares],
             transaction_type : row[headers.transaction_type],
-            action           : row[headers.action],
+            action           : action,
             sold             : row[headers.sold],
             repurchased      : row[headers.repurchased],
             share_stock      : row[headers.share_stock],
