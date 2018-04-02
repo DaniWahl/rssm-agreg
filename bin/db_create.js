@@ -39,7 +39,7 @@ tables.push(`CREATE TABLE person (
     salutation      TEXT,
     status          TEXT,
     last_update     TEXT,
-    comments        TEXT,
+    comment         TEXT,
     FOREIGN KEY (family_id) REFERENCES family(family_id)
 )`)
 indices.push(`CREATE INDEX person_i1 ON person(family_id)`)

@@ -1,6 +1,6 @@
 
 const electron = require('electron');
-const {ipcRenderer} = electron;
+const {ipcRenderer, dialog} = electron;
 const helpers = require('../../lib/app.helpers');
 
 let row_group;

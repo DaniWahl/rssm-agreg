@@ -15,6 +15,7 @@ app.on('ready',                  app_init);
 ipcMain.on('content:show',       loadContentData);
 ipcMain.on('repurchase:execute', executeRepurchase);
 ipcMain.on('transfer:execute',   executeTransfer);
+ipcMain.on('mutation:execute',   executeMutation);
 
 
 /**
@@ -80,6 +81,40 @@ function executeTransfer(e, data) {
                 type: 'error',
                 title: 'Übertrag',
                 message: 'Übertrag fehler!',
+                detail: err.message
+            });
+
+        });
+}
+
+
+/**
+ * initiates the mutation process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+function executeMutation(e, person) {
+
+    rssm.mutation(person)
+        .then(res => {
+
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Mutation',
+                message: 'Mutation erfolgreich durchgeführt.'
+            });
+
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Mutation',
+                message: 'Mutation fehler!',
                 detail: err.message
             });
 
