@@ -230,7 +230,87 @@
         </div>
 
         <div id="content-mutation" class="content-element hidden">
-            mutation
+
+            <h5>Mutation</h5>
+
+            <div class="form-container">
+
+                <form name="mutation">
+
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col s5">
+                                <label for="mutation-a-code-select">Aktionär</label>
+                                <input type="text" id="mutation-a-code-select" class=autocomplete" name="holder">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s5">
+                                <label for="mutation-a-code-input">A-Code</label>
+                                <input type="text" id="mutation-a-code-input" name="a_code">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s1">
+                                <label for="mutation-salutation-input">Anrede</label>
+                                <input type="text" id="mutation-salutation-input" name="salutation" class="active">
+                            </div>
+                            <div class="input-field col s4">
+                                <label for="mutation-first-name-input">Vorname</label>
+                                <input type="text" id="mutation-first-name-input" name="first_name">
+                            </div>
+                            <div class="input-field col s4">
+                                <label for="mutation-name-input">Name</label>
+                                <input type="text" id="mutation-name-input" name="name">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s9">
+                                <label for="mutation-address-input">Adresse</label>
+                                <input type="text" id="mutation-address-input" name="address">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s3">
+                                <label for="mutation-post-code-input">PLZ</label>
+                                <input type="text" id="mutation-post-code-input" name="post_code">
+                            </div>
+                            <div class="input-field col s6">
+                                <label for="mutation-city-input">Ort</label>
+                                <input type="text" id="mutation-city-input" name="city">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s9">
+                                <label for="mutation-comment-input">Kommentar</label>
+                                <input type="text" id="mutation-comment-input" name="comment">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col s5 collection">
+                            <div class="collection-item summary">Datum <span class="secondary-content" id="mutation-date"></span></div>
+                            <div class="collection-item summary">Journal Nr <span class="secondary-content" id="mutation-journal"></span></div>
+                        </div>
+                        <div class="col s7 right-align" style="height: 100%;">
+                            <button style="margin-top: 50px" id="mutation-submit" class="btn-large waves-effect waves-light disabled" type="submit">
+                                Mutation
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
         </div>
 
         <div id="content-administration" class="content-element hidden">
@@ -266,6 +346,8 @@
 <script src="journal.js"></script>
 <script src="repurchase.js"></script>
 <script src="transfer.js"></script>
+<script src="mutation.js"></script>
+
 <script src="mainWindow.js"></script>
 </body>
 </html>

@@ -128,6 +128,10 @@ function loadContentData(e, element_id) {
             break
 
         case 'content-mutation':
+            mainWindow.webContents.send('mutation:show', {
+                nextJournal : rssm.getNextJounalNo(),
+                a_codes     : rssm.data.a_codes
+            });
             break
 
     }
