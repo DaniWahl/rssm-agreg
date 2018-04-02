@@ -58,6 +58,32 @@ function executeRepurchase(e, data) {
  */
 function executeTransfer(e, data) {
 
+    rssm.transfer(data.shares, data.holder, data.reciever, data.comment)
+        .then(res => {
+
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Übertrag',
+                message: 'Übertrag erfolgreich durchgeführt.'
+            });
+
+            //2DO: need to generate & print new certificate documents
+
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Übertrag',
+                message: 'Übertrag fehler!',
+                detail: err.message
+            });
+
+        });
 }
 
 

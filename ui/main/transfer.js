@@ -52,10 +52,12 @@ function doTransfer(e) {
     transfer.reciever = formData.get('reciever');
     transfer.comment = formData.get('comment');
 
-    // extract a_code
+    // extract a_codes
     let reg = /.+ \((.+)\)$/;
     let matches = reg.exec(transfer.holder);
-    transfer.a_code = matches[1];
+    transfer.holder = matches[1];
+    matches = reg.exec(transfer.reciever);
+    transfer.reciever = matches[1];
 
     ipcRenderer.send('transfer:execute', transfer);
 
