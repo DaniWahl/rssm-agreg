@@ -115,9 +115,10 @@ function makeTableItem(row, type) {
                 break;
 
             case 'checkbox':
+                //2DO: check box items need to have a unique id, but the below ids are not causing the checkboxes to not enable!
                 row_html += `
                     <td>
-                        <input type="checkbox" name="repurchase_share" value="${row.share_no}" class="filled-in" id="share_no_${row.share_no}" />
+                        <input type="checkbox" name="share_item" value="${row.share_no}" class="filled-in" id="share_no_${row.share_no}" />
                         <label for="share_no_${row.share_no}"></label>
                     </td>
                 `;

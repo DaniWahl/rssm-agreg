@@ -11,17 +11,23 @@ let mainWindow = null
 
 
 // handle application events
-app.on('ready',                  app_init)
-ipcMain.on('content:show',       loadContentData)
-ipcMain.on('repurchase:execute', executeRepurchase)
+app.on('ready',                  app_init);
+ipcMain.on('content:show',       loadContentData);
+ipcMain.on('repurchase:execute', executeRepurchase);
+ipcMain.on('transfer:execute',   executeTransfer);
 
 
+/**
+ * initiates the repurchase process and displays success or error on UI
+ * @param e
+ * @param data
+ */
 function executeRepurchase(e, data) {
 
     rssm.repurchase(data.shares, data.a_code)
         .then(res => {
 
-            mainWindow.webContents.send('journal:show', rssm.data.journal)
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
 
             dialog.showMessageBox(mainWindow,{
                 type: 'info',
@@ -39,12 +45,20 @@ function executeRepurchase(e, data) {
                 title: 'Rückkauf',
                 message: 'Rückkauf fehler!',
                 detail: err.message
-            })
+            });
 
         });
 
 }
 
+/**
+ * initiates the repurchase process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+function executeTransfer(e, data) {
+
+}
 
 
 /**

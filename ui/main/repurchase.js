@@ -49,7 +49,7 @@ function submitRepurchase(e) {
  */
 function doRepurchase(e) {
 
-    const repurchase = {}
+    const repurchase = {};
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
     repurchase.shares = formData.getAll('repurchase_share');
     repurchase.holder = formData.get('holder');
@@ -161,7 +161,7 @@ function listRepurchaseShares(shares) {
 function updateSelectedShares(e) {
 
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    const share_no = formData.getAll('repurchase_share').length;
+    const share_no = formData.getAll('share_item').length;
 
     document.querySelector('#repurchase-shares').innerHTML = share_no;
 
