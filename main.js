@@ -2,6 +2,8 @@ const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSM_DB = 'db/agregRSSM_test.db'
+const VERSION = "0.1.0";
+
 
 
 // create application objects
@@ -182,10 +184,19 @@ function app_init() {
     // create UI window
     mainWindow = new BrowserWindow({
         width  : 1600,
-        height : 1000
+        height : 1000,
+        show   : false,
+        backgroundColor : '#ffffff'
     })
     mainWindow.loadURL(`file://${__dirname}/ui/main/mainWindow.html`)
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+
+        // send application version to display
+        mainWindow.webContents.send('version:show', VERSION);
+    });
     mainWindow.on('closed', app_quit)
+
 
 
     // build menu from template

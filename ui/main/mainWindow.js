@@ -7,12 +7,14 @@ let row_group;
 let row_group_value;
 
 // register IPC event handlers
+ipcRenderer.on('version:show',          showVersion);
 ipcRenderer.on('repurchase:show',       showRepurchase);
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
 ipcRenderer.on('holders:all:show',      showShareHoldersAll);
 ipcRenderer.on('journal:show',          showJournal);
 ipcRenderer.on('transfer:show',         showTransfer);
 ipcRenderer.on('mutation:show',         showMutation);
+
 
 
 // register event handlers for all elements
@@ -22,8 +24,15 @@ document.querySelectorAll('a').forEach(el => {
     }
 })
 
+
+
 console.log('mainWindow: started');
 
+
+function showVersion(e, version) {
+    console.log("showing version ", version)
+    document.querySelector('#version-no').innerHTML = version;
+}
 
 /**
  * handle click events on <a> dom elements
