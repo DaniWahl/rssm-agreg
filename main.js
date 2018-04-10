@@ -149,7 +149,8 @@ function loadContentData(e, element_id) {
             mainWindow.webContents.send('purchase:show', {
                 nextJournal : rssm.getNextJounalNo(),
                 a_codes     : rssm.data.a_codes,
-                shares      : rssm.data.shares
+                shares      : rssm.data.shares,
+                rssm_shares : rssm.data.rssmShares
             });
             break;
 

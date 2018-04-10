@@ -93,82 +93,83 @@
      // show target element
      showElement('content-purchase');
 
-     // initMutationSummary(data);
-     // initMutationForm();
-     //
-     // // prepare the a_codes suggestion list
-     // const a_codes = {};
-     // Object.keys(data.a_codes).forEach(a_code => {
-     //     let suggest = data.a_codes[a_code].name;
-     //     suggest += ' ';
-     //     suggest += data.a_codes[a_code].first_name;
-     //     suggest += ' (' + a_code + ')';
-     //
-     //     a_codes[suggest] = null;
-     // });
-     //
-     //
-     // // initialize the a_code autocomplete field with suggestion list event handler
-     // $('#mutation-a-code-select').autocomplete({
-     //     data: a_codes,
-     //     limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-     //     onAutocomplete: function (val) {
-     //
-     //         // extract a_code part from selection
-     //         const regex = /.+ \((.+)\)$/g;
-     //         const matches = regex.exec(val);
-     //         const a_code = matches[1];
-     //
-     //         // get share holder with a_code
-     //         const holder = data.a_codes[a_code];
-     //
-     //         // save data global
-     //         holder_orig = Object.assign({}, holder);
-     //
-     //         // load person data to form
-     //         initMutationForm(holder);
-     //
-     //         document.querySelector('#mutation-submit').classList.remove('disabled');
-     //
-     //     },
-     //     minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
-     // });
+     initPurchaseSummary(data);
+     initPurchaseForm();
+
+     //console.log(data.rssm_shares);
+
+     // prepare the a_codes suggestion list
+      const a_codes = {};
+      Object.keys(data.a_codes).forEach(a_code => {
+          let suggest = data.a_codes[a_code].name;
+          suggest += ' ';
+          suggest += data.a_codes[a_code].first_name;
+          suggest += ' (' + a_code + ')';
+
+          a_codes[suggest] = null;
+      });
+
+
+      // initialize the a_code autocomplete field with suggestion list event handler
+      $('#purchase-a-code-select').autocomplete({
+          data: a_codes,
+          limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+          onAutocomplete: function (val) {
+
+              // extract a_code part from selection
+              const regex = /.+ \((.+)\)$/g;
+              const matches = regex.exec(val);
+              const a_code = matches[1];
+
+              // get share holder with a_code
+              const holder = data.a_codes[a_code];
+
+              // save data global
+              holder_orig = Object.assign({}, holder);
+
+              // load person data to form
+              initPurchaseForm(holder);
+
+              document.querySelector('#mutation-submit').classList.remove('disabled');
+
+          },
+          minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+      });
 
  }
 
 
-// /**
-//  * initialize the Transfer summary table
-//  */
-// function initMutationSummary(data) {
-//     // initialize the summary table
-//     document.querySelector('#mutation-date').innerHTML = helpers.dateToString();
-//     document.querySelector('#mutation-journal').innerHTML = data.nextJournal;
-// }
-//
-//
-// /**
-//  * initializes the mutation form with blank or share holder info
-//  * @param {Object} holder
-//  */
-// function initMutationForm(holder = {}) {
-//
-//
-//     if (!holder.a_code) {
-//         document.querySelector('#mutation-a-code-select').value = '';
-//     }
-//
-//     document.querySelector('#mutation-a-code-input').value = holder.a_code || '';
-//     document.querySelector('#mutation-salutation-input').value = holder.salutation || '';
-//     document.querySelector('#mutation-first-name-input').value = holder.first_name || '';
-//     document.querySelector('#mutation-name-input').value = holder.name || '';
-//     document.querySelector('#mutation-address-input').value = holder.address || '';
-//     document.querySelector('#mutation-post-code-input').value = holder.post_code || '';
-//     document.querySelector('#mutation-city-input').value = holder.city || '';
-//     document.querySelector('#mutation-comment-input').value = holder.comment || '';
-//
-//     Materialize.updateTextFields();
-//
-// }
-//
-//
+ /**
+  * initialize the Purchase summary table
+  */
+ function initPurchaseSummary(data) {
+     // initialize the summary table
+     document.querySelector('#purchase-date').innerHTML = helpers.dateToString();
+     document.querySelector('#purchase-journal').innerHTML = data.nextJournal;
+ }
+
+
+ /**
+  * initializes the purchase form with blank or share holder info
+  * @param {Object} holder
+  */
+ function initPurchaseForm(holder = {}) {
+
+
+     if (!holder.a_code) {
+         document.querySelector('#purchase-a-code-select').value = '';
+     }
+
+     document.querySelector('#purchase-salutation-input').value = holder.salutation || '';
+     document.querySelector('#purchase-first-name-input').value = holder.first_name || '';
+     document.querySelector('#purchase-name-input').value = holder.name || '';
+     document.querySelector('#purchase-address-input').value = holder.address || '';
+     document.querySelector('#purchase-post-code-input').value = holder.post_code || '';
+     document.querySelector('#purchase-city-input').value = holder.city || '';
+     document.querySelector('#purchase-comment-input').value = holder.comment || '';
+
+     Materialize.updateTextFields();
+
+ }
+
+
