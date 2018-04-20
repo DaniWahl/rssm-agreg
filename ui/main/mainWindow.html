@@ -28,10 +28,10 @@
             <a target="content-journal" class="collection-item" href="#">Journal</a>
 
             <div class="collection-item menu-category">Aktionen</div>
-            <a target="content-purchase" class="collection-item" href="#">Kauf</a>
+            <a target="content-sale"       class="collection-item" href="#">Verkauf</a>
             <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
-            <a target="content-transfer" class="collection-item" href="#">Übertrag</a>
-            <a target="content-mutation" class="collection-item" href="#">Mutation</a>
+            <a target="content-transfer"   class="collection-item" href="#">Übertrag</a>
+            <a target="content-mutation"   class="collection-item" href="#">Mutation</a>
         </div>
 
         <div class="version">
@@ -313,75 +313,75 @@
 
         </div>
 
-        <div id="content-purchase" class="content-element hidden">
+        <div id="content-sale" class="content-element hidden">
 
-            <h5>Aktien Kauf</h5>
+            <h5>Aktien Verkauf</h5>
 
             <div class="form-container">
 
-                <form name="purchase">
+                <form name="sale">
 
                     <div class="row">
                         <div class="row">
                             <div class="input-field col s5">
-                                <label for="purchase-a-code-select">Aktionär</label>
-                                <input type="text" id="purchase-a-code-select" class=autocomplete" name="holder">
+                                <label for="sale-a-code-select">Aktionär</label>
+                                <input type="text" id="sale-a-code-select" class=autocomplete" name="holder">
                             </div>
                             <div class="input-field col s5">
-                                <label for="purchase-n-shares">Anzahl Aktien</label>
-                                <input type="text" id="purchase-n-shares" name="n_shares">
+                                <label for="sale-n-shares">Anzahl Aktien</label>
+                                <input type="text" id="sale-n-shares" name="n_shares">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s2">
-                                <label for="purchase-salutation-input">Anrede</label>
-                                <input type="text" id="purchase-salutation-input" name="salutation" class="active">
+                                <label for="sale-salutation-input">Anrede</label>
+                                <input type="text" id="sale-salutation-input" name="salutation" class="active">
                             </div>
                             <div class="input-field col s4">
-                                <label for="purchase-first-name-input">Vorname</label>
-                                <input type="text" id="purchase-first-name-input" name="first_name">
+                                <label for="sale-first-name-input">Vorname</label>
+                                <input type="text" id="sale-first-name-input" name="first_name">
                             </div>
                             <div class="input-field col s4">
-                                <label for="purchase-name-input">Name</label>
-                                <input type="text" id="purchase-name-input" name="name">
+                                <label for="sale-name-input">Name</label>
+                                <input type="text" id="sale-name-input" name="name">
                             </div>
 
                         </div>
 
                         <div class="row">
                             <div class="input-field col s10">
-                                <label for="purchase-address-input">Adresse</label>
-                                <input type="text" id="purchase-address-input" name="address">
+                                <label for="sale-address-input">Adresse</label>
+                                <input type="text" id="sale-address-input" name="address">
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s4">
-                                <label for="purchase-post-code-input">PLZ</label>
-                                <input type="text" id="purchase-post-code-input" name="post_code">
+                                <label for="sale-post-code-input">PLZ</label>
+                                <input type="text" id="sale-post-code-input" name="post_code">
                             </div>
                             <div class="input-field col s6">
-                                <label for="purchase-city-input">Ort</label>
-                                <input type="text" id="purchase-city-input" name="city">
+                                <label for="sale-city-input">Ort</label>
+                                <input type="text" id="sale-city-input" name="city">
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s10">
-                                <label for="purchase-family-input">Kommentar</label>
-                                <input type="text" id="purchase-family-input" name="family">
+                                <label for="sale-family-input">Kommentar</label>
+                                <input type="text" id="sale-family-input" name="family">
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s10">
-                                <label for="purchase-comment-input">Familie</label>
-                                <input type="text" id="purchase-comment-input" name="comment">
+                                <label for="sale-comment-input">Familie</label>
+                                <input type="text" id="sale-comment-input" name="comment">
                             </div>
                         </div>
 
                     </div>
 
                     <div class="row" style="min-height: 300px">
-                        <table id="table-purchase-share-list">
+                        <table id="table-sale-share-list">
                             <thead>
                             <tr>
                                 <th>Auswahl</th>
@@ -399,12 +399,12 @@
 
                     <div class="row">
                         <div class="col s5 collection">
-                            <div class="collection-item summary">Datum <span class="secondary-content" id="purchase-date"></span></div>
-                            <div class="collection-item summary">Journal Nr <span class="secondary-content" id="purchase-journal"></span></div>
+                            <div class="collection-item summary">Datum <span class="secondary-content" id="sale-date"></span></div>
+                            <div class="collection-item summary">Journal Nr <span class="secondary-content" id="sale-journal"></span></div>
                         </div>
                         <div class="col s7 right-align" style="height: 100%;">
-                            <button style="margin-top: 50px" id="purchase-submit" class="btn-large waves-effect waves-light disabled" type="submit">
-                                Kauf
+                            <button style="margin-top: 50px" id="sale-submit" class="btn-large waves-effect waves-light disabled" type="submit">
+                                Verkauf
                             </button>
                         </div>
 
@@ -413,30 +413,60 @@
                 </form>
             </div>
 
-
-
-
         </div>
 
-
     </div>
-
 
 </div>
 
 
 <!-- Modal Structure -->
-<div id="confirmation-modal" class="modal modal-fixed-footer">
+<div id="confirmation-modal-sale" class="modal modal-fixed-footer">
     <div class="modal-content">
-        <h4></h4>
+        <h4>Verkauf</h4>
         <p style="margin: 40px"></p>
     </div>
     <div class="modal-footer">
-        <a href="#!" id='confirmation-modal-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">OK</a>
+        <a href="#!" id='confirmation-sale-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Verkauf OK</a>
         <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
     </div>
 </div>
 
+<!-- Modal Structure -->
+<div id="confirmation-modal-repurchase" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Rückkauf</h4>
+        <p style="margin: 40px"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" id='confirmation-repurchase-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Rückkauf OK</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="confirmation-modal-transfer" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Übertrag</h4>
+        <p style="margin: 40px"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" id='confirmation-transfer-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Übertrag OK</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="confirmation-modal-mutation" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Mutation</h4>
+        <p style="margin: 40px"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" id='confirmation-mutation-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Mutation OK</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+    </div>
+</div>
 
 <script type="text/javascript" src="../hammer.min.js"></script>
 <script type="text/javascript" src="../jquery-3.3.1.min.js"></script>
@@ -448,7 +478,7 @@
 <script src="repurchase.js"></script>
 <script src="transfer.js"></script>
 <script src="mutation.js"></script>
-<script src="purchase.js"></script>
+<script src="sale.js"></script>
 
 
 <script src="mainWindow.js"></script>

@@ -145,8 +145,8 @@ function loadContentData(e, element_id) {
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             break;
 
-        case 'content-purchase':
-            mainWindow.webContents.send('purchase:show', {
+        case 'content-sale':
+            mainWindow.webContents.send('sale:show', {
                 nextJournal : rssm.getNextJounalNo(),
                 a_codes     : rssm.data.a_codes,
                 shares      : rssm.data.shares,
@@ -254,7 +254,7 @@ function getMainMenuTemplate() {
             label : 'Aktionen',
             submenu: [
                 {
-                    label: 'Kauf',
+                    label: 'Verkauf',
                     click() {  }
                 },
                 {

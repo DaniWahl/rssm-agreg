@@ -1,6 +1,6 @@
 // setup repurchase ui specific event handlers
 document.querySelector('#transfer-submit').addEventListener('click', submitTransfer);
-document.querySelector('#confirmation-modal-ok').addEventListener('click', doTransfer);
+document.querySelector('#confirmation-transfer-ok').addEventListener('click', doTransfer);
 
 
 /**
@@ -29,12 +29,10 @@ function submitTransfer(e) {
     msg += '<b><ul>';
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal');
-    dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Übertrag';
+    const dialog = document.querySelector('#confirmation-modal-transfer');
     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-
-    $('#confirmation-modal').modal();
-    $('#confirmation-modal').modal('open');
+    $('#confirmation-modal-transfer').modal();
+    $('#confirmation-modal-transfer').modal('open');
 }
 
 /**

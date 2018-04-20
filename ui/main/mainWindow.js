@@ -14,7 +14,7 @@ ipcRenderer.on('holders:all:show',      showShareHoldersAll);
 ipcRenderer.on('journal:show',          showJournal);
 ipcRenderer.on('transfer:show',         showTransfer);
 ipcRenderer.on('mutation:show',         showMutation);
-ipcRenderer.on('purchase:show',         showPurchase);
+ipcRenderer.on('sale:show',             showSale);
 
 
 
