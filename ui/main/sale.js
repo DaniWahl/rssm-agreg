@@ -9,7 +9,7 @@ let rssmShareIndex;
 function updateShareList(e) {
     const value = parseInt(e.target.value);
 
-    if(isNaN(value)) {
+    if (isNaN(value)) {
         return;
     }
 
@@ -19,21 +19,33 @@ function updateShareList(e) {
 
 }
 
+/**
+ * returns an array of share numbers for sale.
+ * tries to get a sequece where possible
+ * @param n {int}  number of shares to pull
+ * @returns {*[]}
+ */
 function getShareList(n) {
-    let list=[];
+    let list = [];
+    let i=n;
 
-    // check if we have a group in the index
-    if(typeof rssmShareIndex[n] !== 'undefined') {
-        // lucky! return the first
-        return rssmShareIndex[n][0];
+    while(list.length < n && i>0) {
+
+        // check if we have a group in the index
+        if (typeof rssmShareIndex[i] !== 'undefined') {
+
+            if(typeof rssmShareIndex[i][0] != 'undefined') {
+
+                // lucky! return the first
+                list = list.concat(rssmShareIndex[i][0]);
+            }
+        }
+
+        i--;
     }
 
-
-    //2DO: need to resolve when there no group of n available
-
-
-    return list;
-
+    //console.log(`getShares(${n} , ${i} ) = ${list} `);
+    return list.slice(0,n);
 }
 
 
@@ -48,13 +60,13 @@ function indexShareList(rssmSharesNo) {
     let next = rssmSharesNo[0];  // bootstrap next with first share no
 
 
-    for (let i=0; i<rssmSharesNo.length; i++) {
+    for (let i = 0; i < rssmSharesNo.length; i++) {
 
         // is share no in sequence group?
-        if(rssmSharesNo[i] !== next) {
+        if (rssmSharesNo[i] !== next) {
 
             // make sure we have a index array of that size
-            if(typeof index[group.length] === 'undefined') {
+            if (typeof index[group.length] === 'undefined') {
                 index[group.length] = [];
             }
 
@@ -66,7 +78,7 @@ function indexShareList(rssmSharesNo) {
 
         // add to group and adjust next
         group.push(rssmSharesNo[i]);
-        next = rssmSharesNo[i] +1;
+        next = rssmSharesNo[i] + 1;
     }
 
     return index;
@@ -78,7 +90,7 @@ function indexShareList(rssmSharesNo) {
 //  * displays a confirmation dialog
 //  * @param e
 //  */
- function submitSale(e) {
+function submitSale(e) {
 //     e.preventDefault();
 //
 //     // get form data
@@ -127,14 +139,15 @@ function indexShareList(rssmSharesNo) {
 //
 //     $('#confirmation-modal').modal();
 //     $('#confirmation-modal').modal('open');
- }
+}
+
 //
 //  /**
 //   * event handler for the modal dialog ok button click.
 //   * passes the data back to main for being processed
 //   * @param e
 //   */
-  function doSale(e) {
+function doSale(e) {
 //
 //      // get form data
 //      const formData = new FormData(document.querySelector('form[name=mutation]'));
@@ -149,97 +162,97 @@ function indexShareList(rssmSharesNo) {
 //      mutated.comment = formData.get('comment');
 //
 //      ipcRenderer.send('mutation:execute', mutated);
- }
+}
 
- /**
-  * event handler for the sale:show IPC event.
-  * initialized the Sale form
-  * @param {Event} e
-  * @param {Object} data
-  */
- function showSale(e, data) {
+/**
+ * event handler for the sale:show IPC event.
+ * initialized the Sale form
+ * @param {Event} e
+ * @param {Object} data
+ */
+function showSale(e, data) {
 
-     // show target element
-     showElement('content-sale');
+    // show target element
+    showElement('content-sale');
 
-     initSaleSummary(data);
-     initSaleForm();
+    initSaleSummary(data);
+    initSaleForm();
 
-     rssmShareIndex = indexShareList(data.rssm_shares);
-     console.log(rssmShareIndex);
+    rssmShareIndex = indexShareList(data.rssm_shares);
+    console.log(rssmShareIndex);
 
-     // prepare the a_codes suggestion list
-      const a_codes = {};
-      Object.keys(data.a_codes).forEach(a_code => {
-          let suggest = data.a_codes[a_code].name;
-          suggest += ' ';
-          suggest += data.a_codes[a_code].first_name;
-          suggest += ' (' + a_code + ')';
+    // prepare the a_codes suggestion list
+    const a_codes = {};
+    Object.keys(data.a_codes).forEach(a_code => {
+        let suggest = data.a_codes[a_code].name;
+        suggest += ' ';
+        suggest += data.a_codes[a_code].first_name;
+        suggest += ' (' + a_code + ')';
 
-          a_codes[suggest] = null;
-      });
-
-
-      // initialize the a_code autocomplete field with suggestion list event handler
-      $('#sale-a-code-select').autocomplete({
-          data: a_codes,
-          limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
-          onAutocomplete: function (val) {
-
-              // extract a_code part from selection
-              const regex = /.+ \((.+)\)$/g;
-              const matches = regex.exec(val);
-              const a_code = matches[1];
-
-              // get share holder with a_code
-              const holder = data.a_codes[a_code];
-
-              // save data global
-              holder_orig = Object.assign({}, holder);
-
-              // load person data to form
-              initSaleForm(holder);
-
-              document.querySelector('#sale-submit').classList.remove('disabled');
-
-          },
-          minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
-      });
-
- }
+        a_codes[suggest] = null;
+    });
 
 
- /**
-  * initialize the Purchase summary table
-  */
- function initSaleSummary(data) {
-     // initialize the summary table
-     document.querySelector('#sale-date').innerHTML = helpers.dateToString();
-     document.querySelector('#sale-journal').innerHTML = data.nextJournal;
- }
+    // initialize the a_code autocomplete field with suggestion list event handler
+    $('#sale-a-code-select').autocomplete({
+        data: a_codes,
+        limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+        onAutocomplete: function (val) {
+
+            // extract a_code part from selection
+            const regex = /.+ \((.+)\)$/g;
+            const matches = regex.exec(val);
+            const a_code = matches[1];
+
+            // get share holder with a_code
+            const holder = data.a_codes[a_code];
+
+            // save data global
+            holder_orig = Object.assign({}, holder);
+
+            // load person data to form
+            initSaleForm(holder);
+
+            document.querySelector('#sale-submit').classList.remove('disabled');
+
+        },
+        minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+    });
+
+}
 
 
- /**
-  * initializes the purchase form with blank or share holder info
-  * @param {Object} holder
-  */
- function initSaleForm(holder = {}) {
+/**
+ * initialize the Purchase summary table
+ */
+function initSaleSummary(data) {
+    // initialize the summary table
+    document.querySelector('#sale-date').innerHTML = helpers.dateToString();
+    document.querySelector('#sale-journal').innerHTML = data.nextJournal;
+}
 
 
-     if (!holder.a_code) {
-         document.querySelector('#sale-a-code-select').value = '';
-     }
+/**
+ * initializes the purchase form with blank or share holder info
+ * @param {Object} holder
+ */
+function initSaleForm(holder = {}) {
 
-     document.querySelector('#sale-salutation-input').value = holder.salutation || '';
-     document.querySelector('#sale-first-name-input').value = holder.first_name || '';
-     document.querySelector('#sale-name-input').value = holder.name || '';
-     document.querySelector('#sale-address-input').value = holder.address || '';
-     document.querySelector('#sale-post-code-input').value = holder.post_code || '';
-     document.querySelector('#sale-city-input').value = holder.city || '';
-     document.querySelector('#sale-comment-input').value = holder.comment || '';
 
-     Materialize.updateTextFields();
+    if (!holder.a_code) {
+        document.querySelector('#sale-a-code-select').value = '';
+    }
 
- }
+    document.querySelector('#sale-salutation-input').value = holder.salutation || '';
+    document.querySelector('#sale-first-name-input').value = holder.first_name || '';
+    document.querySelector('#sale-name-input').value = holder.name || '';
+    document.querySelector('#sale-address-input').value = holder.address || '';
+    document.querySelector('#sale-post-code-input').value = holder.post_code || '';
+    document.querySelector('#sale-city-input').value = holder.city || '';
+    document.querySelector('#sale-comment-input').value = holder.comment || '';
+
+    Materialize.updateTextFields();
+
+}
 
 
