@@ -18,6 +18,9 @@ ipcMain.on('content:show',       loadContentData);
 ipcMain.on('repurchase:execute', executeRepurchase);
 ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
+ipcMain.on('sale:execute',       executeSale);
+
+
 
 
 /**
@@ -83,6 +86,39 @@ function executeTransfer(e, data) {
                 type: 'error',
                 title: 'Übertrag',
                 message: 'Übertrag fehler!',
+                detail: err.message
+            });
+
+        });
+}
+
+/**
+ * initiates the sale process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+function executeSale(e, data) {
+
+    rssm.sale(person)
+        .then(res => {
+
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Verkauf',
+                message: 'Verkauf erfolgreich durchgeführt.'
+            });
+
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Verkauf',
+                message: 'Verkauf fehler!',
                 detail: err.message
             });
 

@@ -323,11 +323,17 @@
 
                     <div class="row">
                         <div class="row">
-                            <div class="input-field col s5">
+                            <div class="input-field col s4">
                                 <label for="sale-a-code-select">Aktionär</label>
                                 <input type="text" id="sale-a-code-select" class=autocomplete" name="holder">
                             </div>
-                            <div class="input-field col s5">
+
+                                <div class="input-field col s4">
+                                    <label for="sale-family-input">Familie</label>
+                                    <input type="text" id="sale-family-input" name="family">
+                                </div>
+
+                            <div class="input-field col s2">
                                 <label for="sale-n-shares">Anzahl Aktien</label>
                                 <input type="text" id="sale-n-shares" name="n_shares">
                             </div>
@@ -367,13 +373,7 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s10">
-                                <label for="sale-family-input">Kommentar</label>
-                                <input type="text" id="sale-family-input" name="family">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s10">
-                                <label for="sale-comment-input">Familie</label>
+                                <label for="sale-comment-input">Kommentar</label>
                                 <input type="text" id="sale-comment-input" name="comment">
                             </div>
                         </div>
@@ -401,6 +401,7 @@
                         <div class="col s5 collection">
                             <div class="collection-item summary">Datum <span class="secondary-content" id="sale-date"></span></div>
                             <div class="collection-item summary">Journal Nr <span class="secondary-content" id="sale-journal"></span></div>
+                            <div class="collection-item summary">Anzahl Aktien <span class="secondary-content" id="sale-shares"></span></div>
                         </div>
                         <div class="col s7 right-align" style="height: 100%;">
                             <button style="margin-top: 50px" id="sale-submit" class="btn-large waves-effect waves-light disabled" type="submit">

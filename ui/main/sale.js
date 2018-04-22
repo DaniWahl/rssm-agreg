@@ -5,6 +5,7 @@ document.querySelector('#sale-n-shares').addEventListener('input', updateShareLi
 
 //let rssmSharesNo;
 let rssmShareIndex;
+let allShares;
 
 function updateShareList(e) {
     const value = parseInt(e.target.value);
@@ -13,11 +14,61 @@ function updateShareList(e) {
         return;
     }
 
+    // pull list of available shares
     const list = getShareList(value);
-    console.log(list);
+
+    // create share table rows
+    const shares = [];
+    for (let i=0; i<list.length; i++) {
+        shares.push(allShares[list[i]]);
+    }
+
+    // create table rows
+    listSaleShares(shares);
+
+}
+
+
+/**
+ * pupulate shares table with proposed shares
+ * @param {Array} shares
+ */
+function listSaleShares(shares) {
+    const tbody = document.querySelector('#table-sale-share-list > tbody');
+
+    tbody.innerHTML = '';
+    shares.forEach(share => {
+        tbody.appendChild(makeTableItem(share, 'share_list'));
+    })
+
+    document.querySelectorAll('#table-sale-share-list > tbody > tr > td > input').forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedShares);
+    })
+}
+
+
+/**
+ * event handler of the checkbox change event.
+ * count number of selected shares and update summary table and repurchase button status
+ * @param {Event} e
+ */
+function updateSelectedShares(e) {
+
+    const formData = new FormData(document.querySelector('form[name=sale]'));
+    const share_no = formData.getAll('share_item').length;
+
+    document.querySelector('#sale-shares').innerHTML = share_no;
+
+    // handle button status
+    if(share_no !== 0) {
+        document.querySelector('#sale-submit').classList.remove('disabled');
+    } else {
+        document.querySelector('#sale-submit').classList.add('disabled');
+    }
 
 
 }
+
 
 /**
  * returns an array of share numbers for sale.
@@ -85,83 +136,79 @@ function indexShareList(rssmSharesNo) {
 }
 
 
-// /**
-//  * event handler for the Transfer Submit button.
-//  * displays a confirmation dialog
-//  * @param e
-//  */
+ /**
+  * event handler for the Transfer Submit button.
+  * displays a confirmation dialog
+  * @param e
+  */
 function submitSale(e) {
-//     e.preventDefault();
-//
-//     // get form data
-//     const formData = new FormData(document.querySelector('form[name=mutation]'));
-//     const mutated = {};
-//     const holder = formData.get('holder');
-//     mutated.a_code = formData.get('a_code');
-//     mutated.salutation = formData.get('salutation');
-//     mutated.first_name = formData.get('first_name');
-//     mutated.name = formData.get('name');
-//     mutated.address = formData.get('address');
-//     mutated.post_code = formData.get('post_code');
-//     mutated.city = formData.get('city');
-//     mutated.comment = formData.get('comment');
-//
-//
-//     // form dialog message
-//     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden Informationen mutiert:<br> `;
-//
-//     let field_counter = 0;
-//     for (let field of ['a_code', 'salutation', 'first_name', 'name', 'address', 'post_code', 'city']) {
-//
-//         if (mutated[field] !== holder_orig[field]) {
-//             msg += `${holder_orig[field]} &rarr; ${mutated[field]} <br>`;
-//             field_counter++;
-//         }
-//
-//     }
-//
-//     if(mutated.comment) {
-//         msg += `Kommentar:  ${mutated.comment} <br>`;
-//     }
-//
-//     if (field_counter > 0) {
-//         msg += '<b><ul>';
-//     } else {
-//         alert('Keine Änderungen an Personendaten.');
-//         return;
-//     }
-//
-//
-//     // initialize and show dialog
-//     const dialog = document.querySelector('#confirmation-modal');
-//     dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Mutation';
-//     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-//
-//     $('#confirmation-modal').modal();
-//     $('#confirmation-modal').modal('open');
+     e.preventDefault();
+
+     // get form data
+     const formData = new FormData(document.querySelector('form[name=sale]'));
+     const shares = formData.getAll('share_item');
+
+     const buyer = {};
+     const holder = formData.get('holder');
+     buyer.a_code = formData.get('a_code');
+     buyer.salutation = formData.get('salutation');
+     buyer.first_name = formData.get('first_name');
+     buyer.name = formData.get('name');
+     buyer.address = formData.get('address');
+     buyer.post_code = formData.get('post_code');
+     buyer.city = formData.get('city');
+     buyer.comment = formData.get('comment');
+
+
+     let buyer_status = 'new';
+     if(holder !== '') {
+         buyer_status = 'exists';
+     }
+
+     // form dialog message
+     let msg = `Die folgenden <b>${shares.length}</b> Aktien werden dem Aktionär <b>${buyer.name}</b> verkauft:<br> `;
+     msg +=  `<ul style="list-style-type:disc"><b>`;
+     shares.forEach(share_no => {
+         msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
+     })
+     msg += '</b></ul>';
+
+     if(buyer_status === 'new') {
+         msg += '<p>Für den Aktionär werden neue Stammdaten erstellt.</p>';
+     }
+
+
+     // initialize and show dialog
+     const dialog = document.querySelector('#confirmation-modal-sale');
+     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
+     $('#confirmation-modal-sale').modal();
+     $('#confirmation-modal-sale').modal('open');
 }
 
-//
-//  /**
-//   * event handler for the modal dialog ok button click.
-//   * passes the data back to main for being processed
-//   * @param e
-//   */
+
+  /**
+   * event handler for the modal dialog ok button click.
+   * passes the data back to main for being processed
+   * @param e
+   */
 function doSale(e) {
-//
-//      // get form data
-//      const formData = new FormData(document.querySelector('form[name=mutation]'));
-//      const mutated = {};
-//      mutated.a_code = formData.get('a_code');
-//      mutated.salutation = formData.get('salutation');
-//      mutated.first_name = formData.get('first_name');
-//      mutated.name = formData.get('name');
-//      mutated.address = formData.get('address');
-//      mutated.post_code = formData.get('post_code');
-//      mutated.city = formData.get('city');
-//      mutated.comment = formData.get('comment');
-//
-//      ipcRenderer.send('mutation:execute', mutated);
+
+      // get form data
+      const formData = new FormData(document.querySelector('form[name=sale]'));
+      const sale = {};
+      sale.shares = formData.getAll('share_item');
+      sale.buyer = {};
+      sale.buyer.holder = formData.get('holder');
+      sale.buyer.a_code = formData.get('a_code');
+      sale.buyer.salutation = formData.get('salutation');
+      sale.buyer.first_name = formData.get('first_name');
+      sale.buyer.name = formData.get('name');
+      sale.buyer.address = formData.get('address');
+      sale.buyer.post_code = formData.get('post_code');
+      sale.buyer.city = formData.get('city');
+      sale.buyer.comment = formData.get('comment');
+
+      ipcRenderer.send('sale:execute', sale);
 }
 
 /**
@@ -178,8 +225,10 @@ function showSale(e, data) {
     initSaleSummary(data);
     initSaleForm();
 
+    allShares = data.shares;
     rssmShareIndex = indexShareList(data.rssm_shares);
-    console.log(rssmShareIndex);
+
+
 
     // prepare the a_codes suggestion list
     const a_codes = {};
@@ -229,6 +278,7 @@ function initSaleSummary(data) {
     // initialize the summary table
     document.querySelector('#sale-date').innerHTML = helpers.dateToString();
     document.querySelector('#sale-journal').innerHTML = data.nextJournal;
+    document.querySelector('#sale-shares').innerHTML = '0';
 }
 
 
@@ -238,6 +288,7 @@ function initSaleSummary(data) {
  */
 function initSaleForm(holder = {}) {
 
+    document.querySelector('#table-sale-share-list > tbody').innerHTML = '';
 
     if (!holder.a_code) {
         document.querySelector('#sale-a-code-select').value = '';
