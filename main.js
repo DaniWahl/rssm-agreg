@@ -99,7 +99,7 @@ function executeTransfer(e, data) {
  */
 function executeSale(e, data) {
 
-    rssm.sale(person)
+    rssm.sale(data.shares, data.buyer)
         .then(res => {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);

@@ -199,7 +199,6 @@ function doSale(e) {
       sale.shares = formData.getAll('share_item');
       sale.buyer = {};
       sale.buyer.holder = formData.get('holder');
-      sale.buyer.a_code = formData.get('a_code');
       sale.buyer.salutation = formData.get('salutation');
       sale.buyer.first_name = formData.get('first_name');
       sale.buyer.name = formData.get('name');
@@ -207,6 +206,16 @@ function doSale(e) {
       sale.buyer.post_code = formData.get('post_code');
       sale.buyer.city = formData.get('city');
       sale.buyer.comment = formData.get('comment');
+
+      // extract a_code
+      let reg = /.+ \((.+)\)$/;
+      let matches = reg.exec(sale.buyer.holder);
+      if(matches) {
+          sale.buyer.a_code = matches[1];
+      } else {
+          sale.buyer.a_code = null;
+      }
+
 
       ipcRenderer.send('sale:execute', sale);
 }
