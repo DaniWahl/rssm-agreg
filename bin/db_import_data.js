@@ -48,6 +48,12 @@ async function import_data() {
     console.log( await rssmShares.purgeDatabase() )
     console.log('')
 
+    // load config values
+    const config_ids = await generateConfig();
+    console.log(' generated configuration successful');
+    console.log(config_ids);
+
+
     // generate 1170 shares
     const share_ids = await generateShares()
     console.log('')
@@ -326,7 +332,7 @@ function insertFamilies(families) {
  * @param family_ids
  * @returns {Promise<any>}
  */
-function insertPersons(persons, family_ids) {
+async function insertPersons(persons, family_ids) {
 
     console.log('inserting PERSON records...')
 
@@ -335,7 +341,7 @@ function insertPersons(persons, family_ids) {
         const insert_promises = []      // array to store promises from inserts
 
         // iterate over persons
-        Object.keys(persons).forEach(a_code => {
+        Object.keys(persons).forEach( async function(a_code) {
 
             // get the persons f_code
             const f_code = persons[a_code].f_code
@@ -346,8 +352,18 @@ function insertPersons(persons, family_ids) {
             // remove the f_code from the person object, since we don't want to insert this
             delete persons[a_code].f_code
 
-            // request inserts for family and store the returned promise in the array
-            insert_promises.push( rssmShares.insertPerson(persons[a_code]) )
+            if(a_code === persons[a_code].name.toUpperCase()) {
+                // this is a temp a_code uppercased from name - generate a new valid a_code
+                //persons[a_code].a_code = await rssmShares.generateACode();
+            }
+
+            try {
+                // request inserts for family and store the returned promise in the array
+                insert_promises.push(rssmShares.insertPerson(persons[a_code]));
+            }
+            catch(e) {
+                throw new Error(e);
+            }
 
 
         })
@@ -669,6 +685,32 @@ function extractShares(rawdata) {
 
 }
 
+/**
+ * generate config data
+ */
+function generateConfig() {
+    const insert_promises = [];
+    const data = [
+        {
+            param : 'DB_PATH',
+            value : RSSMDBPATH
+        },
+        {
+            param : 'A_CODE_SEQ',
+            value : 0
+        },{
+            param : 'RSSM_A_CODE',
+            value : '999010'
+        }
+    ];
+
+
+    data.forEach(c => {
+        insert_promises.push(rssmShares.setConfig(c));
+    });
+
+    return insert_promises;
+}
 
 
 /**

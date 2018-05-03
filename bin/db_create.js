@@ -7,14 +7,14 @@
 
 
 
-const RSSMShares = require('../lib/RSSMShares').RSSMShares
-const RSSMDBPATH = './db/agregRSSM_test.db'
+const RSSMShares = require('../lib/RSSMShares').RSSMShares;
+const RSSMDBPATH = './db/agregRSSM_test.db';
 
 
 //create RSSMShares object
-const rssmShares = new RSSMShares(RSSMDBPATH)
-const tables = []
-const indices = []
+const rssmShares = new RSSMShares(RSSMDBPATH);
+const tables = [];
+const indices = [];
 
 
 // 1. create table FAMILY
@@ -22,8 +22,8 @@ tables.push(`CREATE TABLE family (
     family_id       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     f_code          TEXT NOT NULL,
     name            TEXT
-)`)
-indices.push(`CREATE INDEX family_i1 ON family(f_code)`)
+)`);
+indices.push(`CREATE INDEX family_i1 ON family(f_code)`);
 
 
 // 2. create table PERSON
@@ -41,9 +41,9 @@ tables.push(`CREATE TABLE person (
     last_update     TEXT,
     comment         TEXT,
     FOREIGN KEY (family_id) REFERENCES family(family_id)
-)`)
-indices.push(`CREATE INDEX person_i1 ON person(family_id)`)
-indices.push(`CREATE INDEX person_i2 ON person(a_code)`)
+)`);
+indices.push(`CREATE INDEX person_i1 ON person(family_id)`);
+indices.push(`CREATE INDEX person_i2 ON person(a_code)`);
 
 
 // 3. create table SHARE
@@ -54,9 +54,9 @@ tables.push(`CREATE TABLE share (
     type            TEXT NOT NULL,
     value           REAL NOT NULL,
     emission_date   TEXT NOT NULL
-)`)
-indices.push(`CREATE INDEX share_i1 ON share(certificate_id)`)
-indices.push(`CREATE INDEX share_i2 ON share(share_no)`)
+)`);
+indices.push(`CREATE INDEX share_i1 ON share(certificate_id)`);
+indices.push(`CREATE INDEX share_i2 ON share(share_no)`);
 // certificate_id references the currently valid certificate.
 // integrity is not enforced with a foreign key to avoid issues when purging the database
 
@@ -74,11 +74,11 @@ tables.push(`CREATE TABLE certificate (
     status           TEXT,
     FOREIGN KEY (person_id) REFERENCES person(person_id),
     FOREIGN KEY (share_id) REFERENCES share(share_id)
-)`)
-indices.push(`CREATE INDEX certificate_i1 ON certificate(person_id)`)
-indices.push(`CREATE INDEX certificate_i2 ON certificate(share_id)`)
-indices.push(`CREATE INDEX certificate_i3 ON certificate(journal_id)`)
-indices.push(`CREATE INDEX certificate_i4 ON certificate(transaction_date)`)
+)`);
+indices.push(`CREATE INDEX certificate_i1 ON certificate(person_id)`);
+indices.push(`CREATE INDEX certificate_i2 ON certificate(share_id)`);
+indices.push(`CREATE INDEX certificate_i3 ON certificate(journal_id)`);
+indices.push(`CREATE INDEX certificate_i4 ON certificate(transaction_date)`);
 
 
 // 5. create table JOURNAL
@@ -106,10 +106,10 @@ tables.push(`CREATE TABLE journal (
     vr_protocol_date     TEXT,
     comment              TEXT,
     FOREIGN KEY (person_id) REFERENCES person(person_id)
-)`)
-indices.push(`CREATE INDEX journal_i1 ON journal(person_id)`)
-indices.push(`CREATE INDEX journal_i2 ON journal(journal_no)`)
-indices.push(`CREATE INDEX journal_i3 ON journal(journal_date)`)
+)`);
+indices.push(`CREATE INDEX journal_i1 ON journal(person_id)`);
+indices.push(`CREATE INDEX journal_i2 ON journal(journal_no)`);
+indices.push(`CREATE INDEX journal_i3 ON journal(journal_date)`);
 
 
 // 6. create table SHARE_CHUNK
@@ -119,34 +119,42 @@ tables.push(`CREATE TABLE share_chunk (
     journal_id       INTEGER NOT NULL,
     FOREIGN KEY (share_id) REFERENCES share(share_id),
     FOREIGN KEY (journal_id) REFERENCES journal(journal_id)
-)`)
-indices.push(`CREATE INDEX share_chunk_i1 ON share_chunk(share_id)`)
-indices.push(`CREATE INDEX share_chunk_i2 ON share_chunk(journal_id)`)
+)`);
+indices.push(`CREATE INDEX share_chunk_i1 ON share_chunk(share_id)`);
+indices.push(`CREATE INDEX share_chunk_i2 ON share_chunk(journal_id)`);
 
+
+// 7. create table CONFIG
+tables.push(`CREATE TABLE config (
+    param  TEXT NOT NULL PRIMARY KEY,
+    value  TEXT NOT NULL
+)`);
 
 
 // run SQL statements 
-const tablePromises = []
+const tablePromises = [];
 tables.forEach(tablesql => {
     // initiates all table sqls and stores the returned promises
-    tablePromises.push( rssmShares.runSql(tablesql) )
-})
+    tablePromises.push(rssmShares.runSql(tablesql));
+});
 
 Promise.all(tablePromises)
-.then(msgs => {
+    .then(msgs => {
 
-    // log table creation logs
-    msgs.forEach(msg => { console.log(msg.msg)})
+        // log table creation logs
+        msgs.forEach(msg => {
+            console.log(msg.msg);
+        });
 
-    // all tables created, now run all index creations
-    indices.forEach(indexsql=> {
-        rssmShares.runSql(indexsql)
-        .then(msg => {
-            console.log(msg.msg)
-        })
-        
+        // all tables created, now run all index creations
+        indices.forEach(indexsql => {
+            rssmShares.runSql(indexsql)
+                .then(msg => {
+                    console.log(msg.msg);
+                });
+
+        });
     })
-})
-.catch(err => {
-    console.error(err)
-})
+    .catch(err => {
+        console.error(err);
+    });
