@@ -44,9 +44,13 @@ async function import_data() {
     console.log('')
 
     // purge database
-    console.log('purging database...')
+    console.log('purging database ...')
     console.log( await rssmShares.purgeDatabase() )
     console.log('')
+
+    // load config values
+    console.log('generating configuration ...');
+    const config_ids = await generateConfig();
 
     // generate 1170 shares
     const share_ids = await generateShares()
@@ -60,8 +64,8 @@ async function import_data() {
 
 
     // parse excel sheet data into data objects
-    const [families,persons, certificates] = extractShares(sheets.shares)
-    const journal = extractJournal(sheets.journal)
+    const [families, persons, certificates] = await extractShares(sheets.shares)
+    const journal = await extractJournal(sheets.journal)
     console.log('  parsed file data successfully')
     console.log('')
 
@@ -326,7 +330,7 @@ function insertFamilies(families) {
  * @param family_ids
  * @returns {Promise<any>}
  */
-function insertPersons(persons, family_ids) {
+async function insertPersons(persons, family_ids) {
 
     console.log('inserting PERSON records...')
 
@@ -335,7 +339,7 @@ function insertPersons(persons, family_ids) {
         const insert_promises = []      // array to store promises from inserts
 
         // iterate over persons
-        Object.keys(persons).forEach(a_code => {
+        Object.keys(persons).forEach( async function(a_code) {
 
             // get the persons f_code
             const f_code = persons[a_code].f_code
@@ -346,8 +350,13 @@ function insertPersons(persons, family_ids) {
             // remove the f_code from the person object, since we don't want to insert this
             delete persons[a_code].f_code
 
-            // request inserts for family and store the returned promise in the array
-            insert_promises.push( rssmShares.insertPerson(persons[a_code]) )
+            try {
+                // request inserts for family and store the returned promise in the array
+                insert_promises.push(rssmShares.insertPerson(persons[a_code]));
+            }
+            catch(e) {
+                throw new Error(e);
+            }
 
 
         })
@@ -535,25 +544,30 @@ function extractJournal(rawdata) {
  * @param rawdata
  * @returns {*[]}
  */
-function extractShares(rawdata) {
+async function extractShares(rawdata) {
     const persons = {}
     const families = {}
     const certificates = {}
     const headers = getSheetHeaders('shares')
-    let line = 0;
+    const newACodes = {};
 
     console.log(`processing share raw data on ${rawdata.length} lines...`)
 
+    for (let line=1; line < rawdata.length; line++ ) {
 
-    rawdata.forEach((row) => {
-        line++;
+        const row = rawdata[line];
 
         // skip first line (headers)
         if( line === 1) {
-            console.log("  skipping row 1: header row");
-            return;
+            console.log("  row 1 is header: skipped");
+            continue;
         }
 
+        // handle empty lines
+        if( !row[headers.sh_name] || row[headers.level] === 'NA') {
+            console.log(`  row ${line} has no share holder name or level=NA: skipped`);
+            continue;
+        }
 
         // get f_code
         let f_code = row[headers.f_code];
@@ -575,9 +589,18 @@ function extractShares(rawdata) {
         // get a_code
         let a_code = row[headers.a_code];
 
-        // make a_code from name in case no a_code is available
+        // generate or re-use a new a_code if not available in sheet
         if(!a_code) {
-            a_code = row[headers.name].toUpperCase()
+            const name = row[headers.name] + row[headers.first_name];
+
+            if(newACodes.hasOwnProperty(name)) {
+                a_code = newACodes[name];
+            } else {
+                a_code = await rssmShares.generateACode();
+                newACodes[name] = a_code;
+                console.log(`  row ${line} has no A-Code: Generated new A-Code ${a_code} for person ${name}.`);
+            }
+
         }
 
         // if a_code is already known, make sure name matches
@@ -588,12 +611,6 @@ function extractShares(rawdata) {
             }
         }
 
-
-        // handle empty lines
-        if( !a_code && !f_code ) {
-            console.log(`  skipping row ${line}: no names or f/a_code, f_code`);
-            return;
-        }
 
 
         // get post code from city
@@ -628,6 +645,7 @@ function extractShares(rawdata) {
 
         // convert level into an integer number
         let level = row[headers.level];
+
         let generation = level.match(/[0-9]/);
         generation = generation[0]
 
@@ -662,13 +680,40 @@ function extractShares(rawdata) {
             a_name           : row[headers.sh_name],
             a_first_name     : a_first_name
         }
-    })
+
+    }
 
 
-    return[families, persons, certificates]
+    return [families, persons, certificates]
 
 }
 
+/**
+ * generate config data
+ */
+function generateConfig() {
+    const insert_promises = [];
+    const data = [
+        {
+            param : 'DB_PATH',
+            value : RSSMDBPATH
+        },
+        {
+            param : 'A_CODE_SEQ',
+            value : 0
+        },{
+            param : 'RSSM_A_CODE',
+            value : '999010'
+        }
+    ];
+
+
+    data.forEach(config => {
+        insert_promises.push(rssmShares.setConfig(config.param, config.value));
+    });
+
+    return insert_promises;
+}
 
 
 /**
@@ -687,7 +732,7 @@ function generateShares() {
         // iterate over share series
         shareSeries.forEach(serie => {
 
-            console.log(`generating shares of series : (${serie.emission}) ${serie.start_no} - ${serie.end_no} `);
+            console.log(`generating shares of series : (${serie.emission}) ${serie.start_no} - ${serie.end_no} ...`);
             for(let i=serie.start_no; i<=serie.end_no; i++) {
 
                 // form share data object

@@ -18,6 +18,9 @@ ipcMain.on('content:show',       loadContentData);
 ipcMain.on('repurchase:execute', executeRepurchase);
 ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
+ipcMain.on('sale:execute',       executeSale);
+
+
 
 
 /**
@@ -89,6 +92,39 @@ function executeTransfer(e, data) {
         });
 }
 
+/**
+ * initiates the sale process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+function executeSale(e, data) {
+
+    rssm.sale(data.shares, data.buyer)
+        .then(res => {
+
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Verkauf',
+                message: 'Verkauf erfolgreich durchgeführt.'
+            });
+
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Verkauf',
+                message: 'Verkauf fehler!',
+                detail: err.message
+            });
+
+        });
+}
+
 
 /**
  * initiates the mutation process and displays success or error on UI
@@ -145,7 +181,13 @@ function loadContentData(e, element_id) {
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             break;
 
-        case 'content-purchase':
+        case 'content-sale':
+            mainWindow.webContents.send('sale:show', {
+                nextJournal : rssm.getNextJounalNo(),
+                a_codes     : rssm.data.a_codes,
+                shares      : rssm.data.shares,
+                rssm_shares : rssm.data.rssmShares
+            });
             break;
 
         case 'content-repurchase':
@@ -248,7 +290,7 @@ function getMainMenuTemplate() {
             label : 'Aktionen',
             submenu: [
                 {
-                    label: 'Kauf',
+                    label: 'Verkauf',
                     click() {  }
                 },
                 {

@@ -2,7 +2,7 @@
 
 // setup repurchase ui specific event handlers
 document.querySelector('#repurchase-submit').addEventListener('click', submitRepurchase);
-document.querySelector('#confirmation-modal-ok').addEventListener('click', doRepurchase);
+document.querySelector('#confirmation-repurchase-ok').addEventListener('click', doRepurchase);
 
 
 
@@ -16,7 +16,7 @@ function submitRepurchase(e) {
 
     // get form data
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    const shares = formData.getAll('repurchase_share');
+    const shares = formData.getAll('share_item');
     const holder = formData.get('holder');
 
 
@@ -31,14 +31,10 @@ function submitRepurchase(e) {
         
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal');
-    dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Rückkauf';
+    const dialog = document.querySelector('#confirmation-modal-repurchase');
     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-
-
-
-    $('#confirmation-modal').modal();
-    $('#confirmation-modal').modal('open');
+    $('#confirmation-modal-repurchase').modal();
+    $('#confirmation-modal-repurchase').modal('open');
 
 }
 
@@ -51,7 +47,7 @@ function doRepurchase(e) {
 
     const repurchase = {};
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    repurchase.shares = formData.getAll('repurchase_share');
+    repurchase.shares = formData.getAll('share_item');
     repurchase.holder = formData.get('holder');
 
     // extract a_code

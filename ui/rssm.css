@@ -79,3 +79,10 @@ html, body, #content, #container, .content-element, #sidenav {
     left: 10px;
     color: #666666;
 }
+
+.input-field {
+    margin-top: 0px !important;
+}
+.row {
+    margin-bottom: 10px !important;
+}

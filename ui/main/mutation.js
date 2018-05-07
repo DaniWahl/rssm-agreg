@@ -1,15 +1,15 @@
 // setup repurchase ui specific event handlers
-document.querySelector('#mutation-submit').addEventListener('click', submitTransfer);
-document.querySelector('#confirmation-modal-ok').addEventListener('click', doMutation);
+document.querySelector('#mutation-submit').addEventListener('click', submitMutation);
+document.querySelector('#confirmation-mutation-ok').addEventListener('click', doMutation);
 
 let holder_orig;
 
 /**
- * event handler for the Transfer Submit button.
+ * event handler for the Mutation Submit button.
  * displays a confirmation dialog
  * @param e
  */
-function submitTransfer(e) {
+function submitMutation(e) {
     e.preventDefault();
 
     // get form data
@@ -52,12 +52,10 @@ function submitTransfer(e) {
 
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal');
-    dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Mutation';
+    const dialog = document.querySelector('#confirmation-modal-mutation');
     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-
-    $('#confirmation-modal').modal();
-    $('#confirmation-modal').modal('open');
+    $('#confirmation-modal-mutation').modal();
+    $('#confirmation-modal-mutation').modal('open');
 }
 
  /**
