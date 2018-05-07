@@ -71,10 +71,10 @@ async function import_data() {
 
 
     // running database inserts
-    const family_ids = await insertFamilies(families)
-    console.log(`  inserted ${Object.keys(family_ids).length} family records`)
+    //const family_ids = await insertFamilies(families)
+    //console.log(`  inserted ${Object.keys(family_ids).length} family records`)
 
-    const person_ids = await insertPersons(persons, family_ids)
+    const person_ids = await insertPersons(persons)
     console.log(`  inserted ${Object.keys(person_ids).length} person records`)
 
     const journal_ids = await insertJournal(journal, person_ids)
@@ -342,13 +342,13 @@ async function insertPersons(persons, family_ids) {
         Object.keys(persons).forEach( async function(a_code) {
 
             // get the persons f_code
-            const f_code = persons[a_code].f_code
+            //const f_code = persons[a_code].f_code
 
             // save the family_id in this person
-            persons[a_code].family_id = family_ids[f_code]
+            //persons[a_code].family_id = family_ids[f_code]
 
             // remove the f_code from the person object, since we don't want to insert this
-            delete persons[a_code].f_code
+            //delete persons[a_code].f_code
 
             try {
                 // request inserts for family and store the returned promise in the array
@@ -572,19 +572,6 @@ async function extractShares(rawdata) {
         // get f_code
         let f_code = row[headers.f_code];
 
-        // make a_code from name in case no a_code is available
-        if(!f_code) {
-            f_code = row[headers.family].toUpperCase()
-        }
-
-        // if f_code is already known, make sure family matches
-        if(families[f_code]) {
-            if(families[f_code].name !== row[headers.family]) {
-                new Error (`Error (line ${line}): f_code ${f_code} found with wrong family name: '${row[headers.family]}' != '${families[f_code].name}'`)
-                //console.log( `Error (line ${line}): f_code ${f_code} found with wrong family name: '${row[headers.family]}' != '${families[f_code].name}'`)
-            }
-        }
-
 
         // get a_code
         let a_code = row[headers.a_code];
@@ -652,15 +639,10 @@ async function extractShares(rawdata) {
         // create a certificate id code like shareno_generation
         let cert_code = row[headers.share_no] + '_' +  generation
 
-        // store data in structures
-        families[f_code] = {
-            f_code : f_code,
-            name   : row[headers.family]
-        }
-
         persons[a_code] = {
             a_code       : a_code,
             f_code       : f_code,
+            family       : row[headers.family],
             name         : row[headers.name],
             first_name   : first_name,
             address      : row[headers.address],
