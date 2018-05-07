@@ -196,9 +196,10 @@ function doSale(e) {
       // get form data
       const formData = new FormData(document.querySelector('form[name=sale]'));
       const sale = {};
+      const holder = formData.get('holder');
+
       sale.shares = formData.getAll('share_item');
       sale.buyer = {};
-      sale.buyer.holder = formData.get('holder');
       sale.buyer.salutation = formData.get('salutation');
       sale.buyer.first_name = formData.get('first_name');
       sale.buyer.name = formData.get('name');
@@ -209,13 +210,12 @@ function doSale(e) {
 
       // extract a_code
       let reg = /.+ \((.+)\)$/;
-      let matches = reg.exec(sale.buyer.holder);
+      let matches = reg.exec(holder);
       if(matches) {
           sale.buyer.a_code = matches[1];
       } else {
           sale.buyer.a_code = null;
       }
-
 
       ipcRenderer.send('sale:execute', sale);
 }
