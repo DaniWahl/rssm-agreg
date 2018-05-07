@@ -17,20 +17,12 @@ const tables = [];
 const indices = [];
 
 
-// 1. create table FAMILY
-tables.push(`CREATE TABLE family (
-    family_id       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    f_code          TEXT NOT NULL,
-    name            TEXT
-)`);
-indices.push(`CREATE INDEX family_i1 ON family(f_code)`);
-
-
-// 2. create table PERSON
+// 1. create table PERSON
 tables.push(`CREATE TABLE person (
     person_id       INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-    family_id       INTEGER,
     a_code          TEXT,
+    f_code          TEXT,
+    family          TEXT,
     name            TEXT,
     first_name      TEXT,
     address         TEXT,
@@ -39,14 +31,12 @@ tables.push(`CREATE TABLE person (
     salutation      TEXT,
     status          TEXT,
     last_update     TEXT,
-    comment         TEXT,
-    FOREIGN KEY (family_id) REFERENCES family(family_id)
+    comment         TEXT
 )`);
-indices.push(`CREATE INDEX person_i1 ON person(family_id)`);
 indices.push(`CREATE INDEX person_i2 ON person(a_code)`);
 
 
-// 3. create table SHARE
+// 2. create table SHARE
 tables.push(`CREATE TABLE share (
     share_id        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     certificate_id  INTEGER,
@@ -61,7 +51,7 @@ indices.push(`CREATE INDEX share_i2 ON share(share_no)`);
 // integrity is not enforced with a foreign key to avoid issues when purging the database
 
 
-// 4. create table CERTIFICATE
+// 3. create table CERTIFICATE
 tables.push(`CREATE TABLE certificate (
     certificate_id   INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     person_id        INTEGER NOT NULL,
@@ -81,7 +71,7 @@ indices.push(`CREATE INDEX certificate_i3 ON certificate(journal_id)`);
 indices.push(`CREATE INDEX certificate_i4 ON certificate(transaction_date)`);
 
 
-// 5. create table JOURNAL
+// 4. create table JOURNAL
 tables.push(`CREATE TABLE journal (
     journal_id           INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     person_id            INTEGER,
@@ -112,7 +102,7 @@ indices.push(`CREATE INDEX journal_i2 ON journal(journal_no)`);
 indices.push(`CREATE INDEX journal_i3 ON journal(journal_date)`);
 
 
-// 6. create table SHARE_CHUNK
+// 5. create table SHARE_CHUNK
 tables.push(`CREATE TABLE share_chunk (
     share_chunk_id   INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     share_id         INTEGER NOT NULL,
@@ -124,7 +114,7 @@ indices.push(`CREATE INDEX share_chunk_i1 ON share_chunk(share_id)`);
 indices.push(`CREATE INDEX share_chunk_i2 ON share_chunk(journal_id)`);
 
 
-// 7. create table CONFIG
+// 6. create table CONFIG
 tables.push(`CREATE TABLE config (
     param  TEXT NOT NULL PRIMARY KEY,
     value  TEXT NOT NULL
