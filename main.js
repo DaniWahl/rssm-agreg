@@ -2,6 +2,8 @@ const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSM_DB = 'db/agregRSSM_test.db'
+const VERSION = "0.1.0";
+
 
 
 // create application objects
@@ -11,17 +13,27 @@ let mainWindow = null
 
 
 // handle application events
-app.on('ready',                  app_init)
-ipcMain.on('content:show',       loadContentData)
-ipcMain.on('repurchase:execute', executeRepurchase)
+app.on('ready',                  app_init);
+ipcMain.on('content:show',       loadContentData);
+ipcMain.on('repurchase:execute', executeRepurchase);
+ipcMain.on('transfer:execute',   executeTransfer);
+ipcMain.on('mutation:execute',   executeMutation);
+ipcMain.on('sale:execute',       executeSale);
 
 
+
+
+/**
+ * initiates the repurchase process and displays success or error on UI
+ * @param e
+ * @param data
+ */
 function executeRepurchase(e, data) {
 
     rssm.repurchase(data.shares, data.a_code)
         .then(res => {
 
-            mainWindow.webContents.send('journal:show', rssm.data.journal)
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
 
             dialog.showMessageBox(mainWindow,{
                 type: 'info',
@@ -39,12 +51,113 @@ function executeRepurchase(e, data) {
                 title: 'Rückkauf',
                 message: 'Rückkauf fehler!',
                 detail: err.message
-            })
+            });
 
         });
 
 }
 
+/**
+ * initiates the repurchase process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+function executeTransfer(e, data) {
+
+    rssm.transfer(data.shares, data.holder, data.reciever, data.comment)
+        .then(res => {
+
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Übertrag',
+                message: 'Übertrag erfolgreich durchgeführt.'
+            });
+
+            //2DO: need to generate & print new certificate documents
+
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Übertrag',
+                message: 'Übertrag fehler!',
+                detail: err.message
+            });
+
+        });
+}
+
+/**
+ * initiates the sale process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+function executeSale(e, data) {
+
+    rssm.sale(data.shares, data.buyer)
+        .then(res => {
+
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Verkauf',
+                message: 'Verkauf erfolgreich durchgeführt.'
+            });
+
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Verkauf',
+                message: 'Verkauf fehler!',
+                detail: err.message
+            });
+
+        });
+}
+
+
+/**
+ * initiates the mutation process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+function executeMutation(e, person) {
+
+    rssm.mutation(person)
+        .then(res => {
+
+            mainWindow.webContents.send('journal:show', rssm.data.journal);
+
+            dialog.showMessageBox(mainWindow,{
+                type: 'info',
+                title: 'Mutation',
+                message: 'Mutation erfolgreich durchgeführt.'
+            });
+
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Mutation',
+                message: 'Mutation fehler!',
+                detail: err.message
+            });
+
+        });
+}
 
 
 /**
@@ -68,7 +181,13 @@ function loadContentData(e, element_id) {
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             break;
 
-        case 'content-purchase':
+        case 'content-sale':
+            mainWindow.webContents.send('sale:show', {
+                nextJournal : rssm.getNextJounalNo(),
+                a_codes     : rssm.data.a_codes,
+                shares      : rssm.data.shares,
+                rssm_shares : rssm.data.rssmShares
+            });
             break;
 
         case 'content-repurchase':
@@ -80,9 +199,18 @@ function loadContentData(e, element_id) {
             break;
 
         case 'content-transfer':
+            mainWindow.webContents.send('transfer:show', {
+                nextJournal : rssm.getNextJounalNo(),
+                a_codes     : rssm.data.a_codes,
+                shares      : rssm.data.shares
+            });
             break
 
         case 'content-mutation':
+            mainWindow.webContents.send('mutation:show', {
+                nextJournal : rssm.getNextJounalNo(),
+                a_codes     : rssm.data.a_codes
+            });
             break
 
     }
@@ -98,10 +226,19 @@ function app_init() {
     // create UI window
     mainWindow = new BrowserWindow({
         width  : 1600,
-        height : 1000
+        height : 1000,
+        show   : false,
+        backgroundColor : '#ffffff'
     })
     mainWindow.loadURL(`file://${__dirname}/ui/main/mainWindow.html`)
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+
+        // send application version to display
+        mainWindow.webContents.send('version:show', VERSION);
+    });
     mainWindow.on('closed', app_quit)
+
 
 
     // build menu from template
@@ -153,7 +290,7 @@ function getMainMenuTemplate() {
             label : 'Aktionen',
             submenu: [
                 {
-                    label: 'Kauf',
+                    label: 'Verkauf',
                     click() {  }
                 },
                 {

@@ -1,16 +1,21 @@
 
 const electron = require('electron');
-const {ipcRenderer} = electron;
+const {ipcRenderer, dialog} = electron;
 const helpers = require('../../lib/app.helpers');
 
 let row_group;
-let last_share_no;
+let row_group_value;
 
 // register IPC event handlers
+ipcRenderer.on('version:show',          showVersion);
 ipcRenderer.on('repurchase:show',       showRepurchase);
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
 ipcRenderer.on('holders:all:show',      showShareHoldersAll);
 ipcRenderer.on('journal:show',          showJournal);
+ipcRenderer.on('transfer:show',         showTransfer);
+ipcRenderer.on('mutation:show',         showMutation);
+ipcRenderer.on('sale:show',             showSale);
+
 
 
 // register event handlers for all elements
@@ -20,8 +25,15 @@ document.querySelectorAll('a').forEach(el => {
     }
 })
 
+
+
 console.log('mainWindow: started');
 
+
+function showVersion(e, version) {
+    console.log("showing version ", version)
+    document.querySelector('#version-no').innerHTML = version;
+}
 
 /**
  * handle click events on <a> dom elements
@@ -67,27 +79,28 @@ function makeTableItem(row, type) {
     let row_html = '';
     let share_no;
 
+    // styling the rows based on column values
+    switch(type) {
+        case 'holders_current':
+            share_no = helpers.pad0(row.share_no, 3);
+            tr.className = getRowClass(share_no);
+            break;
 
-    if( type === 'holders_current' && row.a_code === '999010') {
-        tr.className = 'rssm-owner';
+        case 'holders_all':
+            share_no = helpers.pad0(row.share_no, 3);
+            tr.className = getRowClass(share_no);
+            break;
+
+        case 'share_list':
+            share_no = helpers.pad0(row.share_no, 3);
+            tr.className = getRowClass(share_no);
+            break;
+
+        case 'journal':
+            tr.className = getRowClass(row.journal_no);
+            break;
     }
 
-    if( row.share_no ) {
-        share_no = helpers.pad0(row.share_no, 3);
-
-        // toggle row group stripe for each share no
-        if (last_share_no !== share_no) {
-
-            if (row_group === 'row-type-plain') {
-                row_group = 'row-type-highlight';
-            } else {
-                row_group = 'row-type-plain';
-            }
-        }
-
-        tr.className = row_group;
-        last_share_no = share_no;
-    }
 
 
     // generate <td> elements holding data values
@@ -113,9 +126,10 @@ function makeTableItem(row, type) {
                 break;
 
             case 'checkbox':
+                //2DO: check box items need to have a unique id, but the below ids are not causing the checkboxes to not enable!
                 row_html += `
                     <td>
-                        <input type="checkbox" name="repurchase_share" value="${row.share_no}" class="filled-in" id="share_no_${row.share_no}" />
+                        <input type="checkbox" name="share_item" value="${row.share_no}" class="filled-in" id="share_no_${row.share_no}" />
                         <label for="share_no_${row.share_no}"></label>
                     </td>
                 `;
@@ -132,6 +146,25 @@ function makeTableItem(row, type) {
     return tr;
 }
 
+
+/**
+ * returns the row class based on the previous and current values passed in.
+ * will toggle the classes if previous and current are different,
+ * @param current
+ * @returns {String} css class
+ */
+function getRowClass(current) {
+    if(row_group_value !== current) {
+        // need to toggle the row group
+        if (row_group === 'row-type-plain') {
+            row_group = 'row-type-highlight';
+        } else {
+            row_group = 'row-type-plain';
+        }
+    }
+    row_group_value = current;
+    return row_group;
+}
 
 /**
  * returns array of columns for a certain table type
