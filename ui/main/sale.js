@@ -203,6 +203,7 @@ function doSale(e) {
       sale.buyer.salutation = formData.get('salutation');
       sale.buyer.first_name = formData.get('first_name');
       sale.buyer.name = formData.get('name');
+      sale.buyer.family = formData.get('family');
       sale.buyer.address = formData.get('address');
       sale.buyer.post_code = formData.get('post_code');
       sale.buyer.city = formData.get('city');
