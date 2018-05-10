@@ -182,7 +182,9 @@ function getColumms(type) {
             'name',
             'first_name',
             'address',
-            'city'
+            'city',
+            'correspondence'
+
         ],
         holders_current : [
             'share_no',
@@ -190,7 +192,9 @@ function getColumms(type) {
             'name',
             'first_name',
             'address',
-            'city'
+            'city',
+            'correspondence',
+            'comment'
         ],
         journal : [
             'journal_no',

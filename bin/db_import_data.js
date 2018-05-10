@@ -87,6 +87,13 @@ async function import_data() {
     console.log(`  updated all shares`);
     console.log('');
 
+
+    // update persons to set correspondence to 0 if they have no certificate
+    const person_updates = await updatePersonCorrespondence();
+    console.log(`  updated ${person_updates.changes} persons`);
+    console.log('');
+
+
     console.log('');
     console.log('**********************************************************');
     console.log('****   IMPORT COMPLETE                                ****');
@@ -175,6 +182,24 @@ function updateShareCertificates(certificates, share_ids, cert_ids) {
 
     });
 
+}
+
+
+/**
+ * updating persons not having any shares to non-correnspondent
+ * @returns {Promise}
+ */
+async function updatePersonCorrespondence() {
+
+    console.log('updating persons not having any sharey to non-correnspondent ...');
+
+    const sql = `UPDATE PERSON SET correspondence = '0' 
+                 WHERE person_id NOT IN (
+                    SELECT person_id FROM certificate WHERE certificate_id IN (
+                        SELECT certificate_id FROM share
+                     )
+                  )`;
+    return rssmShares.runSql(sql);
 }
 
 
@@ -693,7 +718,8 @@ async function extractShares(rawdata, holders) {
             correspondence = holders[a_code].correspondence;
             comment = holders[a_code].comment;
         } else {
-            correspondence = '0';
+            correspondence = '1';
+            comment = '';
         }
 
         persons[a_code] = {
