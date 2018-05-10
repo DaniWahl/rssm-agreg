@@ -22,8 +22,9 @@
         <div class="collection" id="nav-menu">
 
             <div class="collection-item menu-category">Aktienregister</div>
-            <a target="content-share-holders-current" class="collection-item" href="#">Aktionäre Aktuell</a>
-            <a target="content-share-holders-all" class="collection-item" href="#">Aktionäre Historie</a>
+            <a target="content-share-holders-current" class="collection-item" href="#">Aktienregister Aktuell</a>
+            <a target="content-share-holders-all" class="collection-item" href="#">Aktienregister Historie</a>
+            <a target="content-persons" class="collection-item" href="#">Aktionäre</a>
             <a target="content-journal" class="collection-item" href="#">Journal</a>
 
             <div class="collection-item menu-category">Aktionen</div>
@@ -43,7 +44,7 @@
 
         <div id="content-share-holders-current" class="content-element hidden">
 
-            <h5>Aktienregister - Aktionäre Aktuell</h5>
+            <h5>Aktienregister Aktuell</h5>
 
 
             <table id="table-share-holders-current" class="bordered highlight">
@@ -55,8 +56,6 @@
                     <th>Vorname</th>
                     <th>Adresse</th>
                     <th>Ort</th>
-                    <th>Korrespondenz</th>
-                    <th>Kommentar</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -66,7 +65,7 @@
 
         <div id="content-share-holders-all" class="content-element hidden">
 
-            <h5>Aktienregister - Aktionäre Historie</h5>
+            <h5>Aktienregister Historie</h5>
             <table id="table-share-holders-all" class="bordered highlight">
                 <thead>
                 <tr>
@@ -78,7 +77,26 @@
                     <th>Vorname</th>
                     <th>Adresse</th>
                     <th>Ort</th>
-                    <th>Korrespondenz</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+
+        <div id="content-persons" class="content-element hidden">
+
+            <h5>Aktienregister - Aktionäre</h5>
+            <table id="table-persons-all" class="bordered highlight">
+                <thead>
+                <tr>
+                    <th>A-Code</th>
+                    <th>Name</th>
+                    <th>Vorname</th>
+                    <th>Adresse</th>
+                    <th>Ort</th>
+                    <th>Aktien</th>
+                    <th> </th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -477,6 +495,7 @@
 
 <script src="shareHoldersCurrent.js"></script>
 <script src="shareHoldersAll.js"></script>
+<script src="persons.js"></script>
 <script src="journal.js"></script>
 <script src="repurchase.js"></script>
 <script src="transfer.js"></script>

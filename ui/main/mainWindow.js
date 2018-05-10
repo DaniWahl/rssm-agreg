@@ -11,6 +11,7 @@ ipcRenderer.on('version:show',          showVersion);
 ipcRenderer.on('repurchase:show',       showRepurchase);
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
 ipcRenderer.on('holders:all:show',      showShareHoldersAll);
+ipcRenderer.on('persons:show',          showPersons);
 ipcRenderer.on('journal:show',          showJournal);
 ipcRenderer.on('transfer:show',         showTransfer);
 ipcRenderer.on('mutation:show',         showMutation);
@@ -99,6 +100,10 @@ function makeTableItem(row, type) {
         case 'journal':
             tr.className = getRowClass(row.journal_no);
             break;
+
+        case 'persons':
+            tr.className = getRowClass(row.a_code);
+            break;
     }
 
 
@@ -123,6 +128,20 @@ function makeTableItem(row, type) {
 
             case 'journal_no':
                 row_html += `<td><b>${row.journal_no}</b></td>`;
+                break;
+
+            case 'correspondence':
+                if(row.correspondence === 1) {
+                    row_html += '<td><iclass="far fa-envelope"></i></td>';
+                } else {
+                    // row_html += '<td><span class="fa-stack fa-1x" >' +
+                    //     '<i class="far fa-envelope fa-stack-1x" style="color:#cccccc;"></i>' +
+                    //     '<i class="fas fa-ban fa-stack-2x" style="color:#999999;"></i>' +
+                    //
+                    //     '</span></td>';
+
+                    row_html += '<td></td>';
+                }
                 break;
 
             case 'checkbox':
@@ -183,7 +202,6 @@ function getColumms(type) {
             'first_name',
             'address',
             'city',
-            'correspondence'
 
         ],
         holders_current : [
@@ -193,8 +211,7 @@ function getColumms(type) {
             'first_name',
             'address',
             'city',
-            'correspondence',
-            'comment'
+            'comment',
         ],
         journal : [
             'journal_no',
@@ -215,6 +232,15 @@ function getColumms(type) {
             'first_name',
             'address',
             'city'
+        ],
+        persons : [
+            'a_code',
+            'name',
+            'first_name',
+            'address',
+            'city',
+            'shares',
+            'correspondence'
         ]
 
     };

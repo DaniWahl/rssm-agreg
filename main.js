@@ -177,6 +177,10 @@ function loadContentData(e, element_id) {
             mainWindow.webContents.send('holders:all:show', rssm.data.history);
             break;
 
+        case 'content-persons':
+            mainWindow.webContents.send('persons:show', rssm.data.persons);
+            break;
+
         case 'content-journal':
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             break;

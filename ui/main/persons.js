@@ -1,15 +1,15 @@
 
-function showShareHoldersCurrent(e, holders) {
+function showPersons(e, holders) {
 
     // show target element
-    showElement('content-share-holders-current');
+    showElement('content-persons');
 
     // load shareholder data
-    const tbody = document.querySelector('#table-share-holders-current > tbody')
+    const tbody = document.querySelector('#table-persons-all > tbody')
     tbody.innerHTML = ''
     holders.forEach(person => {
 
-        tbody.appendChild( makeTableItem(person, 'holders_current') )
+        tbody.appendChild( makeTableItem(person, 'persons') )
 
     })
 
