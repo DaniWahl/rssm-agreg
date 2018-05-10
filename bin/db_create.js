@@ -29,11 +29,13 @@ tables.push(`CREATE TABLE person (
     post_code       TEXT,
     city            TEXT,
     salutation      TEXT,
+    correspondence  INTEGER,
     status          TEXT,
     last_update     TEXT,
     comment         TEXT
 )`);
 indices.push(`CREATE INDEX person_i2 ON person(a_code)`);
+indices.push(`CREATE INDEX person_i3 ON person(correspondence)`);
 
 
 // 2. create table SHARE
