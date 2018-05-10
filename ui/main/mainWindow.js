@@ -16,6 +16,7 @@ ipcRenderer.on('journal:show',          showJournal);
 ipcRenderer.on('transfer:show',         showTransfer);
 ipcRenderer.on('mutation:show',         showMutation);
 ipcRenderer.on('sale:show',             showSale);
+ipcRenderer.on('toast:show',            showToast);
 
 
 
@@ -30,6 +31,10 @@ document.querySelectorAll('a').forEach(el => {
 
 console.log('mainWindow: started');
 
+
+function showToast(e, msg) {
+    Materialize.toast(msg, 4000, 'rounded z-depth-4');
+}
 
 function showVersion(e, version) {
     console.log("showing version ", version)
@@ -132,7 +137,7 @@ function makeTableItem(row, type) {
 
             case 'correspondence':
                 if(row.correspondence === 1) {
-                    row_html += '<td><iclass="far fa-envelope"></i></td>';
+                    row_html += '<td><i class="far fa-envelope"></i></td>';
                 } else {
                     // row_html += '<td><span class="fa-stack fa-1x" >' +
                     //     '<i class="far fa-envelope fa-stack-1x" style="color:#cccccc;"></i>' +

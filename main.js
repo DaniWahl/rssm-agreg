@@ -34,12 +34,7 @@ function executeRepurchase(e, data) {
         .then(res => {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
-
-            dialog.showMessageBox(mainWindow,{
-                type: 'info',
-                title: 'Rückkauf',
-                message: 'Rückkauf erfolgreich durchgeführt.'
-            });
+            mainWindow.webContents.send('toast:show', 'Rückkauf erfolgreich durchgeführt');
 
         })
         .catch(err => {
@@ -68,12 +63,7 @@ function executeTransfer(e, data) {
         .then(res => {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
-
-            dialog.showMessageBox(mainWindow,{
-                type: 'info',
-                title: 'Übertrag',
-                message: 'Übertrag erfolgreich durchgeführt.'
-            });
+            mainWindow.webContents.send('toast:show', 'Übertrag erfolgreich durchgeführt');
 
             //2DO: need to generate & print new certificate documents
 
@@ -103,12 +93,7 @@ function executeSale(e, data) {
         .then(res => {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
-
-            dialog.showMessageBox(mainWindow,{
-                type: 'info',
-                title: 'Verkauf',
-                message: 'Verkauf erfolgreich durchgeführt.'
-            });
+            mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
 
         })
         .catch(err => {
@@ -137,12 +122,7 @@ function executeMutation(e, person) {
         .then(res => {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
-
-            dialog.showMessageBox(mainWindow,{
-                type: 'info',
-                title: 'Mutation',
-                message: 'Mutation erfolgreich durchgeführt.'
-            });
+            mainWindow.webContents.send('toast:show', 'Mutation erfolgreich durchgeführt');
 
         })
         .catch(err => {
