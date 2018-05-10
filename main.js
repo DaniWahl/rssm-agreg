@@ -5,7 +5,6 @@ const RSSM_DB = 'db/agregRSSM_test.db'
 const VERSION = "0.1.0";
 
 
-
 // create application objects
 const rssm = new RSSMShares(RSSM_DB)
 rssm.init();

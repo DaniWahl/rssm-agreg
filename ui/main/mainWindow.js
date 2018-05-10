@@ -3,6 +3,15 @@ const electron = require('electron');
 const {ipcRenderer, dialog} = electron;
 const helpers = require('../../lib/app.helpers');
 
+var $ = require( 'jquery' );
+var dt = require( 'datatables.net' )( window, $ );
+
+require( 'datatables.net-fixedheader' )();
+require( 'datatables.net-rowgroup' )();
+require( 'datatables.net-scroller' )();
+
+
+
 let row_group;
 let row_group_value;
 
@@ -206,8 +215,7 @@ function getColumms(type) {
             'name',
             'first_name',
             'address',
-            'city',
-
+            'city'
         ],
         holders_current : [
             'share_no',
@@ -215,8 +223,7 @@ function getColumms(type) {
             'name',
             'first_name',
             'address',
-            'city',
-            'comment',
+            'city'
         ],
         journal : [
             'journal_no',
