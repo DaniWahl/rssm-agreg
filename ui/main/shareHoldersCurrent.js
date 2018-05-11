@@ -1,6 +1,8 @@
-
-
-
+/**
+ * initialized and loads the shareholder data table
+ * @param e
+ * @param holders
+ */
 function showShareHoldersCurrent(e, holders) {
 
     // show target element
@@ -8,17 +10,20 @@ function showShareHoldersCurrent(e, holders) {
 
     const tableEl = $('#table-share-holders-current');
     let table;
-    //console.log(table);
-    //return;
 
+
+    // have we initialized the DataTable before?
     if( ! $.fn.dataTable.isDataTable(tableEl) ) {
-
-        console.log('showShareHoldersCurrent: initializing table');
 
         // prepare data table configuration
         const config = getDataTableConfig();
         config.columns = [
-            { data : 'share_no'},
+            {
+                data : 'share_no',
+                render : function ( data, type, row ) {
+                    return `<b>${data}</b>`;
+                }
+            },
             { data : 'a_code'},
             { data : 'name'},
             { data : 'first_name'},
@@ -26,8 +31,9 @@ function showShareHoldersCurrent(e, holders) {
             { data : 'city'}
         ]
 
-        // make this a DataTable
+        // initialize DataTable
         table = tableEl.DataTable(config);
+        console.log('showShareHoldersCurrent: initialized table');
 
     } else {
         table = tableEl.DataTable();
@@ -46,12 +52,11 @@ function showShareHoldersCurrent(e, holders) {
             city     : person.post_code + ' ' + person.city
         });
 
-
     });
+
     table.clear();
     table.rows.add(tableData).draw();
 
-    console.log('showShareHoldersCurrent: loading table data');
-
+    console.log('showShareHoldersCurrent: loaded table data');
 
 }

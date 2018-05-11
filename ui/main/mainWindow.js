@@ -269,14 +269,14 @@ function getDataTableConfig() {
     return {
         paging: false,
         language: {
-            search : 'Suchen',
+            search :        "<i class=\"fas fa-search\"></i> Suchen",
             processing:     "Bitte warten...",
             lengthMenu:    "_MENU_ Einträge anzeigen",
             info:           "_START_ bis _END_ von _TOTAL_ Einträgen",
             infoEmpty:      "Keine Daten vorhanden",
             infoFiltered:   "(gefiltert von _MAX_ Einträgen)",
             infoPostFix:    "",
-            infoThousands:  "",
+            thousands:      "'",
             loadingRecords: "Wird geladen...",
             zeroRecords:    "Keine Einträge vorhanden",
             emptyTable:     "Keine Daten",
