@@ -259,3 +259,39 @@ function getColumms(type) {
 
     return columns[type];
 }
+
+
+/**
+ * returns a default dataTable config object
+ * @returns {{paging: boolean, language: {search: string, processing: string, lengthMenu: string, info: string, infoEmpty: string, infoFiltered: string, infoPostFix: string, infoThousands: string, loadingRecords: string, zeroRecords: string, emptyTable: string, paginate: {first: string, previous: string, next: string, last: string}, aria: {sortAscending: string, sortDescending: string}}, select: boolean, scrollY: number}}
+ */
+function getDataTableConfig() {
+    return {
+        paging: false,
+        language: {
+            search : 'Suchen',
+            processing:     "Bitte warten...",
+            lengthMenu:    "_MENU_ Einträge anzeigen",
+            info:           "_START_ bis _END_ von _TOTAL_ Einträgen",
+            infoEmpty:      "Keine Daten vorhanden",
+            infoFiltered:   "(gefiltert von _MAX_ Einträgen)",
+            infoPostFix:    "",
+            infoThousands:  "",
+            loadingRecords: "Wird geladen...",
+            zeroRecords:    "Keine Einträge vorhanden",
+            emptyTable:     "Keine Daten",
+            paginate: {
+                first:      "Erste",
+                previous:   "Zurück",
+                next:       "Nächste",
+                last:       "Letzte"
+            },
+            aria: {
+                sortAscending:  ": aktivieren, um Spalte aufsteigend zu sortieren",
+                sortDescending: ": aktivieren, um Spalte absteigend zu sortieren"
+            }
+        },
+        select: true,
+        scrollY: 650
+    }
+}
