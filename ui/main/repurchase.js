@@ -193,10 +193,8 @@ function listRepurchaseShares(shares) {
         // toggle element selection
         if( $(element).hasClass('share-dd-item-selected') ) {
             $(element).removeClass('share-dd-item-selected');
-            $(element).removeClass('z-depth-5');
         } else {
             $(element).addClass('share-dd-item-selected');
-            $(element).addClass('z-depth-5');
         }
 
     });

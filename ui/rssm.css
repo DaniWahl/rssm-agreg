@@ -99,10 +99,15 @@ html, body, #content, #container, .content-element, #sidenav {
     height: 180px;
     margin-left: 10px !important;
     padding: 10px !important;
+    background-color: #e0effa !important;
 }
 
 .share-dd-item-selected {
-
+    box-shadow:
+            0 16px 24px 2px rgba(0,0,0,0.14),
+            0 6px 30px 5px rgba(0,0,0,0.12),
+            0 8px 10px -5px rgba(0,0,0,0.3) !important;
+    background-color: #e3f4ff !important;
 }
 
 share-dd-item p img {
