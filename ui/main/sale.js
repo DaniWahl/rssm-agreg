@@ -1,3 +1,5 @@
+const SALE_TYPE = 'sale';
+
 // setup repurchase ui specific event handlers
 document.querySelector('#sale-submit').addEventListener('click', submitSale);
 document.querySelector('#confirmation-sale-ok').addEventListener('click', doSale);
@@ -7,6 +9,12 @@ document.querySelector('#sale-n-shares').addEventListener('input', updateShareLi
 let rssmShareIndex;
 let allShares;
 
+
+/**
+ * event handler for the sale-n-shares input event.
+ * compile a list of available shares and show them on the container
+ * @param e
+ */
 function updateShareList(e) {
     const value = parseInt(e.target.value);
 
@@ -23,50 +31,8 @@ function updateShareList(e) {
         shares.push(allShares[list[i]]);
     }
 
-    // create table rows
-    listSaleShares(shares);
-
-}
-
-
-/**
- * pupulate shares table with proposed shares
- * @param {Array} shares
- */
-function listSaleShares(shares) {
-    const tbody = document.querySelector('#table-sale-share-list > tbody');
-
-    tbody.innerHTML = '';
-    shares.forEach(share => {
-        tbody.appendChild(makeTableItem(share, 'share_list'));
-    })
-
-    document.querySelectorAll('#table-sale-share-list > tbody > tr > td > input').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedShares);
-    })
-}
-
-
-/**
- * event handler of the checkbox change event.
- * count number of selected shares and update summary table and repurchase button status
- * @param {Event} e
- */
-function updateSelectedShares(e) {
-
-    const formData = new FormData(document.querySelector('form[name=sale]'));
-    const share_no = formData.getAll('share_item').length;
-
-    document.querySelector('#sale-shares').innerHTML = share_no;
-
-    // handle button status
-    if(share_no !== 0) {
-        document.querySelector('#sale-submit').classList.remove('disabled');
-    } else {
-        document.querySelector('#sale-submit').classList.add('disabled');
-    }
-
-
+    // create share elements
+    showShares(shares, SALE_TYPE);
 }
 
 
@@ -146,18 +112,21 @@ function submitSale(e) {
 
      // get form data
      const formData = new FormData(document.querySelector('form[name=sale]'));
-     const shares = formData.getAll('share_item');
 
-     const buyer = {};
      const holder = formData.get('holder');
-     buyer.a_code = formData.get('a_code');
-     buyer.salutation = formData.get('salutation');
-     buyer.first_name = formData.get('first_name');
-     buyer.name = formData.get('name');
-     buyer.address = formData.get('address');
-     buyer.post_code = formData.get('post_code');
-     buyer.city = formData.get('city');
-     buyer.comment = formData.get('comment');
+     const buyer = {
+         a_code :     formData.get('a_code'),
+         salutation : formData.get('salutation'),
+         first_name : formData.get('first_name'),
+         name :       formData.get('name'),
+         address :    formData.get('address'),
+         post_code :  formData.get('post_code'),
+         city :       formData.get('city'),
+         comment :    formData.get('comment')
+     };
+
+     // get selected shares
+     const shares = getSelectedShares(SALE_TYPE);
 
 
      let buyer_status = 'new';
@@ -196,18 +165,19 @@ function doSale(e) {
       // get form data
       const formData = new FormData(document.querySelector('form[name=sale]'));
       const sale = {};
-      const holder = formData.get('holder');
 
-      sale.shares = formData.getAll('share_item');
-      sale.buyer = {};
-      sale.buyer.salutation = formData.get('salutation');
-      sale.buyer.first_name = formData.get('first_name');
-      sale.buyer.name = formData.get('name');
-      sale.buyer.family = formData.get('family');
-      sale.buyer.address = formData.get('address');
-      sale.buyer.post_code = formData.get('post_code');
-      sale.buyer.city = formData.get('city');
-      sale.buyer.comment = formData.get('comment');
+      const holder = formData.get('holder');
+      sale.shares = getSelectedShares(SALE_TYPE);
+      sale.buyer = {
+          a_code :     formData.get('a_code'),
+          salutation : formData.get('salutation'),
+          first_name : formData.get('first_name'),
+          name :       formData.get('name'),
+          address :    formData.get('address'),
+          post_code :  formData.get('post_code'),
+          city :       formData.get('city'),
+          comment :    formData.get('comment')
+      };
 
       // extract a_code
       let reg = /.+ \((.+)\)$/;
@@ -237,8 +207,6 @@ function showSale(e, data) {
 
     allShares = data.shares;
     rssmShareIndex = indexShareList(data.rssm_shares);
-
-
 
     // prepare the a_codes suggestion list
     const a_codes = {};
@@ -297,8 +265,6 @@ function initSaleSummary(data) {
  * @param {Object} holder
  */
 function initSaleForm(holder = {}) {
-
-    document.querySelector('#table-sale-share-list > tbody').innerHTML = '';
 
     if (!holder.a_code) {
         document.querySelector('#sale-a-code-select').value = '';

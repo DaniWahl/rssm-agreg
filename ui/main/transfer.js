@@ -1,3 +1,5 @@
+const TRANSFER_TYPE = 'transfer';
+
 // setup repurchase ui specific event handlers
 document.querySelector('#transfer-submit').addEventListener('click', submitTransfer);
 document.querySelector('#confirmation-transfer-ok').addEventListener('click', doTransfer);
@@ -13,10 +15,12 @@ function submitTransfer(e) {
 
     // get form data
     const formData = new FormData(document.querySelector('form[name=transfer]'));
-    const shares = formData.getAll('share_item');
     const holder = formData.get('source');
     const reciever = formData.get('reciever');
     const comment = formData.get('comment');
+
+    // get selected shares
+    const shares = getSelectedShares(TRANSFER_TYPE);
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden <b>${shares.length}</b> Aktien an den <br>Aktionär
@@ -45,7 +49,7 @@ function doTransfer(e) {
     const transfer = {};
     // get form data
     const formData = new FormData(document.querySelector('form[name=transfer]'));
-    transfer.shares = formData.getAll('share_item');
+    transfer.shares = getSelectedShares(TRANSFER_TYPE);
     transfer.holder = formData.get('source');
     transfer.reciever = formData.get('reciever');
     transfer.comment = formData.get('comment');
@@ -75,6 +79,9 @@ function showTransfer(e, data) {
 
     initTransferSummary(data);
     initTransferForm();
+
+    // empty the share container
+    $('#transfer-list div').remove();
 
     // prepare the a_codes suggestion list
     const a_codes = {};
@@ -110,8 +117,8 @@ function showTransfer(e, data) {
                 shares.push(data.shares[share_no]);
             })
 
-            // create table rows
-            listTransferShares(shares);
+            // create share elements
+            showShares(shares, TRANSFER_TYPE);
         },
         minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
     })
@@ -136,47 +143,8 @@ function initTransferSummary(data) {
 }
 
 function initTransferForm() {
-    document.querySelector('#table-transfer-share-list > tbody').innerHTML = '';
     document.querySelector('#transfer-a-code-source-input').value = '';
     document.querySelector('#transfer-a-code-reciever-input').value = '';
     document.querySelector('#transfer-comment-input').value = '';
 }
 
-/**
- * pupulate shares table with shares from selected share holder
- * @param {Array} shares
- */
-function listTransferShares(shares) {
-    const tbody = document.querySelector('#table-transfer-share-list > tbody');
-
-    tbody.innerHTML = '';
-    shares.forEach(share => {
-        tbody.appendChild(makeTableItem(share, 'share_list'));
-    })
-
-    document.querySelectorAll('#table-transfer-share-list > tbody > tr > td > input').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedTransferShares);
-    })
-}
-
-/**
- * event handler of the checkbox change event.
- * count number of selected shares and update summary table and transfer button status
- * @param {Event} e
- */
-function updateSelectedTransferShares(e) {
-
-    const formData = new FormData(document.querySelector('form[name=transfer]'))
-    const share_no = formData.getAll('share_item').length;
-    const reciever = formData.get('reciever');
-
-    document.querySelector('#transfer-shares').innerHTML = share_no;
-
-    // handle button status
-    if (share_no !== 0 && reciever !== '') {
-        document.querySelector('#transfer-submit').classList.remove('disabled');
-    } else {
-        document.querySelector('#transfer-submit').classList.add('disabled');
-    }
-
-}

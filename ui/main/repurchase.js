@@ -1,5 +1,4 @@
-
-const ACTION_TYPE = 'repurchase';
+const REPURCHASE_TYPE = 'repurchase';
 
 // setup repurchase ui specific event handlers
 document.querySelector('#repurchase-submit').addEventListener('click', submitRepurchase);
@@ -19,7 +18,7 @@ function submitRepurchase(e) {
     const holder = formData.get('holder');
 
     // get selected shares
-    const shares = getSelectedShares(ACTION_TYPE);
+    const shares = getSelectedShares(REPURCHASE_TYPE);
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden <b>${shares.length}</b> Aktien zurückgekauft, 
@@ -51,7 +50,7 @@ function doRepurchase(e) {
 
     const repurchase = {};
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    repurchase.shares = getSelectedShares(ACTION_TYPE);
+    repurchase.shares = getSelectedShares(REPURCHASE_TYPE);
     repurchase.holder = formData.get('holder');
 
     // extract a_code
@@ -116,7 +115,7 @@ function showRepurchase(e, data) {
             })
 
             // create share elements
-            showShares(shares, ACTION_TYPE);
+            showShares(shares, REPURCHASE_TYPE);
         },
         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
     });
