@@ -74,6 +74,7 @@ function showRepurchase(e, data) {
     initRepurchaseSummary(data);
     initRepurchaseForm();
 
+
     // prepare the a_codes suggestion list
     const a_codes = {}
     Object.keys(data.a_codes).forEach(a_code => {
@@ -117,6 +118,42 @@ function showRepurchase(e, data) {
 
 }
 
+
+function initRepurchaseTable() {
+    const tableEl = $('#table-repurchase-share-list');
+
+    // have we initialized the DataTable before?
+    if( ! $.fn.dataTable.isDataTable(tableEl) ) {
+
+        // prepare data table configuration
+        const config = getDataTableConfig();
+        config.searching = false;
+        config.ordering = false;
+        config.info = false;
+        config.scrollY = 300;
+        config.columns = [
+            {
+                data : 'checkbox',
+                render : function ( data, type, row ) {
+                    return `<b>${data}</b>`;
+                }
+            },
+            { data : 'share_no'},
+            { data : 'a_code'},
+            { data : 'name'},
+            { data : 'first_name'},
+            { data : 'address'},
+            { data : 'city'}
+
+        ];
+
+        // initialize DataTable
+        tableEl.DataTable(config);
+        console.log('initRepurchaseTable: initialized table');
+    }
+}
+
+
 /**
  * initialize the Repurchase summary table
  */
@@ -128,25 +165,42 @@ function initRepurchaseSummary(data) {
 }
 
 function initRepurchaseForm() {
-    document.querySelector('#table-repurchase-share-list > tbody').innerHTML = '';
+    //document.querySelector('#table-repurchase-share-list > tbody').innerHTML = '';
     document.querySelector('#repurchase-a-code-input').value = '';
 }
 
 /**
- * pupulate shares table with shares from selected share holder
+ * pupulate shares container with shares from selected share holder
  * @param {Array} shares
  */
 function listRepurchaseShares(shares) {
-    const tbody = document.querySelector('#table-repurchase-share-list > tbody');
 
-    tbody.innerHTML = '';
+    // empty the share container
+    $('#repurchase-list div').remove();
+
+
+    // create share elements to the container
     shares.forEach(share => {
-        tbody.appendChild(makeTableItem(share, 'share_list'));
-    })
+        const div = makeShareElement(share);
+        $('#repurchase-list').append(div);
+    });
 
-    document.querySelectorAll('#table-repurchase-share-list > tbody > tr > td > input').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedShares);
-    })
+    $('#repurchase-list div.share-dd-item').on('click', function(e) {
+
+        const element = e.currentTarget;
+        e.preventDefault();
+
+        // toggle element selection
+        if( $(element).hasClass('share-dd-item-selected') ) {
+            $(element).removeClass('share-dd-item-selected');
+            $(element).removeClass('z-depth-5');
+        } else {
+            $(element).addClass('share-dd-item-selected');
+            $(element).addClass('z-depth-5');
+        }
+
+    });
+
 }
 
 /**
@@ -154,19 +208,11 @@ function listRepurchaseShares(shares) {
  * count number of selected shares and update summary table and repurchase button status
  * @param {Event} e
  */
-function updateSelectedShares(e) {
+function fff(element) {
 
-    const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    const share_no = formData.getAll('share_item').length;
+    console.log(element);
 
-    document.querySelector('#repurchase-shares').innerHTML = share_no;
 
-    // handle button status
-    if(share_no !== 0) {
-        document.querySelector('#repurchase-submit').classList.remove('disabled');
-    } else {
-        document.querySelector('#repurchase-submit').classList.add('disabled');
-    }
 
 
 }
