@@ -16,9 +16,10 @@ function submitRepurchase(e) {
 
     // get form data
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    const shares = formData.getAll('share_item');
     const holder = formData.get('holder');
 
+    // get selected shares
+    const shares = getSelectedShares('repurchase-list');
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden <b>${shares.length}</b> Aktien zurückgekauft, 
@@ -38,6 +39,24 @@ function submitRepurchase(e) {
 
 }
 
+
+function getSelectedShares(container_id) {
+
+    const selected = $(`#${container_id} div.share-dd-item-selected`);
+    const share_no = [];
+    const reg = new RegExp(/\d+$/);
+
+
+    // extract share_no from id
+    for(let i=0; i<selected.length; i++) {
+        const matches = reg.exec(selected[i].id)
+        share_no.push(matches[0]);
+    }
+
+    return share_no;
+}
+
+
 /**
  * event handler for the modal dialog ok button click.
  * passes the data back to main for being processed
@@ -47,7 +66,7 @@ function doRepurchase(e) {
 
     const repurchase = {};
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    repurchase.shares = formData.getAll('share_item');
+    repurchase.shares = getSelectedShares('repurchase-list');
     repurchase.holder = formData.get('holder');
 
     // extract a_code
@@ -56,7 +75,6 @@ function doRepurchase(e) {
     repurchase.a_code = matches[1];
 
     ipcRenderer.send('repurchase:execute', repurchase);
-
 }
 
 
@@ -73,6 +91,9 @@ function showRepurchase(e, data) {
 
     initRepurchaseSummary(data);
     initRepurchaseForm();
+
+    // empty the share container
+    $('#repurchase-list div').remove();
 
 
     // prepare the a_codes suggestion list
@@ -119,40 +140,6 @@ function showRepurchase(e, data) {
 }
 
 
-function initRepurchaseTable() {
-    const tableEl = $('#table-repurchase-share-list');
-
-    // have we initialized the DataTable before?
-    if( ! $.fn.dataTable.isDataTable(tableEl) ) {
-
-        // prepare data table configuration
-        const config = getDataTableConfig();
-        config.searching = false;
-        config.ordering = false;
-        config.info = false;
-        config.scrollY = 300;
-        config.columns = [
-            {
-                data : 'checkbox',
-                render : function ( data, type, row ) {
-                    return `<b>${data}</b>`;
-                }
-            },
-            { data : 'share_no'},
-            { data : 'a_code'},
-            { data : 'name'},
-            { data : 'first_name'},
-            { data : 'address'},
-            { data : 'city'}
-
-        ];
-
-        // initialize DataTable
-        tableEl.DataTable(config);
-        console.log('initRepurchaseTable: initialized table');
-    }
-}
-
 
 /**
  * initialize the Repurchase summary table
@@ -165,7 +152,6 @@ function initRepurchaseSummary(data) {
 }
 
 function initRepurchaseForm() {
-    //document.querySelector('#table-repurchase-share-list > tbody').innerHTML = '';
     document.querySelector('#repurchase-a-code-input').value = '';
 }
 
@@ -197,6 +183,7 @@ function listRepurchaseShares(shares) {
             $(element).addClass('share-dd-item-selected');
         }
 
+        updateSelected();
     });
 
 }
@@ -206,11 +193,16 @@ function listRepurchaseShares(shares) {
  * count number of selected shares and update summary table and repurchase button status
  * @param {Event} e
  */
-function fff(element) {
+function updateSelected() {
 
-    console.log(element);
+    const selected = $('#repurchase-list div.share-dd-item-selected');
+    document.querySelector('#repurchase-shares').innerHTML = selected.length;
 
-
+    if(selected.length) {
+        $('#repurchase-submit').removeClass('disabled');
+    } else {
+        $('#repurchase-submit').addClass('disabled');
+    }
 
 
 }
