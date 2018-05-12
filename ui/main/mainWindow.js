@@ -41,10 +41,23 @@ document.querySelectorAll('a').forEach(el => {
 console.log('mainWindow: started');
 
 
+/**
+ * handler for the toast:show event.
+ * displays message toast on the ui
+ * @param e
+ * @param msg
+ */
 function showToast(e, msg) {
     Materialize.toast(msg, 4000, 'rounded z-depth-4');
 }
 
+
+/**
+ * handler for the version:show event.
+ * displays the application version in it's container.
+ * @param e
+ * @param version
+ */
 function showVersion(e, version) {
     console.log("showing version ", version)
     document.querySelector('#version-no').innerHTML = version;
@@ -81,6 +94,12 @@ function showElement(element_id) {
 }
 
 
+/**
+ * generates and returns a share html element
+ * @param share {Object}  contains share information
+ * @param type {String}  transaction type - will be added to the element id
+ * @returns {string}
+ */
 function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
@@ -94,6 +113,12 @@ function  makeShareElement(share, type) {
     return html;
 }
 
+
+/**
+ * returns share numbers of all selected share elements
+ * @param type {String}  transaction type
+ * @returns {Array}
+ */
 function getSelectedShares(type) {
 
     const container_id = `#${type}-list`;
@@ -112,7 +137,8 @@ function getSelectedShares(type) {
 }
 
 /**
- * pupulate shares container with shares from selected share holder
+ * generates share html elements from the provided shares list and
+ * populates the elements into the share list.
  * @param {Array} shares
  * @param {String} type   transaction type for shares
  */
@@ -130,6 +156,7 @@ function showShares(shares, type) {
         $(`${container_id}`).append(div);
     });
 
+    // create click event handler for all share elements
     $(`${container_id} div.share-dd-item`).on('click', function(e) {
 
         const element = e.currentTarget;
@@ -142,13 +169,13 @@ function showShares(shares, type) {
             $(element).addClass('share-dd-item-selected');
         }
 
+        // update form with selected information
         updateSelected(type);
     });
 
 }
 
 /**
- * event handler of the checkbox change event.
  * count number of selected shares and update summary table and submit button status
  * @param {String} type
  */
