@@ -86,3 +86,50 @@ html, body, #content, #container, .content-element, #sidenav {
 .row {
     margin-bottom: 10px !important;
 }
+
+.share-dd-container {
+    min-height: 500px;
+    height: 500px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.share-dd-item {
+    width: 120px;
+    height: 180px;
+    margin-left: 10px !important;
+    padding: 10px !important;
+    background-color: #e0effa !important;
+}
+
+.share-dd-item-selected {
+    box-shadow:
+            0 16px 24px 2px rgba(0,0,0,0.14),
+            0 6px 30px 5px rgba(0,0,0,0.12),
+            0 8px 10px -5px rgba(0,0,0,0.3) !important;
+    background-color: #e3f4ff !important;
+}
+
+share-dd-item p img {
+    border: #949494 1px dashed !important;
+}
+
+.share-dd-item img {
+    width: 100%;
+}
+.share-dd-item p.share-no {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 13px;
+}
+.share-dd-item p.name {
+    text-align: center;
+    width: 100%;
+    font-size: 10px;
+}
+
+.share-dd-item p.share-selected {
+    font-size: 24px;
+    color: teal;
+}
