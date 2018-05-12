@@ -32,7 +32,8 @@ function showJournal(e, journal) {
             { data : 'action'},
             { data : 'number'},
             { data : 'share_stock'}
-        ]
+        ];
+        config.order = [[0, 'desc']]; // order first col descending
 
         // initialize DataTable
         table = tableEl.DataTable(config);
