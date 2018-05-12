@@ -81,11 +81,11 @@ function showElement(element_id) {
 }
 
 
-function  makeShareElement(share) {
+function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
 
-    const html = `<div id="repurchase-share-${share.share_no}" class="card-panel hoverable share-dd-item">
+    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable share-dd-item">
         <img src="../../assets/linden.png">
         <p class="share-no">${no}</p>
         <p class="name">${share.first_name} ${share.name}</p>
@@ -93,6 +93,83 @@ function  makeShareElement(share) {
 
     return html;
 }
+
+function getSelectedShares(type) {
+
+    const container_id = `#${type}-list`;
+    const selected = $(`${container_id} div.share-dd-item-selected`);
+    const share_no = [];
+    const reg = new RegExp(/\d+$/);
+
+
+    // extract share_no from id
+    for(let i=0; i<selected.length; i++) {
+        const matches = reg.exec(selected[i].id)
+        share_no.push(matches[0]);
+    }
+
+    return share_no;
+}
+
+/**
+ * pupulate shares container with shares from selected share holder
+ * @param {Array} shares
+ * @param {String} type   transaction type for shares
+ */
+function showShares(shares, type) {
+
+    const container_id = `#${type}-list`;
+
+    // empty the share container
+    $(`${container_id} div`).remove();
+
+
+    // create share elements to the container
+    shares.forEach(share => {
+        const div = makeShareElement(share, type);
+        $(`${container_id}`).append(div);
+    });
+
+    $(`${container_id} div.share-dd-item`).on('click', function(e) {
+
+        const element = e.currentTarget;
+        e.preventDefault();
+
+        // toggle element selection
+        if( $(element).hasClass('share-dd-item-selected') ) {
+            $(element).removeClass('share-dd-item-selected');
+        } else {
+            $(element).addClass('share-dd-item-selected');
+        }
+
+        updateSelected(type);
+    });
+
+}
+
+/**
+ * event handler of the checkbox change event.
+ * count number of selected shares and update summary table and submit button status
+ * @param {String} type
+ */
+function updateSelected(type) {
+
+    const container_id = `#${type}-list`;
+    const submit_id = `#${type}-submit`;
+    const summary_id = `#${type}-shares`;
+
+    const selected = $(`${container_id} div.share-dd-item-selected`);
+    document.querySelector(summary_id).innerHTML = selected.length;
+
+    if(selected.length) {
+        $(submit_id).removeClass('disabled');
+    } else {
+        $(submit_id).addClass('disabled');
+    }
+
+}
+
+
 
 /**
  * generates table rows and td elements for a specified table type

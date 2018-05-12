@@ -1,9 +1,9 @@
 
+const ACTION_TYPE = 'repurchase';
 
 // setup repurchase ui specific event handlers
 document.querySelector('#repurchase-submit').addEventListener('click', submitRepurchase);
 document.querySelector('#confirmation-repurchase-ok').addEventListener('click', doRepurchase);
-
 
 
 /**
@@ -19,7 +19,7 @@ function submitRepurchase(e) {
     const holder = formData.get('holder');
 
     // get selected shares
-    const shares = getSelectedShares('repurchase-list');
+    const shares = getSelectedShares(ACTION_TYPE);
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden <b>${shares.length}</b> Aktien zurückgekauft, 
@@ -40,21 +40,6 @@ function submitRepurchase(e) {
 }
 
 
-function getSelectedShares(container_id) {
-
-    const selected = $(`#${container_id} div.share-dd-item-selected`);
-    const share_no = [];
-    const reg = new RegExp(/\d+$/);
-
-
-    // extract share_no from id
-    for(let i=0; i<selected.length; i++) {
-        const matches = reg.exec(selected[i].id)
-        share_no.push(matches[0]);
-    }
-
-    return share_no;
-}
 
 
 /**
@@ -66,7 +51,7 @@ function doRepurchase(e) {
 
     const repurchase = {};
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    repurchase.shares = getSelectedShares('repurchase-list');
+    repurchase.shares = getSelectedShares(ACTION_TYPE);
     repurchase.holder = formData.get('holder');
 
     // extract a_code
@@ -130,9 +115,8 @@ function showRepurchase(e, data) {
                 shares.push(data.shares[share_no]);
             })
 
-
-            // create table rows
-            listRepurchaseShares(shares);
+            // create share elements
+            showShares(shares, ACTION_TYPE);
         },
         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
     });
@@ -155,54 +139,6 @@ function initRepurchaseForm() {
     document.querySelector('#repurchase-a-code-input').value = '';
 }
 
-/**
- * pupulate shares container with shares from selected share holder
- * @param {Array} shares
- */
-function listRepurchaseShares(shares) {
-
-    // empty the share container
-    $('#repurchase-list div').remove();
 
 
-    // create share elements to the container
-    shares.forEach(share => {
-        const div = makeShareElement(share);
-        $('#repurchase-list').append(div);
-    });
 
-    $('#repurchase-list div.share-dd-item').on('click', function(e) {
-
-        const element = e.currentTarget;
-        e.preventDefault();
-
-        // toggle element selection
-        if( $(element).hasClass('share-dd-item-selected') ) {
-            $(element).removeClass('share-dd-item-selected');
-        } else {
-            $(element).addClass('share-dd-item-selected');
-        }
-
-        updateSelected();
-    });
-
-}
-
-/**
- * event handler of the checkbox change event.
- * count number of selected shares and update summary table and repurchase button status
- * @param {Event} e
- */
-function updateSelected() {
-
-    const selected = $('#repurchase-list div.share-dd-item-selected');
-    document.querySelector('#repurchase-shares').innerHTML = selected.length;
-
-    if(selected.length) {
-        $('#repurchase-submit').removeClass('disabled');
-    } else {
-        $('#repurchase-submit').addClass('disabled');
-    }
-
-
-}
