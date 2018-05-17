@@ -117,6 +117,7 @@ function submitSale(e) {
      const buyer = {
          a_code :     formData.get('a_code'),
          salutation : formData.get('salutation'),
+         family     : formData.get('family'),
          first_name : formData.get('first_name'),
          name :       formData.get('name'),
          address :    formData.get('address'),
@@ -171,6 +172,7 @@ function doSale(e) {
       sale.buyer = {
           a_code :     formData.get('a_code'),
           salutation : formData.get('salutation'),
+          family     : formData.get('family'),
           first_name : formData.get('first_name'),
           name :       formData.get('name'),
           address :    formData.get('address'),
@@ -271,15 +273,20 @@ function initSaleForm(holder = {}) {
     }
 
     document.querySelector('#sale-salutation-input').value = holder.salutation || '';
+    document.querySelector('#sale-family-input').value = holder.family || '';
     document.querySelector('#sale-first-name-input').value = holder.first_name || '';
     document.querySelector('#sale-name-input').value = holder.name || '';
     document.querySelector('#sale-address-input').value = holder.address || '';
     document.querySelector('#sale-post-code-input').value = holder.post_code || '';
     document.querySelector('#sale-city-input').value = holder.city || '';
     document.querySelector('#sale-comment-input').value = holder.comment || '';
+    document.querySelector('#sale-n-shares').value = '';
+
+    document.querySelector('#sale-list').innerHTML = '';
+
+    document.querySelector('#sale-submit').classList.add('disabled');
 
     Materialize.updateTextFields();
-
 }
 
 

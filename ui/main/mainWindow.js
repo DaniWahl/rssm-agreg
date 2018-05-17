@@ -146,7 +146,7 @@ function showShares(shares, type) {
 
     const container_id = `#${type}-list`;
 
-    // empty the share container
+    // get existing shares in container
     const old = $(`${container_id} div`);
 
     if(type === 'sale') {
