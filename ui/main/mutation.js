@@ -24,23 +24,35 @@ function submitMutation(e) {
     mutated.post_code = formData.get('post_code');
     mutated.city = formData.get('city');
     mutated.comment = formData.get('comment');
+    mutated.family = formData.get('family');
+    mutated.correspondence = $('form[name=mutation] input[name=correspondence]')[0].checked ? 1: 0;
 
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden Informationen mutiert:<br> `;
 
     let field_counter = 0;
-    for (let field of ['a_code', 'salutation', 'first_name', 'name', 'address', 'post_code', 'city']) {
+    for (let field of ['a_code', 'salutation', 'first_name', 'name', 'address', 'post_code', 'city', 'family']) {
 
         if (mutated[field] !== holder_orig[field]) {
-            msg += `${holder_orig[field]} &rarr; ${mutated[field]} <br>`;
+            msg += `${holder_orig[field]} <i class="fas fa-caret-right"></i> ${mutated[field]} <br>`;
             field_counter++;
         }
-
     }
 
-    if(mutated.comment) {
+    if (mutated.correspondence !== holder_orig.correspondence) {
+        let action = 'deaktiviert';
+        if(mutated.correspondence ) {
+            action = 'aktiviert';
+        }
+
+        msg += `Korrespondenz wurde ${action} <br>`;
+        field_counter++;
+    }
+
+    if(mutated['comment'] !== holder_orig['comment']) {
         msg += `Kommentar:  ${mutated.comment} <br>`;
+        field_counter++;
     }
 
     if (field_counter > 0) {
@@ -76,6 +88,8 @@ function submitMutation(e) {
      mutated.post_code = formData.get('post_code');
      mutated.city = formData.get('city');
      mutated.comment = formData.get('comment');
+     mutated.family = formData.get('family');
+     mutated.correspondence = $('form[name=mutation] input[name=correspondence]')[0].checked ? 1: 0;
 
      ipcRenderer.send('mutation:execute', mutated);
 }
@@ -93,6 +107,7 @@ function showMutation(e, data) {
 
     initMutationSummary(data);
     initMutationForm();
+
 
     // prepare the a_codes suggestion list
     const a_codes = {};
@@ -163,6 +178,9 @@ function initMutationForm(holder = {}) {
     document.querySelector('#mutation-post-code-input').value = holder.post_code || '';
     document.querySelector('#mutation-city-input').value = holder.city || '';
     document.querySelector('#mutation-comment-input').value = holder.comment || '';
+    document.querySelector('#mutation-family-input').value = holder.family || '';
+    document.querySelector('#mutation-correspondence-input').checked = holder.correspondence || 0;
+
 
     Materialize.updateTextFields();
 
