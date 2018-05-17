@@ -147,7 +147,20 @@ function showShares(shares, type) {
     const container_id = `#${type}-list`;
 
     // empty the share container
-    $(`${container_id} div`).remove();
+    const old = $(`${container_id} div`);
+
+    if(type === 'sale') {
+        for(let i=0; i<old.length; i++) {
+
+            // remove only the non-selected
+            if( !$(old[i]).hasClass("share-dd-item-selected") ) {
+                $(old[i]).remove();
+            }
+        }
+    } else {
+        // remove all
+        $(old).remove();
+    }
 
 
     // create share elements to the container
