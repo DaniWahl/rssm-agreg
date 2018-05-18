@@ -1,9 +1,11 @@
 const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
-const RSSM_DB = 'db/agregRSSM_test.db'
-const VERSION = "0.1.0";
 
+// read the basic settings
+const SETTINGS = require('./settings');
+const RSSM_DB = SETTINGS.dbpath;
+const VERSION = SETTINGS.version;
 
 // create application objects
 const rssm = new RSSMShares(RSSM_DB)
