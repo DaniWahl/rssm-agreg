@@ -35,6 +35,7 @@ function showJournal(e, journal) {
         ];
         config.order = [[0, 'desc']]; // order first col descending
 
+
         // initialize DataTable
         table = tableEl.DataTable(config);
         console.log('showJournal: initialized table');

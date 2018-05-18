@@ -216,7 +216,9 @@ function updateSelected(type) {
  */
 function getDataTableConfig() {
     return {
-        paging: false,
+        paging: true,
+        pageLength : 20,
+        lengthChange : false,
         language: {
             search :        "<i class=\"fas fa-search\"></i> Suchen",
             processing:     "Bitte warten...",
@@ -230,10 +232,10 @@ function getDataTableConfig() {
             zeroRecords:    "",
             emptyTable:     "",
             paginate: {
-                first:      "Erste",
-                previous:   "Zurück",
-                next:       "Nächste",
-                last:       "Letzte"
+                first:      "<i class='fas fa-angle-double-left'></i>",
+                previous:   "<i class='fas fa-angle-left'></i>",
+                next:       "<i class='fas fa-angle-right'></i>",
+                last:       "<i class='fas fa-angle-double-right'></i>"
             },
             aria: {
                 sortAscending:  ": aktivieren, um Spalte aufsteigend zu sortieren",
@@ -241,6 +243,6 @@ function getDataTableConfig() {
             }
         },
         select: true,
-        scrollY: 650
+        scrollY: 700
     }
 }

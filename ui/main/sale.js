@@ -281,9 +281,7 @@ function initSaleForm(holder = {}) {
     document.querySelector('#sale-city-input').value = holder.city || '';
     document.querySelector('#sale-comment-input').value = holder.comment || '';
     document.querySelector('#sale-n-shares').value = '';
-
     document.querySelector('#sale-list').innerHTML = '';
-
     document.querySelector('#sale-submit').classList.add('disabled');
 
     Materialize.updateTextFields();
