@@ -4,13 +4,9 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 
 // read the basic settings
 const SETTINGS = require('./settings');
-const RSSM_DB = SETTINGS.dbpath;
-const VERSION = SETTINGS.version;
-
-// create application objects
-const rssm = new RSSMShares(RSSM_DB)
-rssm.init();
+let rssm;
 let mainWindow = null
+
 
 
 // handle application events
@@ -20,8 +16,7 @@ ipcMain.on('repurchase:execute', executeRepurchase);
 ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
-
-
+process.on('uncaughtException', errorHandler);
 
 
 /**
@@ -208,6 +203,11 @@ function loadContentData(e, element_id) {
  */
 function app_init() {
 
+
+    rssm = new RSSMShares(SETTINGS.dbpath);
+    rssm.init();
+
+
     // create UI window
     mainWindow = new BrowserWindow({
         width  : 1600,
@@ -220,7 +220,7 @@ function app_init() {
         mainWindow.show();
 
         // send application version to display
-        mainWindow.webContents.send('version:show', VERSION);
+        mainWindow.webContents.send('version:show', SETTINGS.version);
     });
     mainWindow.on('closed', app_quit)
 
@@ -239,7 +239,16 @@ function app_quit() {
     app.quit()
 }
 
-
+function errorHandler(e) {
+    console.log( e );
+    dialog.showMessageBox({
+        type: "error",
+        message:  e.name,
+        detail: e.message,
+        title: "Error"
+    });
+    app.quit();
+}
 
 
 function getMainMenuTemplate() {
