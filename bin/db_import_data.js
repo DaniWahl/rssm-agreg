@@ -10,18 +10,16 @@
 
 const excel = require('excel');
 const RSSMShares = require('../lib/RSSMShares').RSSMShares;
-const excel_to_date_string = require('../lib/app.helpers.js').excel_to_date_string;
-const parse_share_no = require('../lib/app.helpers').parse_share_no;
+const Helpers = require('../lib/app.helpers');
+const SETTINGS = require('../settings');
 
-
-const RSSMDBPATH = 'db/agregRSSM_test.db';         // path to sqlite database
 const WBPATH = 'docs/Aktien 2018.05.10.xlsx';        // path to Excel document to read
 const WB2PATH = 'docs/Aktionäre 2018.05.10.xlsx';  // path to Excel document having current share holders
 const CERTIF_SHEET = 2;                              // worksheet containing Certificates & Person data
 const JOUNRAL_SHEET = 1;                             // worksheet containing Journal
 const HOLDERS_SHEET = 1;                           // worksheet containing person correspondence and comments
 
-const rssmShares = new RSSMShares(RSSMDBPATH);
+const rssmShares = new RSSMShares(SETTINGS.dbpath);
 
 
 // run the whole import!
@@ -222,7 +220,7 @@ function insertShareJunks(journals, share_ids, journal_ids) {
 
             // prepare array of shares from journal
             const share_list = journals[journal_no].shares;
-            const shares = parse_share_no(share_list);
+            const shares = Helpers.parse_share_no(share_list);
 
 
             // iterate over shares
@@ -496,13 +494,13 @@ function extractJournal(rawdata) {
 
 
         // convert journal date to date string from Excel date number
-        const journal_date = excel_to_date_string(row[headers.journal_date]);
+        const journal_date = Helpers.excel_to_date_string(row[headers.journal_date]);
 
         // convert journal date to date string from Excel date number
-        const booking_date = excel_to_date_string(row[headers.booking_date]);
+        const booking_date = Helpers.excel_to_date_string(row[headers.booking_date]);
 
         // convert vr_protocol date date to date string from Excel date number
-        const vr_protocol_date = excel_to_date_string(row[headers.vr_protocol_date]);
+        const vr_protocol_date = Helpers.excel_to_date_string(row[headers.vr_protocol_date]);
 
         // correct action
         let action = row[headers.action];
@@ -701,7 +699,7 @@ async function extractShares(rawdata, holders) {
         }
 
         // convert transaction date to date string from Excel date number
-        const transaction_date = excel_to_date_string(row[headers.transaction]);
+        const transaction_date = Helpers.excel_to_date_string(row[headers.transaction]);
 
         // convert level into an integer number
         let level = row[headers.level];
@@ -762,8 +760,8 @@ function generateConfig() {
     const insert_promises = [];
     const data = [
         {
-            param: 'DB_PATH',
-            value: RSSMDBPATH
+            param: 'DB_LOAD',
+            value: Helpers.dateToDbString()
         },
         {
             param: 'A_CODE_SEQ',

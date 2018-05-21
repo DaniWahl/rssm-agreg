@@ -142,7 +142,7 @@ function executeMutation(e, person) {
  * @param {Event} e
  * @param {String} element_id
  */
-function loadContentData(e, element_id) {
+async function loadContentData(e, element_id) {
 
     switch(element_id) {
         case 'content-share-holders-current':
@@ -195,7 +195,11 @@ function loadContentData(e, element_id) {
 
         case 'admin-db':
             mainWindow.webContents.send('admin:database:show', {
-                version : SETTINGS.version
+                version : SETTINGS.version,
+                db_path : SETTINGS.dbpath,
+                db_backup_path : null,
+                db_load_date : await rssm.getConfig('DB_LOAD'),
+                db_creation_date : await rssm.getConfig('DB_CREATION')
             });
             break
 

@@ -29,12 +29,6 @@ ipcRenderer.on('toast:show',            showToast);
 ipcRenderer.on('admin:database:show',   showAdminDB);
 
 
-function showAdminDB(e, data) {
-
-    // show target element
-    showElement('admin-db');
-    console.log(data);
-}
 
 // register event handlers for all elements
 document.querySelectorAll('a').forEach(el => {

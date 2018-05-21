@@ -8,11 +8,13 @@
 
 
 const RSSMShares = require('../lib/RSSMShares').RSSMShares;
-const RSSMDBPATH = './db/agregRSSM_test.db';
+const Helpers = require('../lib/app.helpers');
 
+const SETTINGS = require('../settings');
+const DB_CREATE_WRITE_MODE = 6;
 
 //create RSSMShares object
-const rssmShares = new RSSMShares(RSSMDBPATH);
+const rssmShares = new RSSMShares(SETTINGS.dbpath, DB_CREATE_WRITE_MODE);
 const tables = [];
 const indices = [];
 
@@ -130,6 +132,7 @@ tables.forEach(tablesql => {
     tablePromises.push(rssmShares.runSql(tablesql));
 });
 
+
 Promise.all(tablePromises)
     .then(msgs => {
 
@@ -146,6 +149,13 @@ Promise.all(tablePromises)
                 });
 
         });
+
+        // setting db creation date
+        rssmShares.setConfig('DB_CREATION', Helpers.dateToDbString());
+        rssmShares.setConfig('VERSION', SETTINGS.version);
+        rssmShares.setConfig('DB_PATH', SETTINGS.dbpath);
+
+
     })
     .catch(err => {
         console.error(err);
