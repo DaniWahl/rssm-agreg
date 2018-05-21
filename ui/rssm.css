@@ -1,10 +1,18 @@
 
 
 /* make sure we use all vertical space and use proper font */
-html, body, #content, #container, .content-element, #sidenav {
+html, body  {
     height: 100%;
     font-family: Helvetica;
 }
+
+#container, #sidenav, #content {
+    height: 100%;
+    min-height: 100% !important;
+}
+
+
+
 
 .logo-container {
     padding: 10px;
@@ -25,15 +33,33 @@ html, body, #content, #container, .content-element, #sidenav {
     color: #333333;
 }
 
+
+#content {
+    position: relative;
+}
+
 .content-element {
-    margin: 20px;
-    overflow: auto;
+    margin: 20px !important;
+    display: block;
+    position:absolute !important;
+    height:auto;
+    bottom:0;
+    top:0;
+    left:0;
+    right:0;
 }
 
 .content-element table td {
     font-size: 12px;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.card-content {
+    min-height: 90%;
+}
+.card-action {
+    min-height: 10%;
 }
 
 .hidden {
@@ -132,4 +158,8 @@ share-dd-item p img {
 .share-dd-item p.share-selected {
     font-size: 24px;
     color: teal;
+}
+
+.btn-blue {
+    background-color: #1565c0;
 }

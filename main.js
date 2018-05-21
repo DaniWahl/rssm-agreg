@@ -193,6 +193,12 @@ function loadContentData(e, element_id) {
             });
             break
 
+        case 'admin-db':
+            mainWindow.webContents.send('admin:database:show', {
+                version : SETTINGS.version
+            });
+            break
+
     }
 
 }

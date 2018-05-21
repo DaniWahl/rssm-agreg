@@ -26,8 +26,15 @@ ipcRenderer.on('transfer:show',         showTransfer);
 ipcRenderer.on('mutation:show',         showMutation);
 ipcRenderer.on('sale:show',             showSale);
 ipcRenderer.on('toast:show',            showToast);
+ipcRenderer.on('admin:database:show',   showAdminDB);
 
 
+function showAdminDB(e, data) {
+
+    // show target element
+    showElement('admin-db');
+    console.log(data);
+}
 
 // register event handlers for all elements
 document.querySelectorAll('a').forEach(el => {
@@ -62,6 +69,10 @@ function showVersion(e, version) {
     console.log("showing version ", version)
     document.querySelector('#version-no').innerHTML = version;
 }
+
+
+
+
 
 /**
  * handle click events on <a> dom elements
@@ -242,7 +253,6 @@ function getDataTableConfig() {
                 sortDescending: ": aktivieren, um Spalte absteigend zu sortieren"
             }
         },
-        select: true,
-        scrollY: 700
+        select: true
     }
 }
