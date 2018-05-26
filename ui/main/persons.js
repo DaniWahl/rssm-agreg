@@ -60,3 +60,8 @@ function showPersons(e, holders) {
     table.rows.add(tableData).draw();
     console.log('showPersons: loaded table data');
 }
+
+
+module.exports = {
+    showPersons
+};

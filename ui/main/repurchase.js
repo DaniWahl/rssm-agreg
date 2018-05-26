@@ -141,3 +141,6 @@ function initRepurchaseForm() {
 
 
 
+module.exports = {
+    showRepurchase
+};

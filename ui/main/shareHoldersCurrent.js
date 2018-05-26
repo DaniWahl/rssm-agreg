@@ -60,3 +60,7 @@ function showShareHoldersCurrent(e, holders) {
     console.log('showShareHoldersCurrent: loaded table data');
 
 }
+
+module.exports = {
+    showShareHoldersCurrent
+};

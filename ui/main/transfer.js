@@ -148,3 +148,7 @@ function initTransferForm() {
     document.querySelector('#transfer-comment-input').value = '';
 }
 
+
+module.exports = {
+    showTransfer
+};

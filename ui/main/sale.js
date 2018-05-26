@@ -288,3 +288,6 @@ function initSaleForm(holder = {}) {
 }
 
 
+module.exports = {
+    showSale
+};

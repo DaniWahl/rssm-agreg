@@ -6,8 +6,6 @@ document.querySelector('#admin-db-select').addEventListener('click', selectDb);
 
 
 
-
-
 function showAdminDB(e, data) {
 
     // show target element

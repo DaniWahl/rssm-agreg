@@ -11,7 +11,20 @@ require( 'datatables.net-rowgroup' )();
 require( 'datatables.net-scroller' )();
 
 
-const { showAdminDB } = require('./dbAdmin');
+// load ui modules
+const {showAdminDB} = require('./dbAdmin');
+const {showJournal} = require('./journal');
+const {showMutation} = require('./mutation');
+const {showPersons} = require('./persons');
+const {showRepurchase} = require('./repurchase');
+const {showTransfer} = require('./transfer');
+const {showSale} = require('./sale');
+const {showShareHoldersAll} = require('./shareHoldersAll');
+const {showShareHoldersCurrent} = require('./shareHoldersCurrent');
+
+
+
+
 
 
 let row_group;

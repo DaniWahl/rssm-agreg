@@ -50,3 +50,7 @@ function showJournal(e, journal) {
     console.log('showJournal: loaded table data');
 
 }
+
+module.exports = {
+    showJournal
+};

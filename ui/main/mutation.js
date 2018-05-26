@@ -187,3 +187,6 @@ function initMutationForm(holder = {}) {
 }
 
 
+module.exports = {
+    showMutation
+};
