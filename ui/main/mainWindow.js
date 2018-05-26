@@ -11,6 +11,8 @@ require( 'datatables.net-rowgroup' )();
 require( 'datatables.net-scroller' )();
 
 
+const { showAdminDB } = require('./dbAdmin');
+
 
 let row_group;
 let row_group_value;

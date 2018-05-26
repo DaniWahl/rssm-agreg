@@ -1,3 +1,11 @@
+const { dialog } = require('electron').remote;
+
+
+// setup action button event handlers
+document.querySelector('#admin-db-select').addEventListener('click', selectDb);
+
+
+
 
 
 function showAdminDB(e, data) {
@@ -7,6 +15,22 @@ function showAdminDB(e, data) {
     console.log(data);
 
     initDbAdminForm(data);
+};
+
+
+function selectDb() {
+
+    const paths = dialog.showOpenDialog({
+        title : "Datenbank auswählen",
+        message : "Datenbank Datei auswählen",
+        filters : [
+            {name : "SQLite Datenbank", extensions: ['db']}
+            ],
+        properties : ['openFile']
+    });
+
+    console.log(paths[0]);
+
 }
 
 
@@ -22,16 +46,32 @@ function initDbAdminForm(data) {
     $('#admin-info-db-load').text(data.db_load_date);
 
 
-    if(data.db_path) {
-        $('#admin-info-dbpath').text(data.db_path);
+    if(data.dbpath) {
+        $('#admin-info-dbpath').text(data.dbpath);
     }
 
     if(data.db_backup_path) {
         $('#admin-info-backup').text(data.db_backup_path);
     }
+    if(data.error) {
+        $('#admin-info-error').text(data.error);
+        $('#admin-info-error-row').removeClass('hidden');
+
+        if(data.error.match(/Failed to open database/)) {
+            $('#admin-info-dbpath-row').addClass('danger');
+            $('#admin-info-dbpath-row > td > button').addClass('pulse');
+            $('#admin-info-dbpath-row > td > button').removeClass('blue');
+            $('#admin-info-dbpath-row > td > button').addClass('red');
 
 
 
 
+        }
+
+    }
 
 }
+
+module.exports = {
+    showAdminDB
+};

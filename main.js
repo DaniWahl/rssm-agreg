@@ -16,7 +16,7 @@ ipcMain.on('repurchase:execute', executeRepurchase);
 ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
-process.on('uncaughtException', errorHandler);
+process.on('uncaughtException',  errorHandler);
 
 
 /**
@@ -196,7 +196,7 @@ async function loadContentData(e, element_id) {
         case 'admin-db':
             mainWindow.webContents.send('admin:database:show', {
                 version : SETTINGS.version,
-                db_path : SETTINGS.dbpath,
+                dbpath : SETTINGS.dbpath,
                 db_backup_path : null,
                 db_load_date : await rssm.getConfig('DB_LOAD'),
                 db_creation_date : await rssm.getConfig('DB_CREATION')
@@ -231,6 +231,13 @@ function app_init() {
 
         // send application version to display
         mainWindow.webContents.send('version:show', SETTINGS.version);
+
+        if(SETTINGS.error) {
+            // we started with error, let's handle this on the ui
+            mainWindow.webContents.send('admin:database:show', SETTINGS);
+
+        }
+
     });
     mainWindow.on('closed', app_quit)
 
@@ -251,13 +258,15 @@ function app_quit() {
 
 function errorHandler(e) {
     console.log( e );
+    SETTINGS.error = e.name;
+
     dialog.showMessageBox({
         type: "error",
         message:  e.name,
         detail: e.message,
         title: "Error"
     });
-    app.quit();
+
 }
 
 

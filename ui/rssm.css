@@ -39,7 +39,7 @@ html, body  {
 }
 
 .content-element {
-    margin: 20px !important;
+    margin: 30px !important;
     display: block;
     position:absolute !important;
     height:auto;
@@ -64,6 +64,11 @@ html, body  {
 
 .hidden {
     display: none;
+}
+
+.danger td {
+    background-color: rgba(201, 21, 21, 0.11);
+    color: darkred;
 }
 
 

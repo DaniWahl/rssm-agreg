@@ -71,20 +71,27 @@
                         <td><span id="admin-info-db-load"></span></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr id="admin-info-dbpath-row">
                         <th>Datenbank Pfad</th>
                         <td><span id="admin-info-dbpath"></span></td>
                         <td>
-                            <button class="btn blue darken-3 waves-effect">Auswählen</button>
+                            <button id="admin-db-select" class="btn btn-small blue darken-3 waves-effect">Auswählen</button>
                         </td>
                     </tr>
                     <tr>
                         <th>Datenbank Backup</th>
                         <td><span id="admin-info-backup"></span></td>
                         <td>
-                            <button class="btn blue darken-3 waves-effect">Erstellen</button>
+                            <button class="btn btn-small blue darken-3 waves-effect">Erstellen</button>
                         </td>
                     </tr>
+                    <tr id="admin-info-error-row" class="hidden danger">
+                        <th>Fehler</th>
+                        <td><span id="admin-info-error"></span></td>
+                        <td>
+                        </td>
+                    </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -565,7 +572,7 @@
 <script src="transfer.js"></script>
 <script src="mutation.js"></script>
 <script src="sale.js"></script>
-<script src="dbAdmin.js"></script>
+<!-- <script src="dbAdmin.js"></script> -->
 
 
 <script src="mainWindow.js"></script>
