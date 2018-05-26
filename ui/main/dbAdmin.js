@@ -29,8 +29,7 @@ function selectDb() {
         properties : ['openFile']
     });
 
-    console.log(paths[0]);
-
+    ipcRenderer.send('dbpath:set', paths[0]);
 }
 
 

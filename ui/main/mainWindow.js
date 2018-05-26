@@ -51,7 +51,7 @@ console.log('mainWindow: started');
  * @param msg
  */
 function showToast(e, msg) {
-    Materialize.toast(msg, 4000, 'rounded z-depth-4');
+    Materialize.toast(msg, 5000, 'rounded blue green lighten-1 z-depth-4');
 }
 
 

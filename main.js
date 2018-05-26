@@ -1,5 +1,6 @@
 const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
+const fs = require('fs');
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
 
 // read the basic settings
@@ -16,7 +17,41 @@ ipcMain.on('repurchase:execute', executeRepurchase);
 ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
+ipcMain.on('dbpath:set',         setDbPath);
 process.on('uncaughtException',  errorHandler);
+
+
+
+function setDbPath(e, path) {
+
+
+
+    // updating new path to settings
+    let newSettings = {
+        dbpath : path,
+        version : SETTINGS.version
+    };
+    newSettings = JSON.stringify(newSettings);
+
+    fs.writeFile('./settings.json', newSettings, 'utf8', function (err) {
+        if(err) {
+            errorHandler(err);
+            return;
+        }
+
+        SETTINGS.dbpath = path;
+        delete SETTINGS.error;
+
+        mainWindow.webContents.send('toast:show', 'Neue Datenbank ausgewählt');
+
+        rssm = null;
+        mainWindow = null;
+        app_init();
+
+    });
+
+}
+
 
 
 /**
