@@ -1,35 +1,34 @@
-const { dialog } = require('electron').remote;
-
 
 // setup action button event handlers
-document.querySelector('#admin-db-select').addEventListener('click', selectDb);
+document.querySelector('#admin-db-select-btn').addEventListener('click', selectDb);
+document.querySelector('#admin-db-backup-btn').addEventListener('click', backupDb);
+document.querySelector('#admin-db-export-btn').addEventListener('click', exportDb);
+document.querySelector('#admin-db-backup-dir-btn').addEventListener('click', selectBackupDir);
 
 
 
 function showAdminDB(e, data) {
-
     // show target element
     showElement('admin-db');
-    console.log(data);
-
     initDbAdminForm(data);
 };
 
 
-function selectDb() {
-
-    const paths = dialog.showOpenDialog({
-        title : "Datenbank auswählen",
-        message : "Datenbank Datei auswählen",
-        filters : [
-            {name : "SQLite Datenbank", extensions: ['db']}
-            ],
-        properties : ['openFile']
-    });
-
-    ipcRenderer.send('dbpath:set', paths[0]);
+function backupDb() {
+    ipcRenderer.send('dbbackup:create');
 }
 
+function exportDb() {
+    ipcRenderer.send('dbexport:create');
+}
+
+function selectDb() {
+    ipcRenderer.send('dbpath:set');
+}
+
+function selectBackupDir() {
+    ipcRenderer.send('backuppath:set');
+}
 
 /**
  * initialize the Admin form
@@ -48,8 +47,36 @@ function initDbAdminForm(data) {
     }
 
     if(data.db_backup_path) {
-        $('#admin-info-backup').text(data.db_backup_path);
+        $('#admin-info-backup-dir').text(data.db_backup_path);
     }
+
+    if(data.db_backup_list) {
+        let ul = '';
+
+
+        for(let i=0; i<data.db_backup_list.length; i++) {
+            const file = data.db_backup_list[i];
+            if(file) {
+                ul += '<li>';
+                if (i===0) {
+                    ul += '<b>';
+                }
+                ul += file;
+                if (i===0) {
+                    ul += '</b>';
+                }
+                ul += '</li>';
+            }
+        }
+
+
+
+        $('#admin-info-backup').html(`<ul>${ul}</ul>`);
+
+
+    }
+
+
     if(data.error) {
         $('#admin-info-error').text(data.error);
         $('#admin-info-error-row').removeClass('hidden');
@@ -59,14 +86,8 @@ function initDbAdminForm(data) {
             $('#admin-info-dbpath-row > td > button').addClass('pulse');
             $('#admin-info-dbpath-row > td > button').removeClass('blue');
             $('#admin-info-dbpath-row > td > button').addClass('red');
-
-
-
-
         }
-
     }
-
 }
 
 module.exports = {

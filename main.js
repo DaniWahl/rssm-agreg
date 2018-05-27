@@ -18,32 +18,92 @@ ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
 ipcMain.on('dbpath:set',         setDbPath);
+ipcMain.on('backuppath:set',     setBackupPath);
+ipcMain.on('dbbackup:create',    createDbBackup);
+ipcMain.on('dbexport:create',    createDbExport);
 process.on('uncaughtException',  errorHandler);
 
 
 
-function setDbPath(e, path) {
+async function createDbBackup() {
+    const backup = await rssm.backupDatabase(true);
 
+    mainWindow.webContents.send('toast:show', 'Datenbank Backup erstellt: ' + backup);
+
+    rssm = null;
+    mainWindow = null;
+    app_init();
+
+
+}
+
+function createDbExport(e) {
+
+
+}
+
+function setBackupPath(e) {
+
+    // prompt for backup directory
+    const paths = dialog.showOpenDialog(mainWindow, {
+        title : "Backup Directory",
+        message : "Backup Directory auswählen",
+        properties : ['openDirectory']
+    });
+
+    if(!paths) {
+        mainWindow.webContents.send('toast:show', 'Kein Backup Directory ausgewählt');
+        return;
+    }
+
+
+    rssm.setConfig('BACKUP_PATH', paths[0]);
+    mainWindow.webContents.send('toast:show', 'Backup Directory ausgewählt');
+
+}
+
+/**
+ * prompts user to select database file saves selected file to settings
+ * @param e
+ */
+function setDbPath(e) {
+
+
+    // prompt for new database file
+    const paths = dialog.showOpenDialog(mainWindow, {
+        title : "Datenbank auswählen",
+        message : "Datenbank Datei auswählen",
+        filters : [
+            {name : "SQLite Datenbank", extensions: ['db']}
+        ],
+        properties : ['openFile']
+    });
+
+    if(!paths) {
+        mainWindow.webContents.send('toast:show', 'Keine Datenbank ausgewählt');
+        return;
+    }
 
 
     // updating new path to settings
     let newSettings = {
-        dbpath : path,
+        dbpath : paths[0],
         version : SETTINGS.version
     };
     newSettings = JSON.stringify(newSettings);
 
+    // write new setting to file
     fs.writeFile('./settings.json', newSettings, 'utf8', function (err) {
         if(err) {
             errorHandler(err);
             return;
         }
 
-        SETTINGS.dbpath = path;
+        SETTINGS.dbpath = paths[0];
         delete SETTINGS.error;
-
         mainWindow.webContents.send('toast:show', 'Neue Datenbank ausgewählt');
 
+        // initialize application
         rssm = null;
         mainWindow = null;
         app_init();
@@ -232,9 +292,10 @@ async function loadContentData(e, element_id) {
             mainWindow.webContents.send('admin:database:show', {
                 version : SETTINGS.version,
                 dbpath : SETTINGS.dbpath,
-                db_backup_path : null,
+                db_backup_path : await rssm.getConfig('BACKUP_PATH'),
                 db_load_date : await rssm.getConfig('DB_LOAD'),
-                db_creation_date : await rssm.getConfig('DB_CREATION')
+                db_creation_date : await rssm.getConfig('DB_CREATION'),
+                db_backup_list : await getBackupList()
             });
             break
 
@@ -242,6 +303,31 @@ async function loadContentData(e, element_id) {
 
 }
 
+
+/**
+ * returns the last 5 backup files
+ * @returns {Promise<Array>}
+ */
+async function getBackupList() {
+    const backups = [];
+    const slots = 5;
+    const lastSlot = await rssm.getConfig('BACKUP_LAST');
+    let nextSlot = lastSlot;
+
+    for(let i=0; i<slots; i++) {
+
+        const file = await rssm.getConfig(`BACKUP_${nextSlot}`);
+        backups.push(file);
+
+        nextSlot++;
+        if(nextSlot === slots) {
+            nextSlot = 0;
+        }
+    }
+
+
+    return backups;
+}
 
 /**
  * application startup handler

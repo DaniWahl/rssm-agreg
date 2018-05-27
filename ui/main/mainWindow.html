@@ -56,33 +56,49 @@
                 <table>
                     <tbody>
                     <tr>
-                        <th width="200">Version</th>
+                        <th width="250"><i class="fas fa-code"></i> Version</th>
                         <td width="*"><span id="admin-info-version"></span></td>
                         <td width="200"></td>
 
                     </tr>
                     <tr>
-                        <th>Datenbank erstellt</th>
+                        <th>
+                            <i class="fas fa-plus-circle"></i> Datenbank erstellt
+                        </th>
                         <td><span id="admin-info-db-creation"></span></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Datenbank geladen</th>
+                        <th><i class="fas fa-download"></i> Datenbank geladen</th>
                         <td><span id="admin-info-db-load"></span></td>
                         <td></td>
                     </tr>
                     <tr id="admin-info-dbpath-row">
-                        <th>Datenbank Pfad</th>
+                        <th><i class="fas fa-database"></i> Datenbank Pfad</th>
                         <td><span id="admin-info-dbpath"></span></td>
                         <td>
-                            <button id="admin-db-select" class="btn btn-small blue darken-3 waves-effect">Auswählen</button>
+                            <button id="admin-db-select-btn" class="btn btn-small blue darken-3 waves-effect">Auswählen</button>
                         </td>
                     </tr>
                     <tr>
-                        <th>Datenbank Backup</th>
-                        <td><span id="admin-info-backup"></span></td>
+                        <th><i class="fas fa-folder"></i> Datenbank Backup Directory</th>
+                        <td><span id="admin-info-backup-dir"></span></td>
                         <td>
-                            <button class="btn btn-small blue darken-3 waves-effect">Erstellen</button>
+                            <button id="admin-db-backup-dir-btn" class="btn btn-small blue darken-3 waves-effect">Auswählen</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="fas fa-archive"></i> Datenbank Backups</th>
+                        <td><div id="admin-info-backup"></div></td>
+                        <td>
+                            <button id="admin-db-backup-btn" class="btn btn-small blue darken-3 waves-effect">Erstellen</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><i class="fas fa-file-excel"></i> Datenbank Export</th>
+                        <td><span id="admin-info-export"></span></td>
+                        <td>
+                            <button id="admin-db-export-btn" class="btn btn-small blue darken-3 waves-effect">Erstellen</button>
                         </td>
                     </tr>
                     <tr id="admin-info-error-row" class="hidden danger">

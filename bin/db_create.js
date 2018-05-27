@@ -121,7 +121,7 @@ indices.push(`CREATE INDEX share_chunk_i2 ON share_chunk(journal_id)`);
 // 6. create table CONFIG
 tables.push(`CREATE TABLE config (
     param  TEXT NOT NULL PRIMARY KEY,
-    value  TEXT NOT NULL
+    value  TEXT 
 )`);
 
 

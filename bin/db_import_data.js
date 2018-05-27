@@ -189,7 +189,7 @@ function updateShareCertificates(certificates, share_ids, cert_ids) {
  */
 async function updatePersonCorrespondence() {
 
-    console.log('updating persons not having any sharey to non-correnspondent ...');
+    console.log('updating persons not having any shares to non-correnspondent ...');
 
     const sql = `UPDATE PERSON SET correspondence = '0' 
                  WHERE person_id NOT IN (
@@ -766,9 +766,46 @@ function generateConfig() {
         {
             param: 'A_CODE_SEQ',
             value: 0
-        }, {
+        },
+        {
             param: 'RSSM_A_CODE',
             value: '999010'
+        },
+        {
+            param: 'BACKUP_PATH',
+            value: null
+        },
+        {
+            param: 'BACKUP_FREQ',
+            value: 30
+        },
+        {
+            param: 'BACKUP_DATE',
+            value: null
+        },
+        {
+            param: 'BACKUP_LAST',
+            value: null
+        },
+        {
+            param: 'BACKUP_0',
+            value: null
+        },
+        {
+            param: 'BACKUP_1',
+            value: null
+        },
+        {
+            param: 'BACKUP_2',
+            value: null
+        },
+        {
+            param: 'BACKUP_3',
+            value: null
+        },
+        {
+            param: 'BACKUP_4',
+            value: null
         }
     ];
 
