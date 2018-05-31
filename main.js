@@ -18,7 +18,6 @@ ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
 ipcMain.on('dbpath:set',         setDbPath);
-ipcMain.on('backuppath:set',     setBackupPath);
 ipcMain.on('dbbackup:create',    createDbBackup);
 ipcMain.on('dbexport:create',    createDbExport);
 process.on('uncaughtException',  errorHandler);
@@ -26,40 +25,82 @@ process.on('uncaughtException',  errorHandler);
 
 
 async function createDbBackup() {
-    const backup = await rssm.backupDatabase(true);
 
+    let backupPath = await rssm.getConfig('BACKUP_PATH');
+
+    if(!backupPath) {
+        backupPath = await selectDirectory('Backup');
+
+        if(backupPath) {
+            mainWindow.webContents.send('toast:show', 'Backup Directory bespeichert: ' + backupPath);
+            await rssm.setConfig('BACKUP_PATH', backupPath);
+        } else {
+            mainWindow.webContents.send('toast:show', 'kein Backup Directory!', 'red');
+            return;
+        }
+
+    }
+
+    const backup = await rssm.backupDatabase(true);
     mainWindow.webContents.send('toast:show', 'Datenbank Backup erstellt: ' + backup);
 
-    rssm = null;
-    mainWindow = null;
-    app_init();
+    restartApp(2000);
+}
 
+
+
+
+
+async function createDbExport(e) {
+
+    let exportPath = await rssm.getConfig('EXPORT_PATH');
+
+    if(!exportPath) {
+        exportPath = await selectDirectory('Export');
+
+        if(exportPath) {
+            mainWindow.webContents.send('toast:show', 'Export Directory bespeichert: ' + exportPath);
+            await rssm.setConfig('EXPORT_PATH', exportPath);
+        } else {
+            mainWindow.webContents.send('toast:show', 'kein Export Directory!', 'red');
+            return;
+        }
+
+    }
+
+    const exportFile = await rssm.exportToExcel(true);
+    mainWindow.webContents.send('toast:show', 'Datenbank exportiert: ' + exportFile);
 
 }
 
-function createDbExport(e) {
 
+function restartApp(time=1000) {
 
+    mainWindow.webContents.send('toast:show', 'Applikation wird neu gestartet', 'orange');
+
+    setTimeout(function() {
+        rssm = null;
+        mainWindow = null;
+        app_init();
+    }, time);
 }
 
-function setBackupPath(e) {
+
+/**
+ *
+ */
+async function selectDirectory(title) {
 
     // prompt for backup directory
     const paths = dialog.showOpenDialog(mainWindow, {
-        title : "Backup Directory",
-        message : "Backup Directory auswählen",
+        title : `${title} Directory`,
+        message : `${title} Directory auswählen`,
         properties : ['openDirectory']
     });
 
-    if(!paths) {
-        mainWindow.webContents.send('toast:show', 'Kein Backup Directory ausgewählt');
-        return;
+    if(paths) {
+        return paths[0];
     }
-
-
-    rssm.setConfig('BACKUP_PATH', paths[0]);
-    mainWindow.webContents.send('toast:show', 'Backup Directory ausgewählt');
-
 }
 
 /**
@@ -80,7 +121,7 @@ function setDbPath(e) {
     });
 
     if(!paths) {
-        mainWindow.webContents.send('toast:show', 'Keine Datenbank ausgewählt');
+        mainWindow.webContents.send('toast:show', 'Keine Datenbank ausgewählt!', 'red');
         return;
     }
 
@@ -289,6 +330,7 @@ async function loadContentData(e, element_id) {
             break
 
         case 'admin-db':
+
             mainWindow.webContents.send('admin:database:show', {
                 version : SETTINGS.version,
                 dbpath : SETTINGS.dbpath,
@@ -311,20 +353,22 @@ async function loadContentData(e, element_id) {
 async function getBackupList() {
     const backups = [];
     const slots = 5;
+    const backupPath = await rssm.getConfig('BACKUP_PATH') || '';
     const lastSlot = await rssm.getConfig('BACKUP_LAST');
     let nextSlot = lastSlot;
 
     for(let i=0; i<slots; i++) {
 
         const file = await rssm.getConfig(`BACKUP_${nextSlot}`);
-        backups.push(file);
+        if(file) {
+            backups.push(file);
+        }
 
         nextSlot++;
         if(nextSlot === slots) {
             nextSlot = 0;
         }
     }
-
 
     return backups;
 }

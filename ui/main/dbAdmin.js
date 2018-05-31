@@ -3,8 +3,6 @@
 document.querySelector('#admin-db-select-btn').addEventListener('click', selectDb);
 document.querySelector('#admin-db-backup-btn').addEventListener('click', backupDb);
 document.querySelector('#admin-db-export-btn').addEventListener('click', exportDb);
-document.querySelector('#admin-db-backup-dir-btn').addEventListener('click', selectBackupDir);
-
 
 
 function showAdminDB(e, data) {
@@ -24,10 +22,6 @@ function exportDb() {
 
 function selectDb() {
     ipcRenderer.send('dbpath:set');
-}
-
-function selectBackupDir() {
-    ipcRenderer.send('backuppath:set');
 }
 
 /**

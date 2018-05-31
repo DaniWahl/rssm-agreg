@@ -61,10 +61,11 @@ console.log('mainWindow: started');
  * handler for the toast:show event.
  * displays message toast on the ui
  * @param e
- * @param msg
+ * @param msg {String}
+ * @param color {String}
  */
-function showToast(e, msg) {
-    Materialize.toast(msg, 5000, 'rounded blue green lighten-1 z-depth-4');
+function showToast(e, msg, color='green') {
+    Materialize.toast(msg, 5000, `rounded ${color} lighten-1 z-depth-4`);
 }
 
 
