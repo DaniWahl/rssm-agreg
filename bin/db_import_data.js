@@ -12,9 +12,10 @@ const excel = require('excel');
 const RSSMShares = require('../lib/RSSMShares').RSSMShares;
 const Helpers = require('../lib/app.helpers');
 const SETTINGS = require('../settings');
+const WORKSHEETS = require('../data/worksheets');
 
-const WBPATH = 'docs/Aktien 2018.05.10.xlsx';        // path to Excel document to read
-const WB2PATH = 'docs/Aktionäre 2018.05.10.xlsx';  // path to Excel document having current share holders
+const WBPATH = 'data/Aktien 2018.05.10.xlsx';        // path to Excel document to read
+const WB2PATH = 'data/Aktionäre 2018.05.10.xlsx';  // path to Excel document having current share holders
 const CERTIF_SHEET = 2;                              // worksheet containing Certificates & Person data
 const JOUNRAL_SHEET = 1;                             // worksheet containing Journal
 const HOLDERS_SHEET = 1;                           // worksheet containing person correspondence and comments
@@ -474,7 +475,7 @@ function insertCertificates(certificates, person_ids, share_ids, journal_ids) {
  */
 function extractJournal(rawdata) {
     const journal = {};
-    const headers = getSheetHeaders('journal');
+    const headers = getSheetHeaders('Journal');
     let line = 0;
 
     console.log(`processing journal raw data on ${rawdata.length} lines...`);
@@ -562,7 +563,7 @@ function extractJournal(rawdata) {
  */
 function extractHolders(rawdata) {
     const holders = {};
-    const headers = getSheetHeaders('holders');
+    const headers = getSheetHeaders('Aktienregister');
 
     console.log(`processing holder raw data on ${rawdata.length} lines...`);
 
@@ -614,7 +615,7 @@ async function extractShares(rawdata, holders) {
     const persons = {};
     const families = {};
     const certificates = {};
-    const headers = getSheetHeaders('shares');
+    const headers = getSheetHeaders('Zertifikate');
     const newACodes = {};
 
     console.log(`processing share raw data on ${rawdata.length} lines...`);
@@ -924,54 +925,17 @@ function getShareSeries() {
  * @returns {Object}  worksheet header configuration
  */
 function getSheetHeaders(sheetname) {
-    const headers = {
-        shares: {
-            status: 0,
-            share_no: 1,
-            level: 2,
-            yn: 3,
-            sh_name: 4,
-            sh_first_name: 5,
-            journal: 6,
-            transaction: 7,
-            f_code: 8,
-            a_code: 9,
-            family: 10,
-            salutation: 11,
-            name: 12,
-            first_name: 13,
-            address: 14,
-            city: 15
-        },
-        journal: {
-            journal_date: 0,
-            journal_no: 1,
-            checked: 2,
-            a_code: 3,
-            name: 4,
-            shares: 5,
-            transaction_type: 6,
-            action: 7,
-            sold: 8,
-            repurchased: 9,
-            share_stock: 10,
-            value_in: 11,
-            value_out: 12,
-            win: 13,
-            balance_account_1130: 14,
-            balance_bcl: 15,
-            booking_no: 16,
-            booking_date: 17,
-            vr_protocol_date: 18
-        },
-        holders : {
-            a_code: 7,
-            address : 12,
-            correspondence : 14,
-            comment : 15
-        }
-    };
+    const sheet = WORKSHEETS[sheetname];
+    const headers = {};
+    let index = 0;
 
-    return headers[sheetname];
+    sheet.forEach(col => {
+        if(col.import) {
+            headers[col.name] = index;
+        }
+        index++;
+    });
+
+    return headers;
 }
 
