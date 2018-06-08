@@ -2,6 +2,7 @@ const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
 const fs = require('fs');
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
+const RSSMDocs = require('./lib/RSSMDocs').RSSMDocs;
 
 // read the basic settings
 const SETTINGS = require('./settings');
@@ -46,9 +47,6 @@ async function createDbBackup() {
 
     restartApp(2000);
 }
-
-
-
 
 
 async function createDbExport(e) {
@@ -405,7 +403,6 @@ function app_init() {
 
     });
     mainWindow.on('closed', app_quit)
-
 
 
     // build menu from template

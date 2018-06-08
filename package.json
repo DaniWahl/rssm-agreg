@@ -8,6 +8,7 @@
     "db_create": "node bin/db_create.js",
     "db_purge": "node bin/db_purge_database.js",
     "db_import": "node bin/db_import_data.js",
+    "pdf_test" : "node bin/pdfkit_test.js",
     "postinstall": "install-app-deps"
   },
   "author": "Daniel Wahl",
@@ -20,6 +21,7 @@
     "electron": "^1.8.7",
     "excel": "^0.1.7",
     "fs-extra": "^6.0.1",
+    "pdfkit": "^0.8.3",
     "sqlite3": "^3.1.13"
   },
   "devDependencies": {
