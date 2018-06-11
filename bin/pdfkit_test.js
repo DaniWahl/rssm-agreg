@@ -1,10 +1,9 @@
-const makeExampleDoc = require('../lib/RSSMDocs').makeExampleDoc;
-const Helpers = require('../lib/app.helpers');
+const makeSharesLetter = require('../lib/RSSMDocs').makeSharesLetter;
+const makeCertificates = require('../lib/RSSMDocs').makeCertificates;
 
 
 
 const info = {
-    filePath : './data/example.pdf',
     salutation : 'Frau',
     first_name : 'Vivane',
     name : 'Sacher',
@@ -13,10 +12,16 @@ const info = {
     city: 'Münchenstein',
     origin : 'Muttenz',
     initials : 'DW',
-    date : Helpers.dateToString(),
-    shares: [877, 878, 879, 880, 881, 882]
+    shares: [877, 878, 879, 880, 881, 882, 3]
 
 };
 
+makeDocs();
 
-makeExampleDoc(info);
+
+async function makeDocs() {
+
+    await makeCertificates(info);
+    await makeSharesLetter(info);
+
+}
