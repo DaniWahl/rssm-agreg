@@ -124,6 +124,18 @@ tables.push(`CREATE TABLE config (
     value  TEXT 
 )`);
 
+// 7. create table SHARE_SERIES
+tables.push(`CREATE TABLE share_series (
+    series_id     INTEGER NOT NULL PRIMARY KEY UNIQUE,
+    emission_date TEXT NOT NULL,
+    start_no      INTEGER NOT NULL,
+    end_no        INTEGER NOT NULL,
+    shares        INTEGER NOT NULL,
+    shares_value  INTEGER NOT NULL,
+    nv_shares     INTEGER NOT NULL,
+    nv_value      INTEGER NOT NULL
+)`);
+
 
 // run SQL statements 
 const tablePromises = [];

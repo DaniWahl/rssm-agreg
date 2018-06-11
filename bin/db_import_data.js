@@ -49,6 +49,7 @@ async function import_data() {
     console.log('generating configuration ...');
     const config_ids = await generateConfig();
 
+
     // generate 1170 shares
     const share_ids = await generateShares();
     console.log('');
@@ -819,8 +820,9 @@ function generateConfig() {
 }
 
 
+
 /**
- * generate 1170 database share records
+ * generate 1170 database share and share_series records
  */
 function generateShares() {
 
@@ -835,14 +837,18 @@ function generateShares() {
         // iterate over share series
         shareSeries.forEach(serie => {
 
-            console.log(`generating shares of series : (${serie.emission}) ${serie.start_no} - ${serie.end_no} ...`);
+
+            console.log(`generating share serie ${serie.series_id} ...`);
+            insert_promises.push(rssmShares.insertShareSeries(serie));
+
+            console.log(`generating shares of series ${serie.series_id}: (${serie.emission_date}) ${serie.start_no} - ${serie.end_no} ...`);
             for (let i = serie.start_no; i <= serie.end_no; i++) {
 
                 // form share data object
                 const shareData = {
                     share_no: i,
                     type: 'Stammaktie',
-                    emission_date: serie.emission,
+                    emission_date: serie.emission_date,
                     value: 1000
                 };
 
@@ -898,25 +904,50 @@ function readExcelWorkbook(file, sheetno) {
  */
 function getShareSeries() {
     return [{
+        series_id: 1,
         start_no: 1,
         end_no: 300,
-        emission: '1993-05-25'
+        emission_date: '1993-05-25',
+        shares: 300,
+        shares_value: 1000,
+        nv_shares: 500,
+        nv_value: 100
     }, {
+        series_id: 2,
         start_no: 301,
         end_no: 473,
-        emission: '1993-11-25'
+        emission_date: '1993-11-25',
+        shares: 173,
+        shares_value: 1000,
+        nv_shares: 20,
+        nv_value: 100
     }, {
+        series_id: 3,
         start_no: 474,
         end_no: 900,
-        emission: '1994-06-13'
+        emission_date: '1994-08-30',
+        shares: 427,
+        shares_value: 1000,
+        nv_shares: 480,
+        nv_value: 100
     }, {
+        series_id: 4,
         start_no: 901,
         end_no: 990,
-        emission: '2001-12-26'
+        emission_date: '2002-01-24',
+        shares: 90,
+        shares_value: 1000,
+        nv_shares: 100,
+        nv_value: 100
     }, {
+        series_id: 5,
         start_no: 991,
         end_no: 1170,
-        emission: '2003-04-05'
+        emission_date: '2003-03-25',
+        shares: 180,
+        shares_value: 1000,
+        nv_shares: 200,
+        nv_value: 100
     }];
 }
 
