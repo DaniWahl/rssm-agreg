@@ -425,12 +425,12 @@
 
                         <div class="row">
                             <div class="row">
-                                <div class="input-field col s4">
+                                <div class="input-field col s3">
                                     <label for="sale-a-code-select"><i class="fas fa-search"></i> Aktionär</label>
                                     <input type="text" id="sale-a-code-select" class=autocomplete" name="holder">
                                 </div>
 
-                                <div class="input-field col s4">
+                                <div class="input-field col s3">
                                     <label for="sale-family-input">Familie</label>
                                     <input type="text" id="sale-family-input" name="family">
                                 </div>
@@ -438,6 +438,11 @@
                                 <div class="input-field col s2">
                                     <label for="sale-n-shares">Anzahl Aktien</label>
                                     <input type="text" id="sale-n-shares" name="n_shares">
+                                </div>
+
+                                <div class="input-field col s2">
+                                    <label class="active" for="sale-transaction">Buchung</label>
+                                    <input type="date" id="sale-transaction" name="transaction">
                                 </div>
                             </div>
 
@@ -573,6 +578,7 @@
 
 <script type="text/javascript" src="../hammer.min.js"></script>
 <script type="text/javascript" src="../materialize.js"></script>
+
 
 
 <script src="mainWindow.js"></script>

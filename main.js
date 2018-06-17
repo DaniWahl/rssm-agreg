@@ -2,7 +2,7 @@ const electron = require('electron')
 const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
 const fs = require('fs');
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
-const RSSMDocs = require('./lib/RSSMDocs').RSSMDocs;
+const RSSMDocs = require('./lib/RSSMDocs');
 
 // read the basic settings
 const SETTINGS = require('./settings');
@@ -217,13 +217,26 @@ function executeTransfer(e, data) {
  * @param e
  * @param data
  */
-function executeSale(e, data) {
+async function executeSale(e, data) {
 
-    rssm.sale(data.shares, data.buyer)
-        .then(res => {
+    rssm.sale(data.transaction, data.buyer)
+        .then(async function(info) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
+
+            const cert_path = await RSSMDocs.makeCertificates(info, rssm);
+            const letter_path = RSSMDocs.makeSharesLetter(info);
+            const journal_path = RSSMDocs.makeJournalSale(info);
+
+
+            let cert_win = new BrowserWindow({
+                webPreferences: {
+                    plugins: true
+                }
+            });
+            cert_win.loadURL(cert_path);
+
 
         })
         .catch(err => {

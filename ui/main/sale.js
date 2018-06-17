@@ -168,7 +168,6 @@ function doSale(e) {
       const sale = {};
 
       const holder = formData.get('holder');
-      sale.shares = getSelectedShares(SALE_TYPE);
       sale.buyer = {
           a_code :     formData.get('a_code'),
           salutation : formData.get('salutation'),
@@ -177,8 +176,12 @@ function doSale(e) {
           name :       formData.get('name'),
           address :    formData.get('address'),
           post_code :  formData.get('post_code'),
-          city :       formData.get('city'),
-          comment :    formData.get('comment')
+          city :       formData.get('city')
+      };
+      sale.transaction = {
+          comment :    formData.get('comment'),
+          booking_date : formData.get('transaction'),
+          shares : getSelectedShares(SALE_TYPE)
       };
 
       // extract a_code

@@ -52,8 +52,6 @@ document.querySelectorAll('a').forEach(el => {
     }
 })
 
-
-
 console.log('mainWindow: started');
 
 
@@ -105,7 +103,7 @@ function showElement(element_id) {
     // hide all elements
     document.querySelectorAll('.content-element').forEach(div => {
         div.classList.add('hidden');
-    })
+    });
 
     // show selected element
     if(element_id) {
