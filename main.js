@@ -1,5 +1,5 @@
 const electron = require('electron')
-const {app, BrowserWindow, Menu, ipcMain, dialog} = electron
+const {app, BrowserWindow, Menu, ipcMain, dialog, shell} = electron
 const fs = require('fs');
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
@@ -225,18 +225,31 @@ async function executeSale(e, data) {
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
 
+            // generate documents
             const cert_path = await RSSMDocs.makeCertificates(info, rssm);
-            const letter_path = RSSMDocs.makeSharesLetter(info);
-            const journal_path = RSSMDocs.makeJournalSale(info);
-
-
-            let cert_win = new BrowserWindow({
-                webPreferences: {
-                    plugins: true
-                }
+            rssm.registerDocument({
+                journal_id : info.journal_id,
+                path : cert_path
             });
-            cert_win.loadURL(cert_path);
 
+            const letter_path = await RSSMDocs.makeSharesLetter(info);
+            rssm.registerDocument({
+                journal_id : info.journal_id,
+                path : letter_path
+            });
+
+
+            const journal_path = await RSSMDocs.makeJournalSale(info);
+            rssm.registerDocument({
+                journal_id : info.journal_id,
+                path : journal_path
+            });
+
+
+            // open documents
+            shell.openItem(cert_path);
+            shell.openItem(letter_path);
+            shell.openItem(journal_path);
 
         })
         .catch(err => {

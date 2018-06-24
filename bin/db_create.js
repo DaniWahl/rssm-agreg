@@ -136,6 +136,18 @@ tables.push(`CREATE TABLE share_series (
     nv_value      INTEGER NOT NULL
 )`);
 
+// 8. create table DOCUMENT
+tables.push(`CREATE TABLE document (
+    document_id   INTEGER NOT NULL PRIMARY KEY UNIQUE,
+    journal_id    INTEGER,
+    path          TEXT NOT NULL,
+    name          TEXT NOT NULL,
+    type          TEXT NOT NULL,
+    created_date  TEXT NOT NULL
+)`);
+
+
+
 
 // run SQL statements 
 const tablePromises = [];

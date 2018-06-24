@@ -6,6 +6,22 @@ html, body  {
     font-family: Helvetica;
 }
 
+body.dialog {
+    background-color: #eaeaea;
+    margin: 30px;
+}
+
+.summary-table td {
+    padding: 5px;
+}
+
+.summary-table th {
+    padding-right: 25px;
+    font-weight: normal;
+    text-align: right;
+    width : 100px;
+}
+
 #container, #sidenav, #content {
     height: 100%;
     min-height: 100% !important;
@@ -36,6 +52,7 @@ html, body  {
 
 #content {
     position: relative;
+    scroll: none;
 }
 
 .content-element {
@@ -168,3 +185,9 @@ share-dd-item p img {
 .btn-blue {
     background-color: #1565c0;
 }
+
+/** date field style **/
+::-webkit-datetime-edit-month-field { color: #333333; }
+::-webkit-datetime-edit-day-field { color: #333333; }
+::-webkit-datetime-edit-year-field { color: #333333; }
+::-webkit-inner-spin-button { display: none; }
