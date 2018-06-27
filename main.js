@@ -158,13 +158,25 @@ function setDbPath(e) {
  * @param e
  * @param data
  */
-function executeRepurchase(e, data) {
+async function executeRepurchase(e, data) {
 
     rssm.repurchase(data.shares, data.a_code)
-        .then(res => {
+        .then(async function(info) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             mainWindow.webContents.send('toast:show', 'Rückkauf erfolgreich durchgeführt');
+
+
+            // generate journal document
+            const journal_path = await RSSMDocs.makeJournalRepurchase(info);
+            rssm.registerDocument({
+                journal_id : info.journal_id,
+                path : journal_path
+            });
+
+
+            // open document
+            shell.openItem(journal_path);
 
         })
         .catch(err => {
@@ -187,15 +199,24 @@ function executeRepurchase(e, data) {
  * @param e
  * @param data
  */
-function executeTransfer(e, data) {
+async function executeTransfer(e, data) {
 
     rssm.transfer(data.shares, data.holder, data.reciever, data.comment)
-        .then(res => {
+        .then(async function(info) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             mainWindow.webContents.send('toast:show', 'Übertrag erfolgreich durchgeführt');
 
-            //2DO: need to generate & print new certificate documents
+            // generate journal document
+            const journal_path = await RSSMDocs.makeJournalTransfer(info);
+            rssm.registerDocument({
+                journal_id : info.journal_id,
+                path : journal_path
+            });
+
+
+            // open document
+            shell.openItem(journal_path);
 
         })
         .catch(err => {
@@ -272,13 +293,25 @@ async function executeSale(e, data) {
  * @param e
  * @param data
  */
-function executeMutation(e, person) {
+async function executeMutation(e, person) {
 
     rssm.mutation(person)
-        .then(res => {
+        .then(async function(info) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             mainWindow.webContents.send('toast:show', 'Mutation erfolgreich durchgeführt');
+
+
+            // generate documents
+            const journal_path = await RSSMDocs.makeJournalMutation(info);
+            rssm.registerDocument({
+                journal_id : info.journal_id,
+                path : journal_path
+            });
+
+            // open document
+            shell.openItem(journal_path);
+
 
         })
         .catch(err => {
