@@ -43,7 +43,7 @@
     { "name" : "name", "header" : "Name", "import" : true },
     { "name" : "shares", "header" : "Zert Nr.", "import" : true },
     { "name" : "transaction_type", "header" : "Transaktion", "import" : true },
-    { "name" : "action", "header" : "Datum", "Bemerkung" : true },
+    { "name" : "action", "header" : "Bemerkung", "import" : true },
     { "name" : "sold", "header" : "Verkauf", "import" : true },
     { "name" : "repurchased", "header" : "Rückkauf", "import" : true },
     { "name" : "share_stock", "header" : "Bestand Aktien", "import" : true },
