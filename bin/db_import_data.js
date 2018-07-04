@@ -14,13 +14,15 @@ const Helpers = require('../lib/app.helpers');
 const SETTINGS = require('../settings');
 const WORKSHEETS = require('../data/worksheets');
 
-const WBPATH = 'data/Aktien 2018.05.10.xlsx';        // path to Excel document to read
-const WB2PATH = 'data/Aktionäre 2018.05.10.xlsx';  // path to Excel document having current share holders
+const WBPATH = 'data/Aktien 2018.06.28.xlsx';        // path to Excel document to read
+const WB2PATH = 'data/Aktionäre 2018.06.28.xlsx';  // path to Excel document having current share holders
 const CERTIF_SHEET = 2;                              // worksheet containing Certificates & Person data
 const JOUNRAL_SHEET = 1;                             // worksheet containing Journal
 const HOLDERS_SHEET = 1;                           // worksheet containing person correspondence and comments
 
 const rssmShares = new RSSMShares(SETTINGS.dbpath);
+
+
 
 
 // run the whole import!
@@ -101,6 +103,8 @@ async function import_data() {
 
 
 }
+
+
 
 
 /**
@@ -758,8 +762,17 @@ async function extractShares(rawdata, holders) {
 /**
  * generate config data
  */
-function generateConfig() {
+async function generateConfig() {
     const insert_promises = [];
+
+    // generate backup and export paths from db path
+    const reg = /(.+)Datenbank/;
+    const matches = reg.exec(SETTINGS.dbpath);
+    const path_home = matches[1];
+
+    const path_backup = path_home + 'Backup/';
+    const path_export = path_home + 'Exporte/';
+
     const data = [
         {
             param: 'DB_LOAD',
@@ -774,8 +787,12 @@ function generateConfig() {
             value: '999010'
         },
         {
+            param: 'EXPORT_PATH',
+            value: path_export || null
+        },
+        {
             param: 'BACKUP_PATH',
-            value: null
+            value: path_backup || null
         },
         {
             param: 'BACKUP_FREQ',
@@ -808,6 +825,22 @@ function generateConfig() {
         {
             param: 'BACKUP_4',
             value: null
+        },
+        {
+            param: 'AG_SECRETARY',
+            value: 'Ruth Andrea'
+        },
+        {
+            param: 'AG_REGISTER',
+            value: 'Daniel Wahl'
+        },
+        {
+            param: 'AG_REGISTER_INITIALS',
+            value: 'DW'
+        },
+        {
+            param: 'AG_REGISTER_CITY',
+            value: 'Muttenz'
         }
     ];
 
