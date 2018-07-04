@@ -10,7 +10,7 @@ const {shell} = electron;
 const init = require('../lib/RSSMDocs').init;
 
 
-const info = {
+const info_sale = {
     salutation : 'Herr',
     first_name : 'Matthias',
     name : 'Walther',
@@ -77,13 +77,14 @@ makeDocs();
 
 async function makeDocs() {
 
-    // await init();
-    // const cert_doc = await makeCertificates(info);
-    // await makeSharesLetter(info);
-    // await makeJournalSale(info);
+    await init();
 
-    // await makeJournalTransfer(info_transfer);
+    const cert_doc = await makeCertificates(info_sale);
+    await makeSharesLetter(info_sale);
+    await makeJournalSale(info_sale);
 
-    await makeJournalMutation(info_mutation);
+     await makeJournalTransfer(info_transfer);
+
+     await makeJournalMutation(info_mutation);
 
 }

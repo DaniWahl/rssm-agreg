@@ -168,7 +168,7 @@ async function executeRepurchase(e, data) {
 
 
             // generate journal document
-            const journal_path = await RSSMDocs.makeJournalRepurchase(info);
+            const journal_path = await RSSMDocs.makeJournalRepurchase(info, rssm);
             rssm.registerDocument({
                 journal_id : info.journal_id,
                 path : journal_path
@@ -208,7 +208,7 @@ async function executeTransfer(e, data) {
             mainWindow.webContents.send('toast:show', 'Übertrag erfolgreich durchgeführt');
 
             // generate journal document
-            const journal_path = await RSSMDocs.makeJournalTransfer(info);
+            const journal_path = await RSSMDocs.makeJournalTransfer(info, rssm);
             rssm.registerDocument({
                 journal_id : info.journal_id,
                 path : journal_path
@@ -253,14 +253,14 @@ async function executeSale(e, data) {
                 path : cert_path
             });
 
-            const letter_path = await RSSMDocs.makeSharesLetter(info);
+            const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
             rssm.registerDocument({
                 journal_id : info.journal_id,
                 path : letter_path
             });
 
 
-            const journal_path = await RSSMDocs.makeJournalSale(info);
+            const journal_path = await RSSMDocs.makeJournalSale(info, rssm);
             rssm.registerDocument({
                 journal_id : info.journal_id,
                 path : journal_path
@@ -303,7 +303,7 @@ async function executeMutation(e, person) {
 
 
             // generate documents
-            const journal_path = await RSSMDocs.makeJournalMutation(info);
+            const journal_path = await RSSMDocs.makeJournalMutation(info, rssm);
             rssm.registerDocument({
                 journal_id : info.journal_id,
                 path : journal_path
