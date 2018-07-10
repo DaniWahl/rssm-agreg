@@ -1,10 +1,12 @@
 
-const RSSMShares = require('../lib/RSSMShares').RSSMShares
-const RSSMDBPATH = '../db/agregRSSM_test.db'
+
+
+const SETTINGS = require('../settings');
+const RSSMShares = require('../lib/RSSMShares').RSSMShares;
 
 
 //create RSSMShares object
-const rssmShares = new RSSMShares(RSSMDBPATH)
+const rssmShares = new RSSMShares(SETTINGS.dbpath);
 
 
 
@@ -15,5 +17,5 @@ rssmShares.purgeDatabase()
 }) 
 .catch(err => {
     throw(err)
-})
+});
 

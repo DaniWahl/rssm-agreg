@@ -338,6 +338,16 @@ async function executeMutation(e, person) {
 async function loadContentData(e, element_id) {
 
     switch(element_id) {
+        case 'dashboard':
+            mainWindow.webContents.send('dashboard:show', {
+                shares: rssm.data.shares,
+                series: rssm.data.series,
+               journal: rssm.data.journal,
+               persons: rssm.data.persons,
+                rssm : await rssm.getConfig('RSSM_A_CODE')
+            });
+            break;
+
         case 'content-share-holders-current':
             mainWindow.webContents.send('holders:current:show', rssm.data.shareHolders);
             break;
@@ -459,6 +469,8 @@ function app_init() {
             mainWindow.webContents.send('admin:database:show', SETTINGS);
 
         }
+
+        loadContentData(null, 'dashboard');
 
     });
     mainWindow.on('closed', app_quit)

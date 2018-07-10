@@ -192,3 +192,24 @@ share-dd-item p img {
 ::-webkit-datetime-edit-day-field { color: #333333; }
 ::-webkit-datetime-edit-year-field { color: #333333; }
 ::-webkit-inner-spin-button { display: none; }
+
+
+/** Dashboard **/
+
+.dash-title {
+    font-size: 18px;
+}
+
+.dash-row {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.dash-chart {
+    padding: 0;
+}
+
+.dash-chart canvas {
+    height: 600px;
+    width: 600px;
+}

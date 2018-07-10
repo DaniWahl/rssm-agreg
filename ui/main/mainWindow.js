@@ -21,6 +21,7 @@ const {showTransfer} = require('./transfer');
 const {showSale} = require('./sale');
 const {showShareHoldersAll} = require('./shareHoldersAll');
 const {showShareHoldersCurrent} = require('./shareHoldersCurrent');
+const {showDashboard} = require('./dashboard');
 
 
 
@@ -42,6 +43,7 @@ ipcRenderer.on('mutation:show',         showMutation);
 ipcRenderer.on('sale:show',             showSale);
 ipcRenderer.on('toast:show',            showToast);
 ipcRenderer.on('admin:database:show',   showAdminDB);
+ipcRenderer.on('dashboard:show',        showDashboard);
 
 
 
