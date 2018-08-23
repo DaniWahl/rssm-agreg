@@ -14,8 +14,8 @@ const Helpers = require('../lib/app.helpers');
 const SETTINGS = require('../settings');
 const WORKSHEETS = require('../data/worksheets');
 
-const WBPATH = 'data/Aktien 2018.06.28.xlsx';        // path to Excel document to read
-const WB2PATH = 'data/Aktionäre 2018.06.28.xlsx';  // path to Excel document having current share holders
+const WBPATH = 'data/Aktien 2018.08.16.xlsx';        // path to Excel document to read
+const WB2PATH = 'data/Aktionäre 2018.08.16.xlsx';  // path to Excel document having current share holders
 const CERTIF_SHEET = 2;                              // worksheet containing Certificates & Person data
 const JOUNRAL_SHEET = 1;                             // worksheet containing Journal
 const HOLDERS_SHEET = 1;                           // worksheet containing person correspondence and comments
@@ -373,6 +373,7 @@ async function insertPersons(persons, family_ids) {
 
             // remove the f_code from the person object, since we don't want to insert this
             //delete persons[a_code].f_code
+
 
             try {
                 // request inserts for family and store the returned promise in the array
