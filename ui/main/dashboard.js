@@ -12,7 +12,6 @@ function showDashboard(e, data) {
     populateShareTable(data.shares, data.rssm);
     populateHolderTable(data.persons);
     drawShareChart(data.journal, data.series);
-    drawHolderChart();
 
 }
 
@@ -54,7 +53,6 @@ function populateHolderTable(people) {
 }
 
 function drawShareChart(journal,series) {
-    console.log(series);
 
     let ctx = 'shares-chart';
     let available = [];
@@ -131,11 +129,6 @@ function drawShareChart(journal,series) {
 
 
 }
-
-function drawHolderChart() {
-
-}
-
 
 module.exports = {
     showDashboard
