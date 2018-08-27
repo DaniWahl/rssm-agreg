@@ -1,9 +1,8 @@
-
+const REPURCHASE_TYPE = 'repurchase';
 
 // setup repurchase ui specific event handlers
 document.querySelector('#repurchase-submit').addEventListener('click', submitRepurchase);
-document.querySelector('#confirmation-modal-ok').addEventListener('click', doRepurchase);
-
+document.querySelector('#confirmation-repurchase-ok').addEventListener('click', doRepurchase);
 
 
 /**
@@ -16,9 +15,10 @@ function submitRepurchase(e) {
 
     // get form data
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    const shares = formData.getAll('repurchase_share');
     const holder = formData.get('holder');
 
+    // get selected shares
+    const shares = getSelectedShares(REPURCHASE_TYPE);
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden <b>${shares.length}</b> Aktien zurückgekauft, 
@@ -31,16 +31,15 @@ function submitRepurchase(e) {
         
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal');
-    dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Rückkauf';
+    const dialog = document.querySelector('#confirmation-modal-repurchase');
     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-
-
-
-    $('#confirmation-modal').modal();
-    $('#confirmation-modal').modal('open');
+    $('#confirmation-modal-repurchase').modal();
+    $('#confirmation-modal-repurchase').modal('open');
 
 }
+
+
+
 
 /**
  * event handler for the modal dialog ok button click.
@@ -51,7 +50,7 @@ function doRepurchase(e) {
 
     const repurchase = {};
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    repurchase.shares = formData.getAll('repurchase_share');
+    repurchase.shares = getSelectedShares(REPURCHASE_TYPE);
     repurchase.holder = formData.get('holder');
 
     // extract a_code
@@ -60,7 +59,6 @@ function doRepurchase(e) {
     repurchase.a_code = matches[1];
 
     ipcRenderer.send('repurchase:execute', repurchase);
-
 }
 
 
@@ -77,6 +75,10 @@ function showRepurchase(e, data) {
 
     initRepurchaseSummary(data);
     initRepurchaseForm();
+
+    // empty the share container
+    $('#repurchase-list div').remove();
+
 
     // prepare the a_codes suggestion list
     const a_codes = {}
@@ -112,14 +114,15 @@ function showRepurchase(e, data) {
                 shares.push(data.shares[share_no]);
             })
 
-
-            // create table rows
-            listRepurchaseShares(shares);
+            // create share elements
+            showShares(shares, REPURCHASE_TYPE);
         },
         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
     });
 
 }
+
+
 
 /**
  * initialize the Repurchase summary table
@@ -132,45 +135,12 @@ function initRepurchaseSummary(data) {
 }
 
 function initRepurchaseForm() {
-    document.querySelector('#table-repurchase-share-list > tbody').innerHTML = '';
     document.querySelector('#repurchase-a-code-input').value = '';
 }
 
-/**
- * pupulate shares table with shares from selected share holder
- * @param {Array} shares
- */
-function listRepurchaseShares(shares) {
-    const tbody = document.querySelector('#table-repurchase-share-list > tbody');
-
-    tbody.innerHTML = '';
-    shares.forEach(share => {
-        tbody.appendChild(makeTableItem(share, 'share_list'));
-    })
-
-    document.querySelectorAll('#table-repurchase-share-list > tbody > tr > td > input').forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedShares);
-    })
-}
-
-/**
- * event handler of the checkbox change event.
- * count number of selected shares and update summary table and repurchase button status
- * @param {Event} e
- */
-function updateSelectedShares(e) {
-
-    const formData = new FormData(document.querySelector('form[name=repurchase]'));
-    const share_no = formData.getAll('share_item').length;
-
-    document.querySelector('#repurchase-shares').innerHTML = share_no;
-
-    // handle button status
-    if(share_no !== 0) {
-        document.querySelector('#repurchase-submit').classList.remove('disabled');
-    } else {
-        document.querySelector('#repurchase-submit').classList.add('disabled');
-    }
 
 
-}
+
+module.exports = {
+    showRepurchase
+};

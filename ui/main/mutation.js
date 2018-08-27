@@ -1,15 +1,15 @@
 // setup repurchase ui specific event handlers
-document.querySelector('#mutation-submit').addEventListener('click', submitTransfer);
-document.querySelector('#confirmation-modal-ok').addEventListener('click', doMutation);
+document.querySelector('#mutation-submit').addEventListener('click', submitMutation);
+document.querySelector('#confirmation-mutation-ok').addEventListener('click', doMutation);
 
 let holder_orig;
 
 /**
- * event handler for the Transfer Submit button.
+ * event handler for the Mutation Submit button.
  * displays a confirmation dialog
  * @param e
  */
-function submitTransfer(e) {
+function submitMutation(e) {
     e.preventDefault();
 
     // get form data
@@ -24,23 +24,35 @@ function submitTransfer(e) {
     mutated.post_code = formData.get('post_code');
     mutated.city = formData.get('city');
     mutated.comment = formData.get('comment');
+    mutated.family = formData.get('family');
+    mutated.correspondence = $('form[name=mutation] input[name=correspondence]')[0].checked ? 1: 0;
 
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden Informationen mutiert:<br> `;
 
     let field_counter = 0;
-    for (let field of ['a_code', 'salutation', 'first_name', 'name', 'address', 'post_code', 'city']) {
+    for (let field of ['a_code', 'salutation', 'first_name', 'name', 'address', 'post_code', 'city', 'family']) {
 
         if (mutated[field] !== holder_orig[field]) {
-            msg += `${holder_orig[field]} &rarr; ${mutated[field]} <br>`;
+            msg += `${holder_orig[field]} <i class="fas fa-caret-right"></i> ${mutated[field]} <br>`;
             field_counter++;
         }
-
     }
 
-    if(mutated.comment) {
+    if (mutated.correspondence !== holder_orig.correspondence) {
+        let action = 'deaktiviert';
+        if(mutated.correspondence ) {
+            action = 'aktiviert';
+        }
+
+        msg += `Korrespondenz wurde ${action} <br>`;
+        field_counter++;
+    }
+
+    if(mutated['comment'] !== holder_orig['comment']) {
         msg += `Kommentar:  ${mutated.comment} <br>`;
+        field_counter++;
     }
 
     if (field_counter > 0) {
@@ -52,12 +64,10 @@ function submitTransfer(e) {
 
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal');
-    dialog.querySelector('div > div.modal-content > h4').innerHTML = 'Mutation';
+    const dialog = document.querySelector('#confirmation-modal-mutation');
     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-
-    $('#confirmation-modal').modal();
-    $('#confirmation-modal').modal('open');
+    $('#confirmation-modal-mutation').modal();
+    $('#confirmation-modal-mutation').modal('open');
 }
 
  /**
@@ -78,6 +88,8 @@ function submitTransfer(e) {
      mutated.post_code = formData.get('post_code');
      mutated.city = formData.get('city');
      mutated.comment = formData.get('comment');
+     mutated.family = formData.get('family');
+     mutated.correspondence = $('form[name=mutation] input[name=correspondence]')[0].checked ? 1: 0;
 
      ipcRenderer.send('mutation:execute', mutated);
 }
@@ -95,6 +107,7 @@ function showMutation(e, data) {
 
     initMutationSummary(data);
     initMutationForm();
+
 
     // prepare the a_codes suggestion list
     const a_codes = {};
@@ -165,9 +178,15 @@ function initMutationForm(holder = {}) {
     document.querySelector('#mutation-post-code-input').value = holder.post_code || '';
     document.querySelector('#mutation-city-input').value = holder.city || '';
     document.querySelector('#mutation-comment-input').value = holder.comment || '';
+    document.querySelector('#mutation-family-input').value = holder.family || '';
+    document.querySelector('#mutation-correspondence-input').checked = holder.correspondence || 0;
+
 
     Materialize.updateTextFields();
 
 }
 
 
+module.exports = {
+    showMutation
+};
