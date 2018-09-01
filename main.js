@@ -21,9 +21,47 @@ ipcMain.on('sale:execute',       executeSale);
 ipcMain.on('dbpath:set',         setDbPath);
 ipcMain.on('dbbackup:create',    createDbBackup);
 ipcMain.on('dbexport:create',    createDbExport);
+ipcMain.on('settings:update',    saveSettings);
 process.on('uncaughtException',  errorHandler);
 
 
+
+async function saveSettings(e, data) {
+
+    console.log(data);
+
+
+    if(data.A_CODE_SEQ) {
+        rssm.setConfig('A_CODE_SEQ', data.A_CODE_SEQ);
+        mainWindow.webContents.send('toast:show', 'A-Code Sequenz gespeichert : ' + data.A_CODE_SEQ);
+    }
+
+    if(data.AG_SECRETARY) {
+        rssm.setConfig('AG_SECRETARY', data.AG_SECRETARY);
+        mainWindow.webContents.send('toast:show', 'AG Sekretariat gespeichert : ' + data.AG_SECRETARY);
+    }
+
+    if(data.AG_REGISTER) {
+        await rssm.setConfig('AG_REGISTER', data.AG_REGISTER);
+        mainWindow.webContents.send('toast:show', 'AG Aktien Register gespeichert : ' + data.AG_REGISTER);
+    }
+
+    if(data.AG_REGISTER_INITIALS) {
+        rssm.setConfig('AG_REGISTER_INITIALS', data.AG_REGISTER_INITIALS);
+        mainWindow.webContents.send('toast:show', 'Aktien Register, Initialen gespeichert : ' + data.AG_REGISTER_INITIALS);
+    }
+
+    if(data.AG_REGISTER_CITY) {
+        rssm.setConfig('AG_REGISTER_CITY', data.AG_REGISTER_CITY);
+        mainWindow.webContents.send('toast:show', 'Aktien Register, Ort gespeichert : ' + data.AG_REGISTER_CITY);
+    }
+
+    if(data.EXPORT_PATH) {
+        rssm.setConfig('EXPORT_PATH', data.EXPORT_PATH);
+        mainWindow.webContents.send('toast:show', 'Export Pfad für Dokumente gespeichert : ' + data.EXPORT_PATH);
+    }
+
+}
 
 async function createDbBackup() {
 
@@ -408,6 +446,17 @@ async function loadContentData(e, element_id) {
             });
             break
 
+        case 'admin-settings':
+            mainWindow.webContents.send('admin:settings:show', {
+                A_CODE_SEQ : await rssm.getConfig('A_CODE_SEQ'),
+                EXPORT_PATH : await rssm.getConfig('EXPORT_PATH'),
+                AG_SECRETARY : await rssm.getConfig('AG_SECRETARY'),
+                AG_REGISTER : await rssm.getConfig('AG_REGISTER'),
+                AG_REGISTER_INITIALS : await rssm.getConfig('AG_REGISTER_INITIALS'),
+                AG_REGISTER_CITY : await rssm.getConfig('AG_REGISTER_CITY')
+            });
+            break;
+
     }
 
 }
@@ -471,6 +520,7 @@ function app_init() {
         }
 
         loadContentData(null, 'dashboard');
+        //loadContentData(null, 'admin-settings');
 
     });
     mainWindow.on('closed', app_quit)

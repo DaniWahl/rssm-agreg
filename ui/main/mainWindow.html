@@ -37,8 +37,7 @@
 
             <div class="collection-item menu-category">Administration</div>
             <a target="admin-db" class="collection-item" href="#">Datenbank</a>
-
-            <!--<a target="admin-docs" class="collection-item" href="#">Dokumente</a> -->
+            <a target="admin-settings" class="collection-item" href="#">Einstellungen</a>
 
 
         </div>
@@ -577,6 +576,61 @@
                 </button>
             </div>
 
+        </div>
+
+
+        <div id="admin-settings" class="content-element card hidden">
+            <div class="card-content">
+                <span class="card-title">Einstellungen</span>
+
+                <table>
+                    <tbody>
+
+                        <tr >
+                            <th width="350">A-Code Sequenz</th>
+                            <td>
+                                <input id="setting-edit-A_CODE_SEQ" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="350">AG Sekretariat</th>
+                            <td>
+                                <input id="setting-edit-AG_SECRETARY" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="350">AG Aktien Register</th>
+                            <td>
+                                <input id="setting-edit-AG_REGISTER" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="350">Aktien Register, Initialen</th>
+                            <td>
+                                <input id="setting-edit-AG_REGISTER_INITIALS" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="350">Aktien Register, Ort</th>
+                            <td>
+                                <input id="setting-edit-AG_REGISTER_CITY" type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="350">Export Pfad für Dokumente</th>
+                            <td>
+                                <input id="setting-edit-EXPORT_PATH" type="text" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="card-action">
+                <button id="settings-submit" class="btn-large blue darken-3 waves-effect" type="submit">
+                    Speichern
+                </button>
+            </div>
         </div>
 
     </div>
