@@ -22,6 +22,7 @@ const {showSale} = require('./sale');
 const {showShareHoldersAll} = require('./shareHoldersAll');
 const {showShareHoldersCurrent} = require('./shareHoldersCurrent');
 const {showDashboard} = require('./dashboard');
+const {showSettings} = require('./settings');
 
 
 
@@ -33,6 +34,7 @@ let row_group_value;
 
 // register IPC event handlers
 ipcRenderer.on('version:show',          showVersion);
+ipcRenderer.on('dashboard:show',        showDashboard);
 ipcRenderer.on('repurchase:show',       showRepurchase);
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
 ipcRenderer.on('holders:all:show',      showShareHoldersAll);
@@ -43,7 +45,8 @@ ipcRenderer.on('mutation:show',         showMutation);
 ipcRenderer.on('sale:show',             showSale);
 ipcRenderer.on('toast:show',            showToast);
 ipcRenderer.on('admin:database:show',   showAdminDB);
-ipcRenderer.on('dashboard:show',        showDashboard);
+ipcRenderer.on('admin:settings:show',   showSettings);
+
 
 
 
