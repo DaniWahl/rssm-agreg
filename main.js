@@ -3,12 +3,15 @@ const {app, BrowserWindow, Menu, ipcMain, dialog, shell} = electron
 const fs = require('fs');
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
+const helpers = require('./lib/app.helpers');
 
 // read the basic settings
 const SETTINGS = require('./settings');
 let rssm;
-let mainWindow = null
+let mainWindow = null;
 
+const VERSION = '1.0.2';
+SETTINGS.version = VERSION;
 
 
 // handle application events
@@ -18,6 +21,7 @@ ipcMain.on('repurchase:execute', executeRepurchase);
 ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
+ipcMain.on('report:execute',     executeReport);
 ipcMain.on('dbpath:set',         setDbPath);
 ipcMain.on('dbbackup:create',    createDbBackup);
 ipcMain.on('dbexport:create',    createDbExport);
@@ -367,6 +371,24 @@ async function executeMutation(e, person) {
 }
 
 
+async function executeReport(e, range) {
+
+    const transactions = await rssm.getTransactionList(range.startDate, range.endDate);
+    const kapital = await rssm.getShareKapital(range.endDate);
+
+    mainWindow.webContents.send('report:data:show', {
+        today          : helpers.dateToString(),
+        startDate      : helpers.dateToString(new Date(range.startDate)),
+        endDate        : helpers.dateToString(new Date(range.endDate)),
+        transactions   : transactions,
+        stock          : transactions[report.transactions.length-1].share_stock,
+        shares_total   : kapital[0].shares_total,
+        shares_kapital : kapital[0].shares_kapital
+    });
+
+}
+
+
 /**
  * handler for the main window content:show event.
  * send appropriate data to element
@@ -400,6 +422,10 @@ async function loadContentData(e, element_id) {
 
         case 'content-journal':
             mainWindow.webContents.send('journal:show', rssm.data.journal);
+            break;
+
+        case 'content-report':
+            mainWindow.webContents.send('report:show', []);
             break;
 
         case 'content-sale':
