@@ -10,7 +10,7 @@ const SETTINGS = require('./settings');
 let rssm;
 let mainWindow = null;
 
-const VERSION = '1.0.3';
+const VERSION = '1.0.4';
 SETTINGS.version = VERSION;
 
 
