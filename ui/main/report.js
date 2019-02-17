@@ -2,8 +2,10 @@
 // setup report ui specific event handlers
 document.querySelector('#report-start-date-input').addEventListener('input', setReportRange);
 document.querySelector('#report-end-date-input').addEventListener('input', setReportRange);
+document.querySelector('#report-pdf-btn').addEventListener('click', exportReport);
 
 
+let reportData;
 const reportRange = {
     startDate : null,
     endDate : null
@@ -28,15 +30,15 @@ function setReportRange() {
  * @param {Array} report
  */
 function showReport(e, report) {
-
     // show target element
     showElement('content-report');
-
 }
 
 
 function showReportData(e, data) {
     console.log("showReportData", data);
+
+    reportData = data;
 
     const tableEl = $('#table-yearly-report');
     let table;
@@ -66,16 +68,19 @@ function showReportData(e, data) {
         table = tableEl.DataTable();
     }
 
-
-
     table.clear();
-    table.rows.add(data.transactions).draw();
+    table.rows.add(reportData.transactions).draw();
+    $('#report-pdf-btn').removeClass('disabled');
+
     console.log('showReportData: loaded table data');
-
-
-
-
 }
+
+
+
+function exportReport() {
+    ipcRenderer.send('report:export', reportData);
+}
+
 
 module.exports.showReport = showReport;
 module.exports.showReportData = showReportData;

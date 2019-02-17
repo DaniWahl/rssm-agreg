@@ -22,6 +22,7 @@ ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
 ipcMain.on('report:execute',     executeReport);
+ipcMain.on('report:export',      exportReport);
 ipcMain.on('dbpath:set',         setDbPath);
 ipcMain.on('dbbackup:create',    createDbBackup);
 ipcMain.on('dbexport:create',    createDbExport);
@@ -388,6 +389,16 @@ async function executeReport(e, range) {
         shares_kapital : kapital[0].shares_kapital
     });
 
+}
+
+
+async function exportReport(e, reportData) {
+
+    // generate document
+    const report_path = await RSSMDocs.makeAnnualReport(reportData, rssm);
+
+    // open document
+    shell.openItem(report_path);
 }
 
 
