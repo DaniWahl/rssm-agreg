@@ -10,7 +10,7 @@ const SETTINGS = require('./settings');
 let rssm;
 let mainWindow = null;
 
-const VERSION = '1.0.4';
+const VERSION = '1.1.0';
 SETTINGS.version = VERSION;
 
 
@@ -22,6 +22,7 @@ ipcMain.on('transfer:execute',   executeTransfer);
 ipcMain.on('mutation:execute',   executeMutation);
 ipcMain.on('sale:execute',       executeSale);
 ipcMain.on('report:execute',     executeReport);
+ipcMain.on('report:export',      exportReport);
 ipcMain.on('dbpath:set',         setDbPath);
 ipcMain.on('dbbackup:create',    createDbBackup);
 ipcMain.on('dbexport:create',    createDbExport);
@@ -376,16 +377,28 @@ async function executeReport(e, range) {
     const transactions = await rssm.getTransactionList(range.startDate, range.endDate);
     const kapital = await rssm.getShareKapital(range.endDate);
 
+    //console.log("executeReport", range, transactions, kapital);
+
     mainWindow.webContents.send('report:data:show', {
         today          : helpers.dateToString(),
         startDate      : helpers.dateToString(new Date(range.startDate)),
         endDate        : helpers.dateToString(new Date(range.endDate)),
         transactions   : transactions,
-        stock          : transactions[report.transactions.length-1].share_stock,
+        stock          : transactions[transactions.length-1].share_stock,
         shares_total   : kapital[0].shares_total,
         shares_kapital : kapital[0].shares_kapital
     });
 
+}
+
+
+async function exportReport(e, reportData) {
+
+    // generate document
+    const report_path = await RSSMDocs.makeAnnualReport(reportData, rssm);
+
+    // open document
+    shell.openItem(report_path);
 }
 
 
