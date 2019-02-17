@@ -28,6 +28,7 @@
             <a target="content-share-holders-all" class="collection-item" href="#">Aktienregister Historie</a>
             <a target="content-persons" class="collection-item" href="#">Aktionäre</a>
             <a target="content-journal" class="collection-item" href="#">Journal</a>
+            <a target="content-report" class="collection-item" href="#">Jahresbericht</a>
 
             <div class="collection-item menu-category">Aktionen</div>
             <a target="content-sale" class="collection-item" href="#">Verkauf</a>
@@ -48,6 +49,54 @@
     </div>
 
     <div class="col s10" id="content">
+
+
+        <div id="content-report" class="content-element card hidden">
+            <div class="card-content">
+                <span class="card-title">Jahresbericht</span>
+
+
+                <div class="form-container">
+
+                    <form name="report-range">
+
+                        <div class="row">
+                            <div class="row">
+                                <div class="input-field col s3">
+                                    <label class="active" for="report-start-date-input">Transaktionen von</label>
+                                    <input type="date" class="date-field" id="report-start-date-input"
+                                           name="start-date">
+                                </div>
+                                <div class="input-field col s3">
+                                    <label class="active" for="report-end-date-input">bis</label>
+                                    <input type="date" class="date-field" id="report-end-date-input"
+                                           name="end-date">
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+                <table id="table-yearly-report" class="compact nowrap stripe hover row-border order-column">
+                    <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Journal Nr</th>
+                        <th>Transaktion</th>
+                        <th>Aktionär</th>
+                        <th>Anzahl</th>
+                        <th>Neuer Bestand</th>
+                        <th>Zertifikate</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+
+            </div>
+        </div>
 
 
         <div id="dashboard" class="content-element card hidden">

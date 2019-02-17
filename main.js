@@ -376,12 +376,14 @@ async function executeReport(e, range) {
     const transactions = await rssm.getTransactionList(range.startDate, range.endDate);
     const kapital = await rssm.getShareKapital(range.endDate);
 
+    //console.log("executeReport", range, transactions, kapital);
+
     mainWindow.webContents.send('report:data:show', {
         today          : helpers.dateToString(),
         startDate      : helpers.dateToString(new Date(range.startDate)),
         endDate        : helpers.dateToString(new Date(range.endDate)),
         transactions   : transactions,
-        stock          : transactions[report.transactions.length-1].share_stock,
+        stock          : transactions[transactions.length-1].share_stock,
         shares_total   : kapital[0].shares_total,
         shares_kapital : kapital[0].shares_kapital
     });

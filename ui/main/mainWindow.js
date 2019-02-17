@@ -23,9 +23,7 @@ const {showShareHoldersAll} = require('./shareHoldersAll');
 const {showShareHoldersCurrent} = require('./shareHoldersCurrent');
 const {showDashboard} = require('./dashboard');
 const {showSettings} = require('./settings');
-
-
-
+const {showReport, showReportData} = require('./report');
 
 
 
@@ -40,12 +38,15 @@ ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
 ipcRenderer.on('holders:all:show',      showShareHoldersAll);
 ipcRenderer.on('persons:show',          showPersons);
 ipcRenderer.on('journal:show',          showJournal);
+ipcRenderer.on('report:show',           showReport);
+ipcRenderer.on('report:data:show',      showReportData);
 ipcRenderer.on('transfer:show',         showTransfer);
 ipcRenderer.on('mutation:show',         showMutation);
 ipcRenderer.on('sale:show',             showSale);
 ipcRenderer.on('toast:show',            showToast);
 ipcRenderer.on('admin:database:show',   showAdminDB);
 ipcRenderer.on('admin:settings:show',   showSettings);
+
 
 
 
