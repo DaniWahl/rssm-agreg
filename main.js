@@ -4,6 +4,7 @@ const fs = require('fs');
 const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
+const path = require('path')
 
 // read the basic settings
 const SETTINGS = require('./settings');
@@ -567,7 +568,7 @@ function app_init() {
 
     // build menu from template
     const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
-    Menu.setApplicationMenu(mainMenu)
+   // Menu.setApplicationMenu(mainMenu)
 }
 
 
