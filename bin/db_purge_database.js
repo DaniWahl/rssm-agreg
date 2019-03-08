@@ -1,7 +1,7 @@
 
 
 
-const SETTINGS = require('../settings');
+const SETTINGS = require('./settings');
 const RSSMShares = require('../lib/RSSMShares').RSSMShares;
 
 

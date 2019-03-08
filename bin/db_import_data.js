@@ -11,7 +11,7 @@
 const excel = require('excel');
 const RSSMShares = require('../lib/RSSMShares').RSSMShares;
 const Helpers = require('../lib/app.helpers');
-const SETTINGS = require('../settings');
+const SETTINGS = require('./settings');
 const WORKSHEETS = require('../data/worksheets');
 
 const WBPATH = 'data/Aktien 2018.08.16.xlsx';        // path to Excel document to read

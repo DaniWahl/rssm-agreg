@@ -10,7 +10,7 @@
 const RSSMShares = require('../lib/RSSMShares').RSSMShares;
 const Helpers = require('../lib/app.helpers');
 
-const SETTINGS = require('../settings');
+const SETTINGS = require('./settings');
 const DB_CREATE_WRITE_MODE = 6;
 
 //create RSSMShares object
