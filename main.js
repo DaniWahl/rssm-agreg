@@ -6,13 +6,15 @@ const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 const path = require('path')
 
-// read the basic settings
-const SETTINGS = require('./settings');
+//  basic settings
+const SETTINGS = {
+    version : '1.1.0',
+    config : 'config.json'
+};
+
 let rssm;
 let mainWindow = null;
 
-const VERSION = '1.1.0';
-SETTINGS.version = VERSION;
 
 
 // handle application events
@@ -33,9 +35,6 @@ process.on('uncaughtException',  errorHandler);
 
 
 async function saveSettings(e, data) {
-
-    console.log(data);
-
 
     if(data.A_CODE_SEQ) {
         rssm.setConfig('A_CODE_SEQ', data.A_CODE_SEQ);
@@ -168,30 +167,19 @@ function setDbPath(e) {
     }
 
 
-    // updating new path to settings
-    let newSettings = {
-        dbpath : paths[0],
-        version : SETTINGS.version
+    // updating new path to app config
+    let newConfig = {
+        dbpath : paths[0]
     };
-    newSettings = JSON.stringify(newSettings);
+    newConfig = writeAppConfig(newConfig)
 
-    // write new setting to file
-    fs.writeFile('./settings.json', newSettings, 'utf8', function (err) {
-        if(err) {
-            errorHandler(err);
-            return;
-        }
+    delete SETTINGS.error;
+    mainWindow.webContents.send('toast:show', 'Neue Datenbank ausgewählt');
 
-        SETTINGS.dbpath = paths[0];
-        delete SETTINGS.error;
-        mainWindow.webContents.send('toast:show', 'Neue Datenbank ausgewählt');
-
-        // initialize application
-        rssm = null;
-        mainWindow = null;
-        app_init();
-
-    });
+    // initialize application
+    rssm = null;
+    mainWindow = null;
+    app_init();
 
 }
 
@@ -478,7 +466,7 @@ async function loadContentData(e, element_id) {
 
             mainWindow.webContents.send('admin:database:show', {
                 version : SETTINGS.version,
-                dbpath : SETTINGS.dbpath,
+                dbpath : rssm.dbPath,
                 db_backup_path : await rssm.getConfig('BACKUP_PATH'),
                 db_load_date : await rssm.getConfig('DB_LOAD'),
                 db_creation_date : await rssm.getConfig('DB_CREATION'),
@@ -529,15 +517,62 @@ async function getBackupList() {
     return backups;
 }
 
+
+/**
+ * read application config from application user data space
+ * @returns {{dbpath: string, version: string}}
+ */
+function readAppConfig() {
+    const settingsFile = app.getPath('userData') + '/' + SETTINGS.config
+    let config = {
+        dbpath : '',
+        version : SETTINGS.version
+    }
+
+    // read setting from file if it exists
+    if(fs.existsSync(settingsFile)) {
+        const settingsContent = fs.readFileSync(settingsFile)
+        config = JSON.parse(settingsContent)
+    }
+
+    return config
+}
+
+/**
+ * save application config to application user data space
+ * @param newConfig
+ * @returns {{dbpath: string, version: string}}
+ */
+function writeAppConfig(newConfig) {
+    const settingsFile = app.getPath('userData') + '/' + SETTINGS.config
+    let config = readAppConfig()
+
+    for(key in newConfig) {
+        config[key] = newConfig[key]
+    }
+
+    // writing default settings to file
+    fs.writeFileSync(settingsFile, JSON.stringify(config))
+    console.log('app configuration file updated: ' + settingsFile)
+
+    return config
+}
+
 /**
  * application startup handler
  */
 function app_init() {
 
 
-    rssm = new RSSMShares(SETTINGS.dbpath);
-    rssm.init();
+    // read application settings
+    const config = readAppConfig()
 
+    if(config.dbpath == '') {
+        SETTINGS.error = 'Es ist keine Datenbank definiert. Bitte Datenbank auswählen!'
+    }
+
+    rssm = new RSSMShares(config.dbpath);
+    rssm.init();
 
     // create UI window
     mainWindow = new BrowserWindow({
@@ -559,8 +594,12 @@ function app_init() {
 
         }
 
-        loadContentData(null, 'dashboard');
-        //loadContentData(null, 'admin-settings');
+        if(config.dbpath != '') {
+            loadContentData(null, 'dashboard');
+        } else {
+            loadContentData(null, 'admin-db');
+        }
+
 
     });
     mainWindow.on('closed', app_quit)
