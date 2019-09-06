@@ -52,6 +52,7 @@ function doRepurchase(e) {
     const formData = new FormData(document.querySelector('form[name=repurchase]'));
     repurchase.shares = getSelectedShares(REPURCHASE_TYPE);
     repurchase.holder = formData.get('holder');
+    repurchase.booking_date = formData.get('transaction');
 
     // extract a_code
     let reg = /.+ \((.+)\)$/;

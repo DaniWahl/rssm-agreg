@@ -8,7 +8,7 @@ const path = require('path')
 
 //  basic settings
 const SETTINGS = {
-    version : '1.2.1',
+    version : '1.2.2',
     config : 'config.json'
 };
 
@@ -192,7 +192,7 @@ function setDbPath(e) {
  */
 async function executeRepurchase(e, data) {
 
-    rssm.repurchase(data.shares, data.a_code)
+    rssm.repurchase(data.shares, data.a_code, data.booking_date)
         .then(async function(info) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
@@ -524,6 +524,7 @@ async function getBackupList() {
  */
 function readAppConfig() {
     const settingsFile = app.getPath('userData') + '/' + SETTINGS.config
+
     let config = {
         dbpath : '',
         version : SETTINGS.version
@@ -535,7 +536,22 @@ function readAppConfig() {
         config = JSON.parse(settingsContent)
     }
 
+
+    if (isDev()) {
+        console.log("Application is running in development mode - using dev database")
+        config.dbpath = './db/RSSM_DB_DEV.db'
+        config.isDev = true
+    }
+
     return config
+}
+
+/**
+ * returns true if application is in development mode
+ * @returns {boolean}
+ */
+function isDev() {
+    return process.mainModule.filename.indexOf('app.asar') === -1;
 }
 
 /**
@@ -586,6 +602,10 @@ function app_init() {
         mainWindow.show();
 
         // send application version to display
+
+        if(config.isDev) {
+            SETTINGS.version += ' - DEV'
+        }
         mainWindow.webContents.send('version:show', SETTINGS.version);
 
         if(SETTINGS.error) {
