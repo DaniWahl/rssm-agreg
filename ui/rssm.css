@@ -197,12 +197,16 @@ share-dd-item p img {
 /** Dashboard **/
 
 .dash-title {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .dash-row {
     margin-top: 50px;
     margin-bottom: 50px;
+}
+
+.dash-text {
+    font-size: 18px !important;
 }
 
 .dash-chart {
