@@ -40,7 +40,6 @@ function populateHolderTable(people) {
     for(let i=0; i < people.length; i++) {
         if(people[i].shares) {
             total++;
-
             if(people[i].correspondence) {
                 active++;
             }
