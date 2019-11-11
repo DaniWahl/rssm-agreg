@@ -84,20 +84,20 @@ function showTransfer(e, data) {
     $('#transfer-list div').remove();
 
     // prepare the a_codes suggestion list
-    const a_codes = {};
+    const a_codes_holders = {};
     Object.keys(data.a_codes).forEach(a_code => {
         let suggest = data.a_codes[a_code].name;
         suggest += ' ';
         suggest += data.a_codes[a_code].first_name;
         suggest += ' (' + a_code + ')';
 
-        a_codes[suggest] = null;
+        a_codes_holders[suggest] = null;
     })
 
 
     // initialize the a_code autocomplete field with suggestion list event handler
     $('#transfer-a-code-source-input').autocomplete({
-        data: a_codes,
+        data: a_codes_holders,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
 
@@ -123,9 +123,19 @@ function showTransfer(e, data) {
         minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
     })
 
+    // prepare the a_codes suggestion list
+    const a_codes_persons = {};
+    data.persons.forEach(person => {
+        let suggest = person.name;
+        suggest += ' ';
+        suggest += person.first_name;
+        suggest += ' (' + person.a_code + ')';
+
+        a_codes_persons[suggest] = null;
+    })
 
     $('#transfer-a-code-reciever-input').autocomplete({
-        data: a_codes,
+        data: a_codes_persons,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
     })

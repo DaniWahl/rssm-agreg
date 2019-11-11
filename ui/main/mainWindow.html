@@ -35,6 +35,8 @@
             <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
             <a target="content-transfer" class="collection-item" href="#">Übertrag</a>
             <a target="content-mutation" class="collection-item" href="#">Mutation</a>
+            <a target="content-enter-person" class="collection-item" href="#">Person Erfassen</a>
+
 
             <div class="collection-item menu-category">Administration</div>
             <a target="admin-db" class="collection-item" href="#">Datenbank</a>
@@ -634,6 +636,76 @@
 
         </div>
 
+        <div id="content-enter-person" class="content-element card hidden">
+            <div class="card-content">
+                <span class="card-title">Person Erfassen</span>
+
+                <div class="form-container">
+
+                    <form name="enterPerson">
+
+                        <div class="row">
+                            <div class="row">
+
+                                <div class="input-field col s3">
+                                    <label for="enter-person-family-input">Familie</label>
+                                    <input type="text" id="enter-person-family-input" name="family">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s2">
+                                    <label for="enter-person-salutation-input">Anrede</label>
+                                    <input type="text" id="enter-person-salutation-input" name="salutation" class="active">
+                                </div>
+                                <div class="input-field col s4">
+                                    <label for="enter-person-first-name-input">Vorname</label>
+                                    <input type="text" id="enter-person-first-name-input" name="first_name">
+                                </div>
+                                <div class="input-field col s4">
+                                    <label for="enter-person-name-input">Name</label>
+                                    <input type="text" id="enter-person-name-input" name="name">
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <label for="enter-person-address-input">Adresse</label>
+                                    <input type="text" id="enter-person-address-input" name="address">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <label for="enter-person-post-code-input">PLZ</label>
+                                    <input type="text" id="enter-person-post-code-input" name="post_code">
+                                </div>
+                                <div class="input-field col s6">
+                                    <label for="enter-person-city-input">Ort</label>
+                                    <input type="text" id="enter-person-city-input" name="city">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10">
+                                    <label for="enter-person-comment-input">Kommentar</label>
+                                    <input type="text" id="enter-person-comment-input" name="comment">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="card-action">
+                <button id="enter-person-submit" class="btn-large blue darken-3 waves-effect" type="submit">
+                    Erfassen
+                </button>
+            </div>
+
+        </div>
+
 
         <div id="admin-settings" class="content-element card hidden">
             <div class="card-content">
@@ -695,6 +767,17 @@
 
 
 <!-- Modal Structure -->
+<div id="confirmation-modal-enter-person" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Person Erfassen</h4>
+        <p style="margin: 40px"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" id='confirmation-enter-person-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Erfassen</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+    </div>
+</div>
+
 <div id="confirmation-modal-sale" class="modal modal-fixed-footer">
     <div class="modal-content">
         <h4>Verkauf</h4>

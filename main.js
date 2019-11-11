@@ -8,7 +8,7 @@ const path = require('path')
 
 //  basic settings
 const SETTINGS = {
-    version : '1.2.2',
+    version : '1.3.0',
     config : 'config.json'
 };
 
@@ -18,12 +18,13 @@ let mainWindow = null;
 
 
 // handle application events
-app.on('ready',                  app_init);
-ipcMain.on('content:show',       loadContentData);
-ipcMain.on('repurchase:execute', executeRepurchase);
-ipcMain.on('transfer:execute',   executeTransfer);
-ipcMain.on('mutation:execute',   executeMutation);
-ipcMain.on('sale:execute',       executeSale);
+app.on('ready',                     app_init);
+ipcMain.on('content:show',        loadContentData);
+ipcMain.on('repurchase:execute',  executeRepurchase);
+ipcMain.on('transfer:execute',    executeTransfer);
+ipcMain.on('mutation:execute',    executeMutation);
+ipcMain.on('sale:execute',        executeSale);
+ipcMain.on('enterperson:execute', executeEnterPerson);
 ipcMain.on('report:execute',     executeReport);
 ipcMain.on('report:export',      exportReport);
 ipcMain.on('dbpath:set',         setDbPath);
@@ -319,6 +320,19 @@ async function executeSale(e, data) {
         });
 }
 
+/**
+ * initiates the enter person process and displays success or error on UI
+ * @param e
+ * @param data
+ */
+async function executeEnterPerson(e, person) {
+
+    rssm.enterPerson(person)
+        .then(async function(info){
+            mainWindow.webContents.send('toast:show', 'Personendaten erfolgreich erfasst');
+        });
+}
+
 
 /**
  * initiates the mutation process and displays success or error on UI
@@ -430,6 +444,10 @@ async function loadContentData(e, element_id) {
             mainWindow.webContents.send('report:show', []);
             break;
 
+        case 'content-enter-person':
+            mainWindow.webContents.send('enterperson:show', []);
+            break;
+
         case 'content-sale':
             mainWindow.webContents.send('sale:show', {
                 nextJournal : rssm.getNextJounalNo(),
@@ -451,7 +469,8 @@ async function loadContentData(e, element_id) {
             mainWindow.webContents.send('transfer:show', {
                 nextJournal : rssm.getNextJounalNo(),
                 a_codes     : rssm.data.a_codes,
-                shares      : rssm.data.shares
+                shares      : rssm.data.shares,
+                persons     : rssm.data.persons
             });
             break
 
