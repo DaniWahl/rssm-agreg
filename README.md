@@ -5,7 +5,7 @@ Datenbank und Applikation zur Verwaltung des Aktienregisters der AG Schulgebäud
 
 **Installation**
 1. clone from Github 
-2. _"npm install required packages"_
+2. npm install 
 3. npm run postinstall
 
 **Build & load the database:**
