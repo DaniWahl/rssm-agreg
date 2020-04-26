@@ -134,7 +134,7 @@ function restartApp(time=1000) {
 async function selectDirectory(title) {
 
     // prompt for backup directory
-    const paths = dialog.showOpenDialog(mainWindow, {
+    const paths = dialog.showOpenDialogSync(mainWindow, {
         title : `${title} Directory`,
         message : `${title} Directory auswählen`,
         properties : ['openDirectory']
@@ -153,7 +153,7 @@ function setDbPath(e) {
 
 
     // prompt for new database file
-    const paths = dialog.showOpenDialog(mainWindow, {
+    const paths = dialog.showOpenDialogSync(mainWindow, {
         title : "Datenbank auswählen",
         message : "Datenbank Datei auswählen",
         filters : [
