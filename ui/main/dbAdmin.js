@@ -9,6 +9,8 @@ function showAdminDB(e, data) {
     // show target element
     showElement('admin-db');
     initDbAdminForm(data);
+
+    console.log("dbAdmin.js showAdminDB() ")
 };
 
 
@@ -30,6 +32,7 @@ function selectDb() {
 function initDbAdminForm(data) {
     // initialize the summary table
 
+    console.log(data)
 
     $('#admin-info-version').text(data.version);
     $('#admin-info-db-creation').text(data.db_creation_date);
@@ -72,6 +75,9 @@ function initDbAdminForm(data) {
 
 
     if(data.error) {
+
+        console.warn("displaying error: " + data.error)
+
         $('#admin-info-error').text(data.error);
         $('#admin-info-error-row').removeClass('hidden');
 

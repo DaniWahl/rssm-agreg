@@ -1,32 +1,31 @@
 {
   "name": "aktienregister-rssm",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Aktienregister der AG Schulgebäude RSSM",
   "main": "main.js",
   "scripts": {
-    "start": "ELECTRON_DEV=1 electron .",
+    "start": "electron .",
+    "start_dev": "set ELECTRON_DEV=1&&electron .",
     "db_create": "node bin/db_create.js",
     "db_purge": "node bin/db_purge_database.js",
     "db_import": "node bin/db_import_data.js",
     "pdf_test": "node bin/pdfkit_test.js",
-    "postinstall": "install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "package": "electron-packager ./ 'Aktienregister RSSM' --icon ./assets/icons/mac/icon.icns --out ./build/ --overwrite"
   },
   "author": "Daniel Wahl",
   "license": "ISC",
   "dependencies": {
-    "chart.js": "^2.7.3",
-    "datatables.net-dt": "^1.10.19",
-    "datatables.net-fixedheader-dt": "^3.1.5",
-    "datatables.net-rowgroup-dt": "^1.1.0",
-    "datatables.net-scroller-dt": "^1.5.1",
-    "excel": "^0.1.7",
-    "fs-extra": "^6.0.1",
-    "pdfkit": "^0.8.3",
-    "sqlite3": "^3.1.13"
+    "chart.js": "^2.9.3",
+    "datatables.net-dt": "^1.10.20",
+    "datatables.net-fixedheader-dt": "^3.1.6",
+    "datatables.net-rowgroup-dt": "^1.1.1",
+    "datatables.net-scroller-dt": "^2.0.1",
+    "pdfkit": "^0.11.0",
+    "sqlite3": "^4.1.1"
   },
   "devDependencies": {
-    "electron-builder": "^20.38.5",
-    "electron": "^1.8.8"
+    "electron": "^8.2.3",
+    "electron-builder": "^22.5.1"
   }
 }

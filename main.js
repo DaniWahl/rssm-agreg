@@ -8,7 +8,7 @@ const path = require('path')
 
 //  basic settings
 const SETTINGS = {
-    version : '1.3.1',
+    version : '1.4.0',
     config : 'config.json'
 };
 
@@ -545,7 +545,7 @@ function readAppConfig() {
     const settingsFile = app.getPath('userData') + '/' + SETTINGS.config
 
     let config = {
-        dbpath : '',
+        dbpath : undefined,
         version : SETTINGS.version
     }
 
@@ -553,6 +553,8 @@ function readAppConfig() {
     if(fs.existsSync(settingsFile)) {
         const settingsContent = fs.readFileSync(settingsFile)
         config = JSON.parse(settingsContent)
+    } else {
+        console.log(`settings file ${settingsFile} not found. Starting with no database`)
     }
 
 
@@ -602,25 +604,39 @@ function app_init() {
     // read application settings
     const config = readAppConfig()
 
-    if(config.dbpath == '') {
+    if(config.dbpath == undefined) {
         SETTINGS.error = 'Es ist keine Datenbank definiert. Bitte Datenbank auswählen!'
+        console.warn("Database is undefined")
     }
 
     rssm = new RSSMShares(config.dbpath);
     rssm.init();
 
     // create UI window
+    // read here about the webPreferences.nodeIntegration:
+    // https://www.electronjs.org/docs/tutorial/security
+    // https://stackoverflow.com/questions/44391448/electron-require-is-not-defined/55908510#55908510
+
+
     mainWindow = new BrowserWindow({
         width  : 1600,
         height : 1000,
         show   : false,
-        backgroundColor : '#ffffff'
+        backgroundColor : '#ffffff',
+
+        webPreferences: {
+            nodeIntegration: true
+        }
     })
     mainWindow.loadURL(`file://${__dirname}/ui/main/mainWindow.html`)
+
+
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
+    })
 
-        // send application version to display
+
+    mainWindow.webContents.once('dom-ready', () => {
 
         if(config.isDev) {
             SETTINGS.version += ' - DEV'
@@ -629,14 +645,18 @@ function app_init() {
 
         if(SETTINGS.error) {
             // we started with error, let's handle this on the ui
-            mainWindow.webContents.send('admin:database:show', SETTINGS);
+            console.warn("starting with error: " + SETTINGS.error)
+            mainWindow.webContents.send('admin:database:show', {
+                version: SETTINGS.version,
+                error : SETTINGS.error
+            });
 
         }
 
-        if(config.dbpath != '') {
-            loadContentData(null, 'dashboard');
+        if(typeof config.dbpath != 'undefined') {
+           loadContentData(null, 'dashboard');
         } else {
-            loadContentData(null, 'admin-db');
+           loadContentData(null, 'admin-db');
         }
 
 
