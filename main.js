@@ -8,7 +8,7 @@ const path = require('path')
 
 //  basic settings
 const SETTINGS = {
-    version : '1.4.0',
+    version : '1.5.0',
     config : 'config.json'
 };
 
