@@ -97,7 +97,7 @@ function initEnterPersonForm() {
     document.querySelector('#enter-person-city-input').value = '';
     document.querySelector('#enter-person-comment-input').value = '';
 
-    Materialize.updateTextFields();
+    M.updateTextFields();
 }
 
 

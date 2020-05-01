@@ -226,7 +226,8 @@ function showSale(e, data) {
 
 
     // initialize the a_code autocomplete field with suggestion list event handler
-    $('#sale-a-code-select').autocomplete({
+    const selectField = document.querySelectorAll('#sale-a-code-select');
+    M.Autocomplete.init(selectField, {
         data: a_codes,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
@@ -247,8 +248,7 @@ function showSale(e, data) {
 
             document.querySelector('#sale-submit').classList.remove('disabled');
 
-        },
-        minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+        }
     });
 
 }
@@ -287,7 +287,7 @@ function initSaleForm(holder = {}) {
     document.querySelector('#sale-list').innerHTML = '';
     document.querySelector('#sale-submit').classList.add('disabled');
 
-    Materialize.updateTextFields();
+    M.updateTextFields();
 }
 
 
