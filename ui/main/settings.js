@@ -1,10 +1,42 @@
 
-//document.querySelector('#settings-submit').addEventListener('click', saveSettings);
+
+document.querySelector('#settings-submit').addEventListener('click', saveSettings);
+document.querySelector('#admin-db-select-btn').addEventListener('click', selectDb);
+document.querySelector('#admin-backup-select-btn').addEventListener('click', selectBackup);
+document.querySelector('#admin-document-select-btn').addEventListener('click', selectDocuments);
+document.querySelector('#admin-export-select-btn').addEventListener('click', selectExport);
+document.querySelector('#admin-db-backup-btn').addEventListener('click', backupDb);
+document.querySelector('#admin-db-export-btn').addEventListener('click', exportDb);
+
 let originalSettings;
+
+function backupDb() {
+    ipcRenderer.send('dbbackup:create');
+}
+
+function exportDb() {
+    ipcRenderer.send('dbexport:create');
+}
+
+function selectDb() {
+    ipcRenderer.send('dbpath:set');
+}
+
+function selectBackup() {
+    ipcRenderer.send('backuppath:set');
+}
+
+function selectDocuments() {
+    ipcRenderer.send('documentpath:set');
+}
+
+function selectExport() {
+    ipcRenderer.send('exportpath:set');
+}
+
 
 function showSettings(e, data) {
     showElement('settings');
-
     
     const tabsEl = document.querySelectorAll('#settings-tabs');
     M.Tabs.init(tabsEl, {onShow: onTabSelect});
@@ -16,7 +48,7 @@ function showSettings(e, data) {
 
 
 function onTabSelect(el) {
-    console.log('onTabSelect()')
+    //console.log('onTabSelect()')
 }
 
 function saveSettings() {
@@ -68,31 +100,73 @@ function saveSettings() {
 
 
 function setValues(data) {
+    issues = []
 
-    $('#admin-info-version').text(data.version);
-    $('#admin-info-db-creation').text(data.db_creation_date);
-    $('#admin-info-db-load').text(data.db_load_date);
+    console.log(data)
 
-    $('#setting-edit-A_CODE_SEQ').val(data.A_CODE_SEQ);
-    $('#setting-edit-AG_SECRETARY').val(data.AG_SECRETARY);
-    $('#setting-edit-AG_REGISTER').val(data.AG_REGISTER);
-    $('#setting-edit-AG_REGISTER_INITIALS').val(data.AG_REGISTER_INITIALS);
-    $('#setting-edit-AG_REGISTER_CITY').val(data.AG_REGISTER_CITY);
-    $('#setting-edit-EXPORT_PATH').val(data.EXPORT_PATH);
+    
+    if(data.A_CODE_SEQ) {
+        document.querySelector('#setting-edit-A_CODE_SEQ').value = data.A_CODE_SEQ
+    } else {
+        issues.push("Bitte Nummer für A-Code Sequenz definieren.")
+    }
 
+    if(data.AG_SECRETARY) {
+        document.querySelector('#setting-edit-AG_SECRETARY').value = data.AG_SECRETARY
+    } else {
+        issues.push("Bitte Person für Sekretariat definieren.")
+    }
 
+    if(data.AG_REGISTER) {
+        document.querySelector('#setting-edit-AG_REGISTER').value = data.AG_REGISTER
+    } else {
+        issues.push("Bitte Person für Aktienregisterführer definieren.")
+    }
+
+    if(data.AG_REGISTER_INITIALS) {
+        document.querySelector('#setting-edit-AG_REGISTER_INITIALS').value = data.AG_REGISTER_INITIALS
+    } else {
+        issues.push("Bitte Kürzel für Aktienregisterführer definieren.")
+    }
+
+    if(data.AG_REGISTER_CITY) {
+        document.querySelector('#setting-edit-AG_REGISTER_CITY').value = data.AG_REGISTER_CITY
+    } else {
+        issues.push("Bitte Ort für Aktienregisterführer definieren.")
+    }
+
+        
+    document.querySelector('#admin-info-version').textContent = data.version
+    
     if(data.dbpath) {
-        $('#admin-info-dbpath').text(data.dbpath);
+        document.querySelector('#admin-info-dbpath').textContent = data.dbpath
+    } else {
+        issues.push("Bitte Datenbank Datei auswählen.")
+        document.querySelector("#admin-db-backup-btn").classList.add('disabled')
     }
 
     if(data.db_backup_path) {
-        $('#admin-info-backup-dir').text(data.db_backup_path);
+        document.querySelector('#admin-info-dbbackuppath').textContent = data.db_backup_path
+    } else {
+        issues.push("Bitte Ordner für Datenbank Backups auswählen.")
+        document.querySelector("#admin-db-backup-btn").classList.add('disabled')
+    }
+
+    if(data.db_export_path) {
+        document.querySelector('#admin-info-exportspath').textContent = data.db_export_path
+    } else {
+        issues.push("Bitte Ordner für Exporte auswählen.")
+        document.querySelector("#admin-db-export-btn").classList.add('disabled')
+    }
+
+    if(data.documents_path) {
+        document.querySelector('#admin-info-documentspath').textContent = data.db_export_path
+    } else {
+        issues.push("Bitte Ordner für Dokumente auswählen.")
     }
 
     if(data.db_backup_list) {
         let ul = '';
-
-
         for(let i=0; i<data.db_backup_list.length; i++) {
             const file = data.db_backup_list[i];
             if(file) {
@@ -107,13 +181,30 @@ function setValues(data) {
                 ul += '</li>';
             }
         }
-
-
-
-        $('#admin-info-backup').html(`<ul>${ul}</ul>`);
+        document.querySelector('#admin-info-backup-list').innerHTML = `<ul>${ul}</ul>`
     }
 
+    showIssues(issues)
 }
+
+
+function showIssues(issues) {
+    let issueHtml = ''
+
+    if(issues.length) {
+        document.querySelector("#admin-info-error").classList.remove('hidden')
+
+        issues.forEach(issue => {
+            issueHtml += `<li><i class="fas fa-exclamation-triangle"></i> ${issue}</li>`
+        });
+        issueHtml = `<ul>${issueHtml}</ul>`
+        document.querySelector("#admin-info-error").innerHTML = issueHtml
+    } else {
+        document.querySelector("#admin-info-error").innerHTML = ''
+        document.querySelector("#admin-info-error").classList.add('hidden')
+    }
+}
+    
 
 function getValues() {
 

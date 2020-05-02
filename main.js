@@ -513,8 +513,10 @@ async function loadContentData(e, element_id) {
                 db_creation_date : await rssm.getConfig('DB_CREATION'),
                 db_backup_list : await getBackupList(),
 
+                db_export_path : await rssm.getConfig('EXPORT_PATH'),
+                documents_path : undefined,
+
                 A_CODE_SEQ : await rssm.getConfig('A_CODE_SEQ'),
-                EXPORT_PATH : await rssm.getConfig('EXPORT_PATH'),
                 AG_SECRETARY : await rssm.getConfig('AG_SECRETARY'),
                 AG_REGISTER : await rssm.getConfig('AG_REGISTER'),
                 AG_REGISTER_INITIALS : await rssm.getConfig('AG_REGISTER_INITIALS'),
