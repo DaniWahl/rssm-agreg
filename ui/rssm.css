@@ -103,6 +103,9 @@ li.tab a {
 li.tab a.active {
     background-color: var(--nav-item-grey-highlight) !important;
 }
+ul.tabs {
+    margin-bottom: 30px;
+}
 
 
 

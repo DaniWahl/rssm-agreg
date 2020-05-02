@@ -11,7 +11,7 @@ require( 'datatables.net-scroller' )();
 
 
 // load ui modules
-const {showAdminDB} = require('./dbAdmin');
+//const {showAdminDB} = require('./dbAdmin');
 const {showJournal} = require('./journal');
 const {showMutation} = require('./mutation');
 const {showPersons} = require('./persons');
@@ -22,7 +22,7 @@ const {showShareHoldersAll} = require('./shareHoldersAll');
 const {showShareHoldersCurrent} = require('./shareHoldersCurrent');
 const {showDashboard} = require('./dashboard');
 const {showSettings} = require('./settings');
-const {showSettings2} = require('./settings2');
+//const {showSettings2} = require('./settings2');
 const {showReport, showReportData} = require('./report');
 const {showEnterPerson} = require('./newPerson');
 
@@ -63,11 +63,8 @@ ipcRenderer.on('mutation:show',         showMutation);
 ipcRenderer.on('sale:show',             showSale);
 ipcRenderer.on('enterperson:show',      showEnterPerson);
 ipcRenderer.on('toast:show',            showToast);
-ipcRenderer.on('admin:database:show',   showAdminDB);
+//ipcRenderer.on('admin:database:show',   showAdminDB);
 ipcRenderer.on('admin:settings:show',   showSettings);
-ipcRenderer.on('admin:settings2:show',   showSettings2);
-
-
 
 
 

@@ -481,20 +481,38 @@ async function loadContentData(e, element_id) {
             });
             break
 
-        case 'admin-db':
+        // case 'admin-db':
 
-            mainWindow.webContents.send('admin:database:show', {
+        //     mainWindow.webContents.send('admin:database:show', {
+        //         version : SETTINGS.version,
+        //         dbpath : rssm.dbPath,
+        //         db_backup_path : await rssm.getConfig('BACKUP_PATH'),
+        //         db_load_date : await rssm.getConfig('DB_LOAD'),
+        //         db_creation_date : await rssm.getConfig('DB_CREATION'),
+        //         db_backup_list : await getBackupList()
+        //     });
+        //     break
+
+        // case 'admin-settings':
+        //     mainWindow.webContents.send('admin:settings:show', {
+        //         A_CODE_SEQ : await rssm.getConfig('A_CODE_SEQ'),
+        //         EXPORT_PATH : await rssm.getConfig('EXPORT_PATH'),
+        //         AG_SECRETARY : await rssm.getConfig('AG_SECRETARY'),
+        //         AG_REGISTER : await rssm.getConfig('AG_REGISTER'),
+        //         AG_REGISTER_INITIALS : await rssm.getConfig('AG_REGISTER_INITIALS'),
+        //         AG_REGISTER_CITY : await rssm.getConfig('AG_REGISTER_CITY')
+        //     });
+        //     break;
+
+        case 'settings':
+            mainWindow.webContents.send('admin:settings:show', {
                 version : SETTINGS.version,
                 dbpath : rssm.dbPath,
                 db_backup_path : await rssm.getConfig('BACKUP_PATH'),
                 db_load_date : await rssm.getConfig('DB_LOAD'),
                 db_creation_date : await rssm.getConfig('DB_CREATION'),
-                db_backup_list : await getBackupList()
-            });
-            break
+                db_backup_list : await getBackupList(),
 
-        case 'admin-settings':
-            mainWindow.webContents.send('admin:settings:show', {
                 A_CODE_SEQ : await rssm.getConfig('A_CODE_SEQ'),
                 EXPORT_PATH : await rssm.getConfig('EXPORT_PATH'),
                 AG_SECRETARY : await rssm.getConfig('AG_SECRETARY'),
