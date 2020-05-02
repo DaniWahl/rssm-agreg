@@ -747,31 +747,31 @@ OLD DB ADMIN PANEL
                         <table class="no-line">
                             <tbody>
                                 <tr >
-                                    <th width="350">A-Code Sequenz</th>
+                                    <th width="250" >A-Code Sequenz</th>
                                     <td>
                                         <input id="setting-edit-A_CODE_SEQ" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="350">AG Sekretariat</th>
+                                    <th>Sekretariat</th>
                                     <td>
                                         <input id="setting-edit-AG_SECRETARY" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="350">AG Aktien Register</th>
+                                    <th>Aktienregisterführer</th>
                                     <td>
                                         <input id="setting-edit-AG_REGISTER" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="350">Aktien Register, Initialen</th>
+                                    <th>Aktienregisterführer, Initialen</th>
                                     <td>
                                         <input id="setting-edit-AG_REGISTER_INITIALS" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="350">Aktien Register, Ort</th>
+                                    <th>Aktienregisterführer, Ort</th>
                                     <td>
                                         <input id="setting-edit-AG_REGISTER_CITY" type="text"/>
                                     </td>
@@ -795,67 +795,69 @@ OLD DB ADMIN PANEL
                             <tbody>
                                 <tr>
                                     <th width="250"><i class="fas fa-code"></i> Version</th>
-                                    <td width="*"><span id="admin-info-version"></span></td>
+                                    <td width="*"><span class="setting-info" id="admin-info-version"></span></td>
                                     <td width="200"></td>
                                 </tr>
 
                                 
                                 <tr id="admin-info-dbpath-row">
-                                    <th width="350"><i class="fas fa-database"></i> Datenbank</th>
-                                    <td><span id="admin-info-dbpath"></span></td>
+                                    <th ><i class="fas fa-database"></i> Datenbank</th>
+                                    <td><span class="setting-info" id="admin-info-dbpath"></span></td>
                                     <td>
                                         <button id="admin-db-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="350"><i class="fas fa-clone"></i> Backups</th>
-                                    <td><span id="setting-edit-EXPORT_PATH"></span></td>
+                                    <th ><i class="fas fa-clone"></i> Backups</th>
+                                    <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
                                     <td>
-                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                        <button id="admin-backup-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="350"><i class="fas fa-file-pdf"></i> Dokumente</th>
-                                    <td><span id="setting-edit-EXPORT_PATH"></span></td>
+                                    <th ><i class="fas fa-file-pdf"></i> Dokumente</th>
+                                    <td><span class="setting-info" id="admin-info-documentspath"></span></td>
                                     <td>
-                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                        <button id="admin-document-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th width="350"><i class="fas fa-file-excel"></i> Exporte</th>
-                                    <td><span id="setting-edit-EXPORT_PATH"></span></td>
+                                    <th ><i class="fas fa-file-excel"></i> Exporte</th>
+                                    <td><span class="setting-info" id="admin-info-exportspath"></span></td>
                                     <td>
-                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                        <button id="admin-export-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
                                     </td>
                                 </tr>
 
 
                                 <tr>
                                     <th><i class="fas fa-archive"></i> Datenbank Backups</th>
-                                    <td><div id="admin-info-backup"></div></td>
+                                    <td><div class="setting-info" id="admin-info-backup-list"></div></td>
                                     <td>
                                         <button id="admin-db-backup-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
-                                    <td><span id="admin-info-export"></span></td>
+                                    <td><span class="setting-info" id="admin-info-export"></span></td>
                                     <td>
                                         <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
                                     </td>
                                 </tr>
-
-
                                 
-
-
                             </tbody>
                         </table>
                         
 
 
                     </div>
+
+                    
+                    <div class="row">
+                        <div class="s12 hidden danger" id="admin-info-error"></div>
+                    </div>
+
 
                 </div>
                 

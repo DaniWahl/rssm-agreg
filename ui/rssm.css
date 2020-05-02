@@ -43,6 +43,25 @@ table.no-line tr {
     border-bottom: 0 !important;
 }
 
+.setting-info {
+    color: var(--action-item-blue-dark);
+    font-size: 14px;
+}
+
+#admin-info-error {
+    position: absolute;
+    bottom: 0;  
+    right: 0;
+    left: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 20px;
+    margin-bottom: 50px; 
+    background-color: rgba(201, 21, 21, 0.11);
+    color: darkred;
+    font-size: 14px;
+}
+
 
 
 /* Forms color scheme - materialize overrides */
@@ -160,11 +179,6 @@ ul.tabs {
 
 .hidden {
     display: none;
-}
-
-.danger td {
-    background-color: rgba(201, 21, 21, 0.11);
-    color: darkred;
 }
 
 
