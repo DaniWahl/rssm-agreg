@@ -153,7 +153,7 @@ function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
 
-    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable share-dd-item">
+    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-dd-item">
         <img src="../../assets/linden.png">
         <p class="share-no">${no}</p>
         <p class="name">${share.first_name} ${share.name}</p>

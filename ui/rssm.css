@@ -13,6 +13,8 @@ html, body  {
     --action-item-blue-normal : #448AFF;
     --action-item-blue-dark : #1565C0;
     --action-item-blue-light : #82B1FF;
+    --action-item-blue-ultra-light : #BBDEFB;
+    
     
 }
 
@@ -209,6 +211,8 @@ li.tab a.active {
     margin-bottom: 10px !important;
 }
 
+
+/* Aktien Display */
 .share-dd-container {
     min-height: 500px;
     height: 500px;
@@ -221,7 +225,7 @@ li.tab a.active {
     height: 180px;
     margin-left: 10px !important;
     padding: 10px !important;
-    background-color: #e0effa !important;
+    background-color: var(--nav-item-blue-grey-highlight) !important;
 }
 
 .share-dd-item-selected {
@@ -229,7 +233,7 @@ li.tab a.active {
             0 16px 24px 2px rgba(0,0,0,0.14),
             0 6px 30px 5px rgba(0,0,0,0.12),
             0 8px 10px -5px rgba(0,0,0,0.3) !important;
-    background-color: #e3f4ff !important;
+    background-color: var(--action-item-blue-ultra-light) !important;
 }
 
 share-dd-item p img {
@@ -256,15 +260,7 @@ share-dd-item p img {
     color: teal;
 }
 
-.btn-blue {
-    background-color: #1565c0;
-}
 
-/** date field style **/
-::-webkit-datetime-edit-month-field { color: #333333; }
-::-webkit-datetime-edit-day-field { color: #333333; }
-::-webkit-datetime-edit-year-field { color: #333333; }
-::-webkit-inner-spin-button { display: none; }
 
 
 /** Dashboard **/
