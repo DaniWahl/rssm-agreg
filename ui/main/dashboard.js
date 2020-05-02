@@ -86,13 +86,14 @@ function drawShareChart(journal,series) {
         data: {
             datasets : [{
                 label: 'Aktien Verfügbar',
-                backgroundColor: 'rgba(212, 236, 250, 0.5)',
-                borderColor: '#c3d8e6',
-                data: available
+                backgroundColor: 'rgba(21, 101, 192, 0.5)',
+                borderColor: '#1565C0',
+                data: available,
+                steppedLine: true
             },{
                 label: 'Aktien Total',
-                backgroundColor: 'rgba(217, 235, 240, 0.6)',
-                borderColor: '#dae1e6',
+                backgroundColor: 'rgba(130, 177, 255, 0.6)',
+                borderColor: '#82B1FF',
                 data: total,
                 steppedLine: true
             }]

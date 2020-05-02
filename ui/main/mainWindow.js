@@ -5,7 +5,6 @@ const helpers = require('../../lib/app.helpers');
 
 var $ = require( 'jquery' );
 var dt = require( 'datatables.net' )( window, $ );
-
 require( 'datatables.net-fixedheader' )();
 require( 'datatables.net-rowgroup' )();
 require( 'datatables.net-scroller' )();
@@ -23,9 +22,27 @@ const {showShareHoldersAll} = require('./shareHoldersAll');
 const {showShareHoldersCurrent} = require('./shareHoldersCurrent');
 const {showDashboard} = require('./dashboard');
 const {showSettings} = require('./settings');
+const {showSettings2} = require('./settings2');
 const {showReport, showReportData} = require('./report');
 const {showEnterPerson} = require('./newPerson');
 
+// initialize Materialze library
+M.AutoInit();
+const datePickers = document.querySelectorAll('input.datepicker');
+M.Datepicker.init(datePickers, {
+    autoClose : true,
+    format: 'dd.mm.yyyy',
+    firstDay: 1,
+    i18n : {
+        months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+        'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+        monthsShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+        weekdays : ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+        weekdaysShort : ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        weekdaysAbbrev: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
+        cancel : 'Abbrechen'
+    }
+});
 
 
 let row_group;
@@ -48,6 +65,7 @@ ipcRenderer.on('enterperson:show',      showEnterPerson);
 ipcRenderer.on('toast:show',            showToast);
 ipcRenderer.on('admin:database:show',   showAdminDB);
 ipcRenderer.on('admin:settings:show',   showSettings);
+ipcRenderer.on('admin:settings2:show',   showSettings2);
 
 
 
@@ -71,7 +89,11 @@ console.log('mainWindow: started');
  * @param color {String}
  */
 function showToast(e, msg, color='green') {
-    Materialize.toast(msg, 5000, `rounded ${color} lighten-1 z-depth-4`);
+    M.toast({
+        html : msg,
+        displayLength : 5000,
+        classes : `rounded ${color} lighten-1 z-depth-4`
+    })
 }
 
 
