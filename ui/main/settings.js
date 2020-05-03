@@ -102,9 +102,6 @@ function saveSettings() {
 function setValues(data) {
     issues = []
 
-    console.log(data)
-
-    
     if(data.A_CODE_SEQ) {
         document.querySelector('#setting-edit-A_CODE_SEQ').value = data.A_CODE_SEQ
     } else {
@@ -137,10 +134,14 @@ function setValues(data) {
 
         
     document.querySelector('#admin-info-version').textContent = data.version
+    document.querySelector('#admin-info-configfile').textContent = data.user_config_file
+    document.querySelector('#admin-info-configset').textContent = data.user_config_set
+    
     
     if(data.dbpath) {
         document.querySelector('#admin-info-dbpath').textContent = data.dbpath
     } else {
+        issues = []
         issues.push("Bitte Datenbank Datei auswählen.")
         document.querySelector("#admin-db-backup-btn").classList.add('disabled')
     }
