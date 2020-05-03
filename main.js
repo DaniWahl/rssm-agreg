@@ -25,8 +25,8 @@ ipcMain.on('report:execute',      executeReport);
 ipcMain.on('report:export',       exportReport);
 ipcMain.on('dbpath:set',          setDbPath);
 ipcMain.on('backuppath:set',      setBackupPath);
-ipcMain.on('documentpath:set',    setDbPath);
-ipcMain.on('exportpath:set',      setDbPath);
+ipcMain.on('documentpath:set',    setDocumentPath);
+ipcMain.on('exportpath:set',      setExportPath);
 ipcMain.on('dbbackup:create',     createDbBackup);
 ipcMain.on('dbexport:create',     createDbExport);
 ipcMain.on('settings:update',     saveSettings);
@@ -39,25 +39,16 @@ process.on('uncaughtException',   errorHandler);
  */
 function app_init() {
 
-    const configFile = app.getPath('userData') + '/' + CONFIGNAME
+    const PATHSEP    = process.platform == 'win32' ? '\\' : '//' 
     const configSet  = process.env.ELECTRON_DEV ? 'dev' : 'default'
-
+    const configFile = app.getPath('userData') + PATHSEP + CONFIGNAME
+    
+    // initialize main RSSMShares object
     rssm = new RSSMShares(configFile, configSet);
     rssm.init();
 
-    //if(config.dbpath == undefined) {
-    //    SETTINGS.error = 'Es ist keine Datenbank definiert. Bitte Datenbank auswählen!'
-    //    console.warn("Database is undefined")
-    //}
-
-
 
     // create UI window
-    // read here about the webPreferences.nodeIntegration:
-    // https://www.electronjs.org/docs/tutorial/security
-    // https://stackoverflow.com/questions/44391448/electron-require-is-not-defined/55908510#55908510
-
-
     if(mainWindow === null) {
         mainWindow = new BrowserWindow({
             width  : 1600,
@@ -211,8 +202,8 @@ async function selectDirectory(title) {
 
     // prompt for backup directory
     const paths = dialog.showOpenDialogSync(mainWindow, {
-        title : `${title} Directory`,
-        message : `${title} Directory auswählen`,
+        title : `${title} Ordner`,
+        message : `${title} Ordner auswählen`,
         properties : ['openDirectory']
     });
 
@@ -243,30 +234,20 @@ function setDbPath(e) {
         return;
     }
 
-
     // updating new path to app config
-    let newConfig = {
-        dbpath : paths[0]
-    };
-    newConfig = writeAppConfig(newConfig)
-
-    delete SETTINGS.error;
-    mainWindow.webContents.send('toast:show', 'Neue Datenbank ausgewählt');
-
+    rssm.config.save('dbpath', paths[0])
+    mainWindow.webContents.send('toast:show', 'Neue Datenbank ausgewählt: ' + paths[0])
+   
     // initialize application
-    rssm = null;
-    mainWindow = null;
-    app_init();
-
+    restartApp(2000)
 }
 
 
 /**
- * prompts user to select backup directory, saves selected directory to settings
+ * prompts user to select backup directory, saves selected directory to config
  * @param e
  */
 async function setBackupPath(e) {
-
 
     // prompt for new database file
     const path = await selectDirectory("Backup")
@@ -277,17 +258,56 @@ async function setBackupPath(e) {
     }
 
     // updating new path to app config
-    let newConfig = {
-        backuppath : path
-    };
-    newConfig = writeAppConfig(newConfig)
-
-    delete SETTINGS.error
-    mainWindow.webContents.send('toast:show', 'Neuer Backup Ordner ausgewählt')
-
+    rssm.config.save('backuppath', path)
+    mainWindow.webContents.send('toast:show', 'Neuer Backup Ordner ausgewählt: ' + path)
 
     // initialize application
     restartApp(2000)
+}
+
+
+/**
+ * prompts user to select document directory, saves selected directory to config
+ * @param e
+ */
+async function setDocumentPath(e) {
+
+    // prompt for new database file
+    const path = await selectDirectory("Dokumente")
+
+    if(!path) {
+        mainWindow.webContents.send('toast:show', 'Kein Ordner ausgewählt!', 'red')
+        return;
+    }
+
+    // updating new path to app config
+    rssm.config.save('documentpath', path)
+    mainWindow.webContents.send('toast:show', 'Neuer Dokumente Ordner ausgewählt: ' + path)
+
+    // initialize application
+    restartApp(2000)
+}
+
+/**
+ * prompts user to select export directory, saves selected directory to config
+ * @param e
+ */
+async function setExportPath(e) {
+
+        // prompt for new database file
+        const path = await selectDirectory("Exporte")
+
+        if(!path) {
+            mainWindow.webContents.send('toast:show', 'Kein Ordner ausgewählt!', 'red')
+            return;
+        }
+    
+        // updating new path to app config
+        rssm.config.save('exportpath', path)
+        mainWindow.webContents.send('toast:show', 'Neuer Export Ordner ausgewählt: ' + path)
+    
+        // initialize application
+        restartApp(2000)
 }
 
 
@@ -592,10 +612,10 @@ async function loadContentData(e, element_id) {
                 version : VERSION,
                 user_config_file : rssm.config.file, 
                 user_config_set : rssm.config.set,
-                db_path : rssm.config.get('dbpath'),
-                db_backup_path : rssm.config.get('backuppath'),
-                export_path : rssm.config.get('exportpath'),
-                document_path : rssm.config.get('documentpath'),
+                dbpath : rssm.config.get('dbpath'),
+                backuppath : rssm.config.get('backuppath'),
+                exportpath : rssm.config.get('exportpath'),
+                documentpath : rssm.config.get('documentpath'),
                 db_backup_list : await getBackupList(),
                 
                 db_export_path : await rssm.getConfig('EXPORT_PATH'),

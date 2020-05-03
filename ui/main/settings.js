@@ -144,24 +144,26 @@ function setValues(data) {
         issues = []
         issues.push("Bitte Datenbank Datei auswählen.")
         document.querySelector("#admin-db-backup-btn").classList.add('disabled')
+        document.querySelector("#admin-db-export-btn").classList.add('disabled')
+        
     }
 
-    if(data.db_backup_path) {
-        document.querySelector('#admin-info-dbbackuppath').textContent = data.db_backup_path
+    if(data.backuppath) {
+        document.querySelector('#admin-info-dbbackuppath').textContent = data.backuppath
     } else {
         issues.push("Bitte Ordner für Datenbank Backups auswählen.")
         document.querySelector("#admin-db-backup-btn").classList.add('disabled')
     }
 
-    if(data.db_export_path) {
-        document.querySelector('#admin-info-exportspath').textContent = data.db_export_path
+    if(data.exportpath) {
+        document.querySelector('#admin-info-exportspath').textContent = data.exportpath
     } else {
-        issues.push("Bitte Ordner für Exporte auswählen.")
+        issues.push("Bitte Ordner für Datenbank Exporte auswählen.")
         document.querySelector("#admin-db-export-btn").classList.add('disabled')
     }
 
-    if(data.documents_path) {
-        document.querySelector('#admin-info-documentspath').textContent = data.db_export_path
+    if(data.documentpath) {
+        document.querySelector('#admin-info-documentspath').textContent = data.documentpath
     } else {
         issues.push("Bitte Ordner für Dokumente auswählen.")
     }
