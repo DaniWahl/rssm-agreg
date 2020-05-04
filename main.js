@@ -39,7 +39,7 @@ process.on('uncaughtException',   errorHandler);
  */
 function app_init() {
 
-    const PATHSEP    = process.platform == 'win32' ? '\\' : '//' 
+    const PATHSEP    = getPathSeparator()
     const configSet  = process.env.ELECTRON_DEV ? 'dev' : 'default'
     const configFile = app.getPath('userData') + PATHSEP + CONFIGNAME
     
@@ -137,25 +137,8 @@ async function saveSettings(e, data) {
 }
 
 async function createDbBackup() {
-
-    let backupPath = await rssm.getConfig('BACKUP_PATH');
-
-    if(!backupPath) {
-        backupPath = await selectDirectory('Backup');
-
-        if(backupPath) {
-            mainWindow.webContents.send('toast:show', 'Backup Directory bespeichert: ' + backupPath);
-            await rssm.setConfig('BACKUP_PATH', backupPath);
-        } else {
-            mainWindow.webContents.send('toast:show', 'kein Backup Directory!', 'red');
-            return;
-        }
-
-    }
-
     const backup = await rssm.backupDatabase(true);
     mainWindow.webContents.send('toast:show', 'Datenbank Backup erstellt: ' + backup);
-
     restartApp(2000);
 }
 
@@ -616,11 +599,8 @@ async function loadContentData(e, element_id) {
                 backuppath : rssm.config.get('backuppath'),
                 exportpath : rssm.config.get('exportpath'),
                 documentpath : rssm.config.get('documentpath'),
-                db_backup_list : await getBackupList(),
+                db_backup_list : rssm.config.get('backups'),
                 
-                db_export_path : await rssm.getConfig('EXPORT_PATH'),
-                documents_path : undefined,
-
                 A_CODE_SEQ : await rssm.getConfig('A_CODE_SEQ'),
                 AG_SECRETARY : await rssm.getConfig('AG_SECRETARY'),
                 AG_REGISTER : await rssm.getConfig('AG_REGISTER'),
@@ -743,6 +723,10 @@ function errorHandler(e) {
         title: "Error"
     });
 
+}
+
+function getPathSeparator() {
+    return process.platform == 'win32' ? '\\' : '//' 
 }
 
 

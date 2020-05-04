@@ -173,15 +173,11 @@ function setValues(data) {
         for(let i=0; i<data.db_backup_list.length; i++) {
             const file = data.db_backup_list[i];
             if(file) {
-                ul += '<li>';
-                if (i===0) {
-                    ul += '<b>';
+                if(i===0) {
+                    ul += `<li><b>${file}</b></li>`
+                } else {
+                    ul += `<li>${file}</li>`
                 }
-                ul += file;
-                if (i===0) {
-                    ul += '</b>';
-                }
-                ul += '</li>';
             }
         }
         document.querySelector('#admin-info-backup-list').innerHTML = `<ul>${ul}</ul>`

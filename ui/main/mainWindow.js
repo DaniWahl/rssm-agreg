@@ -29,6 +29,8 @@ M.AutoInit();
 const datePickers = document.querySelectorAll('input.datepicker');
 M.Datepicker.init(datePickers, {
     autoClose : true,
+    defaultDate : new Date(),
+    //setDefaultDate : true,
     format: 'dd.mm.yyyy',
     firstDay: 1,
     i18n : {
