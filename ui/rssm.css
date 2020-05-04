@@ -1,9 +1,21 @@
 
 
+
+
 /* make sure we use all vertical space and use proper font */
 html, body  {
-    height: 100%;
+    height: 99%;
     font-family: Helvetica;
+    --content-grey-normal: #E0E0E0;
+    --nav-item-grey-normal : #E0E0E0;
+    --nav-item-grey-highlight : #ECEFF1 ;
+    --nav-item-blue-grey-highlight: #CFD8DC;
+    --action-item-blue-normal : #448AFF;
+    --action-item-blue-dark : #1565C0;
+    --action-item-blue-light : #82B1FF;
+    --action-item-blue-ultra-light : #BBDEFB;
+    
+    
 }
 
 body.dialog {
@@ -27,6 +39,92 @@ body.dialog {
     min-height: 100% !important;
 }
 
+table.no-line tr {
+    border-bottom: 0 !important;
+}
+
+.setting-info {
+    color: var(--action-item-blue-dark);
+    font-size: 14px;
+}
+
+#admin-info-error {
+    position: absolute;
+    bottom: 0;  
+    right: 0;
+    left: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 20px;
+    margin-bottom: 50px; 
+    background-color: rgba(201, 21, 21, 0.11);
+    color: darkred;
+    font-size: 14px;
+}
+
+
+
+/* Forms color scheme - materialize overrides */
+
+/* form input fields */ 
+input {
+    color: var(--action-item-blue-dark) !important;
+}
+/* label underline focus color */
+input:focus {
+    border-bottom: 1px solid var(--action-item-blue-normal) !important;
+}
+
+/* search fields - dropdown text color */
+ul.dropdown-content li span {
+    color: var(--action-item-blue-dark) !important;
+}
+ul.dropdown-content li span.highlight {
+    color: var(--action-item-blue-light) !important;
+}
+
+/* Datepicker */
+div.datepicker-date-display  {
+    background-color: var(--action-item-blue-normal) !important;
+}
+.datepicker-table td.is-today, .datepicker-cancel, .datepicker-done  {
+    color: var(--action-item-blue-dark) !important;
+}
+.datepicker-table td.is-selected {
+    background-color: var(--action-item-blue-light) !important;
+}
+
+/* switch */ 
+.switch label input[type=checkbox]:checked + .lever {
+    background-color: var(--action-item-blue-light) !important;
+}
+.switch label input[type=checkbox]:checked + .lever:after {
+    background-color: var(--action-item-blue-normal) !important;
+}
+
+/* buttons */ 
+.btn, .btn-large, .btn-small {
+    background-color: var(--action-item-blue-dark) !important;
+}
+
+/* Tabs */
+li.tab { 
+    text-transform: none !important;
+}
+li.indicator {
+    background-color: var(--action-item-blue-light) !important;
+}
+li.tab a { 
+    color: rgba(0, 0, 0, 0.87) !important;
+    background-color: var(--nav-item-grey-normal) !important;
+    font-weight: bold;
+}
+li.tab a.active {
+    background-color: var(--nav-item-grey-highlight) !important;
+}
+ul.tabs {
+    margin-bottom: 30px;
+}
 
 
 
@@ -52,7 +150,6 @@ body.dialog {
 
 #content {
     position: relative;
-    scroll: none;
 }
 
 .content-element {
@@ -64,7 +161,7 @@ body.dialog {
     top:0;
     left:0;
     right:0;
-    background-color: #e6e7e9 !important;
+    background-color: var(--content-grey-normal) !important;
 }
 
 .content-element table td {
@@ -82,11 +179,6 @@ body.dialog {
 
 .hidden {
     display: none;
-}
-
-.danger td {
-    background-color: rgba(201, 21, 21, 0.11);
-    color: darkred;
 }
 
 
@@ -136,6 +228,8 @@ body.dialog {
     margin-bottom: 10px !important;
 }
 
+
+/* Aktien Display */
 .share-dd-container {
     min-height: 500px;
     height: 500px;
@@ -148,7 +242,7 @@ body.dialog {
     height: 180px;
     margin-left: 10px !important;
     padding: 10px !important;
-    background-color: #e0effa !important;
+    background-color: var(--nav-item-blue-grey-highlight) !important;
 }
 
 .share-dd-item-selected {
@@ -156,7 +250,7 @@ body.dialog {
             0 16px 24px 2px rgba(0,0,0,0.14),
             0 6px 30px 5px rgba(0,0,0,0.12),
             0 8px 10px -5px rgba(0,0,0,0.3) !important;
-    background-color: #e3f4ff !important;
+    background-color: var(--action-item-blue-ultra-light) !important;
 }
 
 share-dd-item p img {
@@ -183,15 +277,7 @@ share-dd-item p img {
     color: teal;
 }
 
-.btn-blue {
-    background-color: #1565c0;
-}
 
-/** date field style **/
-::-webkit-datetime-edit-month-field { color: #333333; }
-::-webkit-datetime-edit-day-field { color: #333333; }
-::-webkit-datetime-edit-year-field { color: #333333; }
-::-webkit-inner-spin-button { display: none; }
 
 
 /** Dashboard **/

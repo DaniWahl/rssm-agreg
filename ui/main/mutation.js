@@ -122,7 +122,8 @@ function showMutation(e, data) {
 
 
     // initialize the a_code autocomplete field with suggestion list event handler
-    $('#mutation-a-code-select').autocomplete({
+    const selectField = document.querySelectorAll('#mutation-a-code-select');
+    M.Autocomplete.init(selectField, {
         data: a_codes,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
@@ -143,8 +144,7 @@ function showMutation(e, data) {
 
             document.querySelector('#mutation-submit').classList.remove('disabled');
 
-        },
-        minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+        }
     });
 
 }
@@ -182,7 +182,7 @@ function initMutationForm(holder = {}) {
     document.querySelector('#mutation-correspondence-input').checked = holder.correspondence || 0;
 
 
-    Materialize.updateTextFields();
+    M.updateTextFields();
 
 }
 

@@ -96,7 +96,8 @@ function showTransfer(e, data) {
 
 
     // initialize the a_code autocomplete field with suggestion list event handler
-    $('#transfer-a-code-source-input').autocomplete({
+    const soureceField = document.querySelectorAll('#transfer-a-code-source-input');
+    M.Autocomplete.init(soureceField, {
         data: a_codes_holders,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
@@ -119,8 +120,7 @@ function showTransfer(e, data) {
 
             // create share elements
             showShares(shares, TRANSFER_TYPE);
-        },
-        minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+        }
     })
 
     // prepare the a_codes suggestion list
@@ -134,7 +134,8 @@ function showTransfer(e, data) {
         a_codes_persons[suggest] = null;
     })
 
-    $('#transfer-a-code-reciever-input').autocomplete({
+    const recieverField = document.querySelectorAll('#transfer-a-code-reciever-input');
+    M.Autocomplete.init(recieverField, {
         data: a_codes_persons,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.

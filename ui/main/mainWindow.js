@@ -5,14 +5,12 @@ const helpers = require('../../lib/app.helpers');
 
 var $ = require( 'jquery' );
 var dt = require( 'datatables.net' )( window, $ );
-
 require( 'datatables.net-fixedheader' )();
 require( 'datatables.net-rowgroup' )();
 require( 'datatables.net-scroller' )();
 
 
 // load ui modules
-const {showAdminDB} = require('./dbAdmin');
 const {showJournal} = require('./journal');
 const {showMutation} = require('./mutation');
 const {showPersons} = require('./persons');
@@ -26,10 +24,30 @@ const {showSettings} = require('./settings');
 const {showReport, showReportData} = require('./report');
 const {showEnterPerson} = require('./newPerson');
 
+// initialize Materialze library
+M.AutoInit();
+const datePickers = document.querySelectorAll('input.datepicker');
+M.Datepicker.init(datePickers, {
+    autoClose : true,
+    defaultDate : new Date(),
+    //setDefaultDate : true,
+    format: 'dd.mm.yyyy',
+    firstDay: 1,
+    i18n : {
+        months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+        'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+        monthsShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+        weekdays : ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+        weekdaysShort : ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        weekdaysAbbrev: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
+        cancel : 'Abbrechen'
+    }
+});
 
 
-let row_group;
-let row_group_value;
+// are these still needed ? 
+// let row_group;
+// let row_group_value;
 
 // register IPC event handlers
 ipcRenderer.on('version:show',          showVersion);
@@ -46,10 +64,7 @@ ipcRenderer.on('mutation:show',         showMutation);
 ipcRenderer.on('sale:show',             showSale);
 ipcRenderer.on('enterperson:show',      showEnterPerson);
 ipcRenderer.on('toast:show',            showToast);
-ipcRenderer.on('admin:database:show',   showAdminDB);
 ipcRenderer.on('admin:settings:show',   showSettings);
-
-
 
 
 
@@ -71,7 +86,11 @@ console.log('mainWindow: started');
  * @param color {String}
  */
 function showToast(e, msg, color='green') {
-    Materialize.toast(msg, 5000, `rounded ${color} lighten-1 z-depth-4`);
+    M.toast({
+        html : msg,
+        displayLength : 5000,
+        classes : `rounded ${color} lighten-1 z-depth-4`
+    })
 }
 
 
@@ -131,7 +150,7 @@ function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
 
-    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable share-dd-item">
+    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-dd-item">
         <img src="../../assets/linden.png">
         <p class="share-no">${no}</p>
         <p class="name">${share.first_name} ${share.name}</p>

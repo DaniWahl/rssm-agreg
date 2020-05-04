@@ -94,7 +94,9 @@ function showRepurchase(e, data) {
 
 
     // initialize the a_code autocomplete field with suggestion list event handler
-    $('#repurchase-a-code-input').autocomplete({
+
+    const selectField = document.querySelectorAll('#repurchase-a-code-input');
+    M.Autocomplete.init(selectField, {
         data: a_codes,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
@@ -117,8 +119,7 @@ function showRepurchase(e, data) {
 
             // create share elements
             showShares(shares, REPURCHASE_TYPE);
-        },
-        minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+        }
     });
 
 }
