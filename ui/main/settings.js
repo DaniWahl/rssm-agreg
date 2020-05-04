@@ -173,14 +173,21 @@ function setValues(data) {
         for(let i=0; i<data.db_backup_list.length; i++) {
             const file = data.db_backup_list[i];
             if(file) {
-                if(i===0) {
-                    ul += `<li><b>${file}</b></li>`
-                } else {
-                    ul += `<li>${file}</li>`
-                }
+                ul += `<li>${file}</li>`
             }
         }
         document.querySelector('#admin-info-backup-list').innerHTML = `<ul>${ul}</ul>`
+    }
+
+    if(data.db_export_list) {
+        let ul = '';
+        for(let i=0; i<data.db_export_list.length; i++) {
+            const file = data.db_export_list[i];
+            if(file) {
+                ul += `<li>${file}</li>`
+            }
+        }
+        document.querySelector('#admin-info-export-list').innerHTML = `<ul>${ul}</ul>`
     }
 
     showIssues(issues)

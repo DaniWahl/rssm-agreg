@@ -144,25 +144,9 @@ async function createDbBackup() {
 
 
 async function createDbExport(e) {
-
-    let exportPath = await rssm.getConfig('EXPORT_PATH');
-
-    if(!exportPath) {
-        exportPath = await selectDirectory('Export');
-
-        if(exportPath) {
-            mainWindow.webContents.send('toast:show', 'Export Directory gespeichert: ' + exportPath);
-            await rssm.setConfig('EXPORT_PATH', exportPath);
-        } else {
-            mainWindow.webContents.send('toast:show', 'kein Export Directory!', 'red');
-            return;
-        }
-
-    }
-
     const exportFile = await rssm.exportToExcel(true);
     mainWindow.webContents.send('toast:show', 'Datenbank exportiert: ' + exportFile);
-
+    restartApp(2000)
 }
 
 
@@ -600,6 +584,7 @@ async function loadContentData(e, element_id) {
                 exportpath : rssm.config.get('exportpath'),
                 documentpath : rssm.config.get('documentpath'),
                 db_backup_list : rssm.config.get('backups'),
+                db_export_list : rssm.config.get('exports'),
                 
                 A_CODE_SEQ : await rssm.getConfig('A_CODE_SEQ'),
                 AG_SECRETARY : await rssm.getConfig('AG_SECRETARY'),
