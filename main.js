@@ -96,8 +96,8 @@ function app_init() {
 
 
     // TODO: build menu from template
-    // const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
-    // Menu.setApplicationMenu(mainMenu)
+    const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
+    Menu.setApplicationMenu(mainMenu)
 }
 
 
@@ -717,7 +717,7 @@ function getPathSeparator() {
 
 function getMainMenuTemplate() {
 
-    // create menu template
+
     const mainMenuTemplate = [
         {
             label : 'AG RSSM',
@@ -725,67 +725,178 @@ function getMainMenuTemplate() {
                 label : 'Info'
             }]
         },{
-            label : 'Aktienregister',
-            submenu: [
-                {
-                    label: 'Aktionäre Aktuell',
-                    click() {  }
-                },
-                {
-                    label: 'Aktionäre Historie ',
-                    click() {  }
-                },
-                {
-                    label: 'Aktien',
-                    click() {  }
-                },{
-                    label: 'Journal',
-                    click() {}
+            label : "Ablage",
+            submenu : [{
+                label: 'Einstellungen',
+                click(item, window, e) {
+                    loadContentData(e, 'settings')
                 }
-            ]
+            },{
+                label: 'Beenden',
+                role : 'close'
+            }]
         },
         {
-            label : 'Aktionen',
-            submenu: [
-                {
-                    label: 'Verkauf',
-                    click() {  }
-                },
-                {
-                    label: 'Rückkauf',
-                    click() {  }
-                },
-                {
-                    label: 'Übertrag',
-                    click() {  }
-                },
-                {
-                    label: 'Mutation',
-                    click() {  }
+            label: "Bearbeiten",
+            submenu : [{
+                label: 'Rückgängig',
+                role : 'undo'
+            },{
+                label: 'Wiederholen',
+                role: 'redo'
+            },{
+                type : 'separator'
+            },{
+                label: 'Ausschneiden',
+                role : 'cut'
+            },{
+                label: 'Kopieren',
+                role : 'copy'
+            },{
+                label: 'Einfügen',
+                role : 'paste'
+            }]
+        },{
+            label: 'Aktienregister',
+            submenu : [{
+                label : 'Dashboard',
+                click(item, window, e) {
+                    loadContentData(e, 'dashboard')
                 }
-            ]
-        },
-        {
-            label : 'Admin',
-            submenu : [
-                {
-                    label : 'Datenbank'
+            },{
+                label : 'Aktienregister Aktuell',
+                click(item, window, e) {
+                    loadContentData(e, 'content-share-holders-current')
                 }
-            ]
-        },
-        {
-            label : 'Developer Tools',
-            submenu: [{
-                label : 'Toggle DevTools',
+            },{
+                label : 'Aktienregister Historie',
+                click(item, window, e) {
+                    loadContentData(e, 'content-share-holders-all')
+                }
+            },{
+                label : 'Aktionäre',
+                click(item, window, e) {
+                    loadContentData(e, 'content-persons')
+                }
+            },{
+                label : 'Journal',
+                click(item, window, e) {
+                    loadContentData(e, 'content-journal')
+                }
+            },{
+                type : 'separator'
+            },{
+                label : 'Verkauf',
+                click(item, window, e) {
+                    loadContentData(e, 'content-sale')
+                }
+            },{
+                label : 'Rückkauf',
+                click(item, window, e) {
+                    loadContentData(e, 'content-repurchase')
+                }
+            },{
+                label : 'Übertrag',
+                click(item, window, e) {
+                    loadContentData(e, 'content-transfer')
+                }
+            },{
+                label : 'Mutation',
+                click(item, window, e) {
+                    loadContentData(e, 'content-mutation')
+                }
+            },{
+                label : 'Person Erfassen',
+                click(item, window, e) {
+                    loadContentData(e, 'content-enter-person')
+                }
+            },{
+                label : 'Jahresbericht',
+                click(item, window, e) {
+                    loadContentData(e, 'content-report')
+                }
+            }]
+        }, {
+            label : 'Hilfe',
+            submenu : [{
+                label : 'Information'
+            },{
+                label : 'Entwickler Tools',
                 accelerator: process.platform === 'darwin' ? 'Command+I' : 'Control+I',
                 click(item, focusedWindiow) {
                     focusedWindiow.toggleDevTools()
                 }
-            },{
-                role: 'reload'
             }]
-        }
+        }        
     ]
+
+
+    // // create menu template
+    // const mainMenuTemplate = [
+    //     {
+    //         label : 'AG RSSM',
+    //         submenu : [{
+    //             label : 'Info'
+    //         }]
+    //     },{
+    //         label : 'Aktienregister',
+    //         submenu: [
+    //             {
+    //                 label: 'Aktionäre Aktuell',
+    //                 click() {  }
+    //             },
+    //             {
+    //                 label: 'Aktionäre Historie ',
+    //                 click() {  }
+    //             },
+    //             {
+    //                 label: 'Aktien',
+    //                 click() {  }
+    //             },{
+    //                 label: 'Journal',
+    //                 click() {}
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         label : 'Aktionen',
+    //         submenu: [
+    //             {
+    //                 label: 'Verkauf',
+    //                 click() {  }
+    //             },
+    //             {
+    //                 label: 'Rückkauf',
+    //                 click() {  }
+    //             },
+    //             {
+    //                 label: 'Übertrag',
+    //                 click() {  }
+    //             },
+    //             {
+    //                 label: 'Mutation',
+    //                 click() {  }
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         label : 'Admin',
+    //         submenu : [
+    //             {
+    //                 label : 'Datenbank'
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         label : 'Developer Tools',
+    //         submenu: [{
+    //             label : 'Toggle DevTools',
+
+    //         },{
+    //             role: 'reload'
+    //         }]
+    //     }
+    // ]
 
 // handle macs first menu item
     if(process.platform !== 'darwin') {

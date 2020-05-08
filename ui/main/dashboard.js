@@ -37,8 +37,6 @@ function populateHolderTable(people) {
     let total = 0;
     let active = 0;
 
-    console.log(people)
-
     for(let i=0; i < people.length; i++) {
         total++;
         if(people[i].shares) {
