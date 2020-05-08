@@ -54,6 +54,7 @@ M.Modal.init(modals)
 
 // register IPC event handlers
 ipcRenderer.on('version:show',          showVersion);
+ipcRenderer.on('information:show',      showInfo);
 ipcRenderer.on('dashboard:show',        showDashboard);
 ipcRenderer.on('repurchase:show',       showRepurchase);
 ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
@@ -95,6 +96,19 @@ function showToast(e, msg, color='green') {
         classes : `rounded ${color} lighten-1 z-depth-4`
     })
 }
+
+/**
+ * handler for the info:show event.
+ * displays application info
+ * @param e
+ */
+function showInfo(e, version) {
+    const el = document.querySelector('#application-info')
+    el.querySelector('div > div.modal-content > p > span.rssm-app-info-version').innerHTML = version
+    const dialog = M.Modal.getInstance(el)
+    dialog.open()
+}
+
 
 
 /**

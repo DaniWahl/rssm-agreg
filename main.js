@@ -819,7 +819,10 @@ function getMainMenuTemplate() {
         }, {
             label : 'Hilfe',
             submenu : [{
-                label : 'Information'
+                label : 'Information',
+                click(item, window, e) {
+                    mainWindow.webContents.send('information:show', VERSION);
+                }
             },{
                 label : 'Entwickler Tools',
                 accelerator: process.platform === 'darwin' ? 'Command+I' : 'Control+I',
