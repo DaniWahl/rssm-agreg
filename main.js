@@ -722,7 +722,11 @@ function getMainMenuTemplate() {
         {
             label : 'AG RSSM',
             submenu : [{
-                label : 'Info'
+                label : 'Info',
+                click(item, window, e) {
+                    // this is the first menu for MacOS and will be removed if not on platform darwin
+                    mainWindow.webContents.send('information:show', VERSION);
+                }
             }]
         },{
             label : "Ablage",
@@ -834,82 +838,17 @@ function getMainMenuTemplate() {
     ]
 
 
-    // // create menu template
-    // const mainMenuTemplate = [
-    //     {
-    //         label : 'AG RSSM',
-    //         submenu : [{
-    //             label : 'Info'
-    //         }]
-    //     },{
-    //         label : 'Aktienregister',
-    //         submenu: [
-    //             {
-    //                 label: 'Aktionäre Aktuell',
-    //                 click() {  }
-    //             },
-    //             {
-    //                 label: 'Aktionäre Historie ',
-    //                 click() {  }
-    //             },
-    //             {
-    //                 label: 'Aktien',
-    //                 click() {  }
-    //             },{
-    //                 label: 'Journal',
-    //                 click() {}
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         label : 'Aktionen',
-    //         submenu: [
-    //             {
-    //                 label: 'Verkauf',
-    //                 click() {  }
-    //             },
-    //             {
-    //                 label: 'Rückkauf',
-    //                 click() {  }
-    //             },
-    //             {
-    //                 label: 'Übertrag',
-    //                 click() {  }
-    //             },
-    //             {
-    //                 label: 'Mutation',
-    //                 click() {  }
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         label : 'Admin',
-    //         submenu : [
-    //             {
-    //                 label : 'Datenbank'
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         label : 'Developer Tools',
-    //         submenu: [{
-    //             label : 'Toggle DevTools',
+    // remove developer tools if in production
+    if(!process.env.ELECTRON_DEV) {
+        mainMenuTemplate[4].submenu.pop()
+    }
 
-    //         },{
-    //             role: 'reload'
-    //         }]
-    //     }
-    // ]
-
-// handle macs first menu item
+    // handle macs first menu item
     if(process.platform !== 'darwin') {
         // remove first menu if not on Mac
         mainMenuTemplate.shift();
     }
-// remove developer tools if in production
-    if(process.env.NODE_ENV === 'production') {
-        mainMenuTemplate.pop()
-    }
+
 
     return mainMenuTemplate
 }

@@ -275,7 +275,7 @@ function updateSelected(type) {
 
 /**
  * returns a default dataTable config object
- * @returns {{paging: boolean, language: {search: string, processing: string, lengthMenu: string, info: string, infoEmpty: string, infoFiltered: string, infoPostFix: string, infoThousands: string, loadingRecords: string, zeroRecords: string, emptyTable: string, paginate: {first: string, previous: string, next: string, last: string}, aria: {sortAscending: string, sortDescending: string}}, select: boolean, scrollY: number}}
+ * @returns {Object}
  */
 function getDataTableConfig() {
     return {
