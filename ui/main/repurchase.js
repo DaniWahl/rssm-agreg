@@ -28,14 +28,12 @@ function submitRepurchase(e) {
         msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
     })
     msg += '<b><ul>';
-        
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal-repurchase');
-    dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-    $('#confirmation-modal-repurchase').modal();
-    $('#confirmation-modal-repurchase').modal('open');
-
+    const dialogEl = document.querySelector('#confirmation-modal-repurchase')
+    dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
+    const dialog = M.Modal.getInstance(dialogEl)
+    dialog.open()
 }
 
 
@@ -94,7 +92,9 @@ function showRepurchase(e, data) {
 
 
     // initialize the a_code autocomplete field with suggestion list event handler
-    $('#repurchase-a-code-input').autocomplete({
+
+    const selectField = document.querySelectorAll('#repurchase-a-code-input');
+    M.Autocomplete.init(selectField, {
         data: a_codes,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
@@ -117,8 +117,7 @@ function showRepurchase(e, data) {
 
             // create share elements
             showShares(shares, REPURCHASE_TYPE);
-        },
-        minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+        }
     });
 
 }

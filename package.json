@@ -4,11 +4,7 @@
   "description": "Aktienregister der AG Schulgebäude RSSM",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "start_dev": "set ELECTRON_DEV=1&&electron .",
-    "db_create": "node bin/db_create.js",
-    "db_purge": "node bin/db_purge_database.js",
-    "db_import": "node bin/db_import_data.js",
+    "start": "set ELECTRON_DEV=1&&electron .",
     "pdf_test": "node bin/pdfkit_test.js",
     "postinstall": "electron-builder install-app-deps",
     "package-mac": "electron-packager ./ 'Aktienregister RSSM' --icon ./assets/icons/mac/icon.icns --out ./build/ --overwrite",
@@ -22,6 +18,7 @@
     "datatables.net-fixedheader-dt": "^3.1.6",
     "datatables.net-rowgroup-dt": "^1.1.1",
     "datatables.net-scroller-dt": "^2.0.1",
+    "exceljs": "^3.9.0",
     "pdfkit": "^0.11.0",
     "sqlite3": "^4.1.1"
   },

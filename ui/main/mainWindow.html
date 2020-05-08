@@ -20,7 +20,7 @@
             <img src="../../assets/linden.png">
         </div>
 
-        <div class="collection" id="nav-menu">
+        <div class="collection hoverable" id="nav-menu">
 
             <div class="collection-item menu-category">Aktienregister</div>
             <a target="dashboard" class="collection-item" href="#">Dashboard</a>
@@ -28,19 +28,23 @@
             <a target="content-share-holders-all" class="collection-item" href="#">Aktienregister Historie</a>
             <a target="content-persons" class="collection-item" href="#">Aktionäre</a>
             <a target="content-journal" class="collection-item" href="#">Journal</a>
-            <a target="content-report" class="collection-item" href="#">Jahresbericht</a>
-
+            
             <div class="collection-item menu-category">Aktionen</div>
             <a target="content-sale" class="collection-item" href="#">Verkauf</a>
             <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
             <a target="content-transfer" class="collection-item" href="#">Übertrag</a>
             <a target="content-mutation" class="collection-item" href="#">Mutation</a>
             <a target="content-enter-person" class="collection-item" href="#">Person Erfassen</a>
+            <a target="content-report" class="collection-item" href="#">Jahresbericht</a>
 
 
             <div class="collection-item menu-category">Administration</div>
+            
+            <!--
             <a target="admin-db" class="collection-item" href="#">Datenbank</a>
             <a target="admin-settings" class="collection-item" href="#">Einstellungen</a>
+            -->
+            <a target="settings" class="collection-item" href="#">Einstellungen</a>
 
 
         </div>
@@ -53,7 +57,7 @@
     <div class="col s10" id="content">
 
 
-        <div id="content-report" class="content-element card hidden">
+        <div id="content-report" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Jahresbericht</span>
 
@@ -65,17 +69,15 @@
                         <div class="row">
                             <div class="row">
                                 <div class="input-field col s3">
-                                    <label class="active" for="report-start-date-input">Transaktionen von</label>
-                                    <input type="date" class="date-field" id="report-start-date-input"
-                                           name="start-date">
+                                    <label class="active" for="report-start-date-input">Transaktionen von</label>                                           
+                                    <input type="text" class="datepicker" id="report-start-date-input" name="start-date">
                                 </div>
                                 <div class="input-field col s3">
                                     <label class="active" for="report-end-date-input">bis</label>
-                                    <input type="date" class="date-field" id="report-end-date-input"
-                                           name="end-date">
+                                    <input type="text" class="datepicker" id="report-end-date-input" name="end-date">
                                 </div>
                                 <div class="col push-s3">
-                                    <button id="report-pdf-btn" class="btn btn-small blue darken-3 waves-effect disabled"><i class="fas fa-file-pdf"></i> Export</button>
+                                    <button id="report-pdf-btn" class="btn btn-small waves-effect disabled"><i class="fas fa-file-pdf"></i> Export</button>
                                 </div>
                             </div>
 
@@ -103,7 +105,7 @@
         </div>
 
 
-        <div id="dashboard" class="content-element card hidden">
+        <div id="dashboard" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Dashboard</span>
 
@@ -152,74 +154,13 @@
                     <div class="col s12 dash-chart">
                         <canvas id="shares-chart" height="200"></canvas>
                     </div>
-                   <!-- <div class="col s6 dash-chart">
-                        <canvas id="holders-chart" width="520" height="400"></canvas>
-                    </div> -->
                 </div>
 
             </div>
         </div>
 
 
-        <div id="admin-db" class="content-element card hidden">
-            <div class="card-content">
-
-                <span class="card-title">Datenbank Administration</span>
-                <table>
-                    <tbody>
-                    <tr>
-                        <th width="250"><i class="fas fa-code"></i> Version</th>
-                        <td width="*"><span id="admin-info-version"></span></td>
-                        <td width="200"></td>
-
-                    </tr>
-                    <tr>
-                        <th>
-                            <i class="fas fa-plus-circle"></i> Datenbank erstellt
-                        </th>
-                        <td><span id="admin-info-db-creation"></span></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th><i class="fas fa-download"></i> Datenbank geladen</th>
-                        <td><span id="admin-info-db-load"></span></td>
-                        <td></td>
-                    </tr>
-                    <tr id="admin-info-dbpath-row">
-                        <th><i class="fas fa-database"></i> Datenbank Pfad</th>
-                        <td><span id="admin-info-dbpath"></span></td>
-                        <td>
-                            <button id="admin-db-select-btn" class="btn btn-small blue darken-3 waves-effect">Auswählen</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th><i class="fas fa-archive"></i> Datenbank Backups</th>
-                        <td><div id="admin-info-backup"></div></td>
-                        <td>
-                            <button id="admin-db-backup-btn" class="btn btn-small blue darken-3 waves-effect">Erstellen</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><i class="fas fa-file-excel"></i> Datenbank Export</th>
-                        <td><span id="admin-info-export"></span></td>
-                        <td>
-                            <button id="admin-db-export-btn" class="btn btn-small blue darken-3 waves-effect">Erstellen</button>
-                        </td>
-                    </tr>
-                    <tr id="admin-info-error-row" class="hidden danger">
-                        <th>Fehler</th>
-                        <td><span id="admin-info-error"></span></td>
-                        <td>
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="content-share-holders-current" class="content-element card hidden">
+        <div id="content-share-holders-current" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Aktienregister Aktuell</span>
 
@@ -243,7 +184,7 @@
 
         </div>
 
-        <div id="content-share-holders-all" class="content-element card hidden">
+        <div id="content-share-holders-all" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Aktienregister Historie</span>
                 <table id="table-share-holders-all" class="compact nowrap stripe hover row-border order-column">
@@ -264,7 +205,7 @@
             </div>
         </div>
 
-        <div id="content-persons" class="content-element card hidden">
+        <div id="content-persons" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Aktienregister - Aktionäre</span>
                 <table id="table-persons-all" class="compact nowrap compact stripe hover row-border order-column">
@@ -285,7 +226,7 @@
         </div>
 
 
-        <div id="content-journal" class="content-element card hidden">
+        <div id="content-journal" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Aktienregister - Journal</span>
                 <table id="table-journal" class="compact nowrap stripe hover row-border order-column">
@@ -307,7 +248,7 @@
             </div>
         </div>
 
-        <div id="content-repurchase" class="content-element card hidden">
+        <div id="content-repurchase" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Aktien Rückkauf</span>
 
@@ -320,12 +261,13 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     <label for="repurchase-a-code-input"><i class="fas fa-search"></i> Aktionär</label>
-                                    <input type="text" id="repurchase-a-code-input" class=autocomplete" name="holder">
+                                    <input type="text" id="repurchase-a-code-input" class="autocomplete" name="holder">
                                 </div>
 
                                 <div class="input-field col s4">
-                                    <label class="active" for="sale-transaction">Buchung</label>
-                                    <input type="date" class="date-field" id="repurchase-transaction" name="transaction">
+                                    <label class="active" for="repurchase-transaction">Buchung</label>
+                                    <input type="text" class="datepicker" id="repurchase-transaction" name="transaction">
+
                                 </div>
                             </div>
 
@@ -357,14 +299,14 @@
                 </div>
             </div>
             <div class="card-action">
-                <button id="repurchase-submit" class="btn-large blue darken-3 waves-effect disabled" type="submit">
+                <button id="repurchase-submit" class="btn-large waves-effect disabled" type="submit">
                     Rückkauf
                 </button>
             </div>
 
         </div>
 
-        <div id="content-transfer" class="content-element card hidden">
+        <div id="content-transfer" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Aktien Übertrag</span>
 
@@ -377,13 +319,13 @@
                                 <div class="input-field col s5">
                                     <label for="transfer-a-code-source-input"><i class="fas fa-search"></i> Aktionär
                                         Alt</label>
-                                    <input type="text" id="transfer-a-code-source-input" class=autocomplete"
+                                    <input type="text" id="transfer-a-code-source-input" class="autocomplete"
                                            name="source">
                                 </div>
                                 <div class="input-field col s5">
                                     <label for="transfer-a-code-reciever-input"><i class="fas fa-search"></i> Aktionär
                                         Neu</label>
-                                    <input type="text" id="transfer-a-code-reciever-input" class=autocomplete"
+                                    <input type="text" id="transfer-a-code-reciever-input" class="autocomplete"
                                            name="reciever">
                                 </div>
                             </div>
@@ -419,13 +361,13 @@
                 </div>
             </div>
             <div class="card-action">
-                <button id="transfer-submit" class="btn-large blue darken-3 waves-effect disabled" type="submit">
+                <button id="transfer-submit" class="btn-large waves-effect disabled" type="submit">
                     Übertrag
                 </button>
             </div>
         </div>
 
-        <div id="content-mutation" class="content-element card hidden">
+        <div id="content-mutation" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Mutation</span>
 
@@ -524,7 +466,7 @@
 
 
             <div class="card-action">
-                <button id="mutation-submit" class="btn-large blue darken-3 waves-effect disabled" type="submit">
+                <button id="mutation-submit" class="btn-large waves-effect disabled" type="submit">
                     Mutation
                 </button>
             </div>
@@ -532,7 +474,7 @@
         </div>
 
 
-        <div id="content-sale" class="content-element card hidden">
+        <div id="content-sale" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Aktien Verkauf</span>
 
@@ -559,7 +501,8 @@
 
                                 <div class="input-field col s2">
                                     <label class="active" for="sale-transaction">Buchung</label>
-                                    <input type="date" class="date-field" id="sale-transaction" name="transaction">
+                                    <input type="text" class="datepicker" id="sale-transaction" name="transaction">
+                                    
                                 </div>
                             </div>
 
@@ -629,14 +572,14 @@
                 </div>
             </div>
             <div class="card-action">
-                <button id="sale-submit" class="btn-large blue darken-3 waves-effect disabled" type="submit">
+                <button id="sale-submit" class="btn-large waves-effect disabled" type="submit">
                     Verkauf
                 </button>
             </div>
 
         </div>
 
-        <div id="content-enter-person" class="content-element card hidden">
+        <div id="content-enter-person" class="content-element card hidden z-depth-3">
             <div class="card-content">
                 <span class="card-title">Person Erfassen</span>
 
@@ -699,67 +642,161 @@
                 </div>
             </div>
             <div class="card-action">
-                <button id="enter-person-submit" class="btn-large blue darken-3 waves-effect" type="submit">
+                <button id="enter-person-submit" class="btn-large waves-effect" type="submit">
                     Erfassen
                 </button>
             </div>
 
         </div>
 
-
-        <div id="admin-settings" class="content-element card hidden">
+        <div id="settings" class="content-element card hidden z-depth-3">
             <div class="card-content">
-                <span class="card-title">Einstellungen</span>
+                
 
-                <table>
-                    <tbody>
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs tabs-fixed-width z-depth-1" id="settings-tabs">
+                            <li class="tab col"><a href="#settings-app" class="active">Applikation</a></li>
+                            <li class="tab col"><a href="#settings-agreg">Aktienregister</a></li>
+                        </ul>
+                    </div>
 
-                        <tr >
-                            <th width="350">A-Code Sequenz</th>
-                            <td>
-                                <input id="setting-edit-A_CODE_SEQ" type="text" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th width="350">AG Sekretariat</th>
-                            <td>
-                                <input id="setting-edit-AG_SECRETARY" type="text" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th width="350">AG Aktien Register</th>
-                            <td>
-                                <input id="setting-edit-AG_REGISTER" type="text" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th width="350">Aktien Register, Initialen</th>
-                            <td>
-                                <input id="setting-edit-AG_REGISTER_INITIALS" type="text" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th width="350">Aktien Register, Ort</th>
-                            <td>
-                                <input id="setting-edit-AG_REGISTER_CITY" type="text"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th width="350">Export Pfad für Dokumente</th>
-                            <td>
-                                <input id="setting-edit-EXPORT_PATH" type="text" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div id=settings-agreg class="col s12">
 
-            </div>
-            <div class="card-action">
-                <button id="settings-submit" class="btn-large blue darken-3 waves-effect" type="submit">
-                    Speichern
-                </button>
+                        <table class="no-line">
+                            <tbody>
+                                <tr >
+                                    <th width="250" >A-Code Sequenz</th>
+                                    <td>
+                                        <input id="setting-edit-A_CODE_SEQ" type="text" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Sekretariat</th>
+                                    <td>
+                                        <input id="setting-edit-AG_SECRETARY" type="text" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Aktienregisterführer</th>
+                                    <td>
+                                        <input id="setting-edit-AG_REGISTER" type="text" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Aktienregisterführer, Initialen</th>
+                                    <td>
+                                        <input id="setting-edit-AG_REGISTER_INITIALS" type="text" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Aktienregisterführer, Ort</th>
+                                    <td>
+                                        <input id="setting-edit-AG_REGISTER_CITY" type="text"/>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+                        <div style="margin-top: 100px;">
+                            <button id="settings-submit" class="btn waves-effect" type="submit">
+                                <i class="fas fa-save"></i> Speichern
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div id="settings-app" class="col s12">
+                        
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th width="200"><i class="fas fa-code"></i> Version</th>
+                                    <td width="*"><span class="setting-info" id="admin-info-version"></span></td>
+                                    <td width="150"></td>
+                                </tr>
+                                <tr>
+                                    <th width="200"><i class="fas fa-cog"></i> Konfigurationsdatei</th>
+                                    <td width="*"><span class="setting-info" id="admin-info-configfile"></span></td>
+                                    <td width="150"></td>
+                                </tr>
+                                <tr>
+                                    <th width="200"><i class="fas fa-cog"></i> Konfigurationsset</th>
+                                    <td width="*"><span class="setting-info" id="admin-info-configset"></span></td>
+                                    <td width="150"></td>
+                                </tr>
+
+                                
+                                <tr id="admin-info-dbpath-row">
+                                    <th ><i class="fas fa-database"></i> Datenbank</th>
+                                    <td><span class="setting-info" id="admin-info-dbpath"></span></td>
+                                    <td>
+                                        <button id="admin-db-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th ><i class="fas fa-clone"></i> Backups</th>
+                                    <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
+                                    <td>
+                                        <button id="admin-backup-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th ><i class="fas fa-file-pdf"></i> Dokumente</th>
+                                    <td><span class="setting-info" id="admin-info-documentspath"></span></td>
+                                    <td>
+                                        <button id="admin-document-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th ><i class="fas fa-file-excel"></i> Exporte</th>
+                                    <td><span class="setting-info" id="admin-info-exportspath"></span></td>
+                                    <td>
+                                        <button id="admin-export-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <th><i class="fas fa-archive"></i> Datenbank Backups</th>
+                                    <td><div class="setting-info" id="admin-info-backup-list"></div></td>
+                                    <td>
+                                        <button id="admin-db-backup-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
+                                    <td><span class="setting-info" id="admin-info-export-list"></span></td>
+                                    <td>
+                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        
+
+
+                    </div>
+
+                    
+                    <div class="row">
+                        <div class="s12 hidden danger z-depth-1" id="admin-info-error"></div>
+                    </div>
+
+
+                </div>
+                
+
+
             </div>
         </div>
+
+
+
 
     </div>
 
@@ -829,11 +866,18 @@
     </div>
 </div>
 
-<script type="text/javascript" src="../hammer.min.js"></script>
+
+<!-- Modal Structure -->
+<div id="application-info" class="modal">
+    <div class="modal-content rssm-app-info">
+        <p>Aktienregister der Akiengesellschaft <b>Schulgebäude, Rudolf Steiner Schule Münchenstein</b></p>
+        <p>Version: <span class="rssm-app-info-version"></span></p>
+        <p>Autor: <span class="rssm-app-info-author">Daniel Wahl</span></p>
+    </div>
+</div>
+
+
 <script type="text/javascript" src="../materialize.js"></script>
-
-
-
-<script src="mainWindow.js"></script>
+<script type="text/javascript" src="mainWindow.js"></script>
 </body>
 </html>
