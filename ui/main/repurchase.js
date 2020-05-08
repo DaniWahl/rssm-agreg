@@ -28,14 +28,12 @@ function submitRepurchase(e) {
         msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
     })
     msg += '<b><ul>';
-        
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal-repurchase');
-    dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-    $('#confirmation-modal-repurchase').modal();
-    $('#confirmation-modal-repurchase').modal('open');
-
+    const dialogEl = document.querySelector('#confirmation-modal-repurchase')
+    dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
+    const dialog = M.Modal.getInstance(dialogEl)
+    dialog.open()
 }
 
 

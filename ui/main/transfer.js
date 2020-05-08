@@ -33,10 +33,10 @@ function submitTransfer(e) {
     msg += '<b><ul>';
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal-transfer');
-    dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-    $('#confirmation-modal-transfer').modal();
-    $('#confirmation-modal-transfer').modal('open');
+    const dialogEl = document.querySelector('#confirmation-modal-transfer')
+    dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
+    const dialog = M.Modal.getInstance(dialogEl)
+    dialog.open()    
 }
 
 /**

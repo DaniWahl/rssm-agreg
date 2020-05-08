@@ -64,10 +64,10 @@ function submitMutation(e) {
 
 
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal-mutation');
-    dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-    $('#confirmation-modal-mutation').modal();
-    $('#confirmation-modal-mutation').modal('open');
+    const dialogEl = document.querySelector('#confirmation-modal-mutation')
+    dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
+    const dialog = M.Modal.getInstance(dialogEl)
+    dialog.open()
 }
 
  /**

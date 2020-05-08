@@ -108,51 +108,50 @@ function indexShareList(rssmSharesNo) {
   * @param e
   */
 function submitSale(e) {
-     e.preventDefault();
+    e.preventDefault();
 
-     // get form data
-     const formData = new FormData(document.querySelector('form[name=sale]'));
+    // get form data
+    const formData = new FormData(document.querySelector('form[name=sale]'));
 
-     const holder = formData.get('holder');
-     const buyer = {
-         a_code :     formData.get('a_code'),
-         salutation : formData.get('salutation'),
-         family     : formData.get('family'),
-         first_name : formData.get('first_name'),
-         name :       formData.get('name'),
-         address :    formData.get('address'),
-         post_code :  formData.get('post_code'),
-         city :       formData.get('city'),
-         comment :    formData.get('comment')
-     };
+    const holder = formData.get('holder');
+    const buyer = {
+        a_code: formData.get('a_code'),
+        salutation: formData.get('salutation'),
+        family: formData.get('family'),
+        first_name: formData.get('first_name'),
+        name: formData.get('name'),
+        address: formData.get('address'),
+        post_code: formData.get('post_code'),
+        city: formData.get('city'),
+        comment: formData.get('comment')
+    };
 
-     // get selected shares
-     const shares = getSelectedShares(SALE_TYPE);
-
-
-     let buyer_status = 'new';
-     if(holder !== '') {
-         buyer_status = 'exists';
-     }
-
-     // form dialog message
-     let msg = `Die folgenden <b>${shares.length}</b> Aktien werden dem Aktionär <b>${buyer.name}</b> verkauft:<br> `;
-     msg +=  `<ul style="list-style-type:disc"><b>`;
-     shares.forEach(share_no => {
-         msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
-     })
-     msg += '</b></ul>';
-
-     if(buyer_status === 'new') {
-         msg += '<p>Für den Aktionär werden neue Stammdaten erstellt.</p>';
-     }
+    // get selected shares
+    const shares = getSelectedShares(SALE_TYPE);
 
 
-     // initialize and show dialog
-     const dialog = document.querySelector('#confirmation-modal-sale');
-     dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-     $('#confirmation-modal-sale').modal();
-     $('#confirmation-modal-sale').modal('open');
+    let buyer_status = 'new';
+    if (holder !== '') {
+        buyer_status = 'exists';
+    }
+
+    // form dialog message
+    let msg = `Die folgenden <b>${shares.length}</b> Aktien werden dem Aktionär <b>${buyer.name}</b> verkauft:<br> `;
+    msg += `<ul style="list-style-type:disc"><b>`;
+    shares.forEach(share_no => {
+        msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
+    })
+    msg += '</b></ul>';
+
+    if (buyer_status === 'new') {
+        msg += '<p>Für den Aktionär werden neue Stammdaten erstellt.</p>';
+    }
+
+    // initialize and show dialog
+    const dialogEl = document.querySelector('#confirmation-modal-sale')
+    dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
+    const dialog = M.Modal.getInstance(dialogEl)
+    dialog.open()
 }
 
 

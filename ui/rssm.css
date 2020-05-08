@@ -18,6 +18,16 @@ html, body  {
     
 }
 
+a.current {
+    background: var(--action-item-blue-light) !important;
+    border: none !important;
+}
+a.paginate_button:hover {
+    background: var(--action-item-blue-ultra-light) !important;
+    border: none !important;
+    color: #000000 !important;
+}
+
 body.dialog {
     background-color: #efefef;
     margin: 30px;

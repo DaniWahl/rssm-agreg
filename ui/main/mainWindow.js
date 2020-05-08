@@ -43,6 +43,9 @@ M.Datepicker.init(datePickers, {
         cancel : 'Abbrechen'
     }
 });
+const modals = document.querySelectorAll('.modal')
+M.Modal.init(modals)
+
 
 
 // are these still needed ? 

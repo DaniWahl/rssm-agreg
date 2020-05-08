@@ -37,12 +37,11 @@ function submitEnterPerson(e) {
     msg += `<b>Ort:</b> ${person.city}<br>`;
     msg += `<b>Kommentar:</b> ${person.comment}<br>`;
 
-
     // initialize and show dialog
-    const dialog = document.querySelector('#confirmation-modal-enter-person');
-    dialog.querySelector('div > div.modal-content > p').innerHTML = msg;
-    $('#confirmation-modal-enter-person').modal();
-    $('#confirmation-modal-enter-person').modal('open');
+    const dialogEl = document.querySelector('#confirmation-modal-enter-person')
+    dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
+    const dialog = M.Modal.getInstance(dialogEl)
+    dialog.open()
 }
 
 
