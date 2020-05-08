@@ -5,9 +5,6 @@
   "main": "main.js",
   "scripts": {
     "start": "set ELECTRON_DEV=1&&electron .",
-    "db_create": "node bin/db_create.js",
-    "db_purge": "node bin/db_purge_database.js",
-    "db_import": "node bin/db_import_data.js",
     "pdf_test": "node bin/pdfkit_test.js",
     "postinstall": "electron-builder install-app-deps",
     "package-mac": "electron-packager ./ 'Aktienregister RSSM' --icon ./assets/icons/mac/icon.icns --out ./build/ --overwrite",
