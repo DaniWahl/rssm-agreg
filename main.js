@@ -5,7 +5,7 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 
-const VERSION = '1.5.0'
+const VERSION = '1.5.1'
 const CONFIGNAME = 'config.json'
 
 let rssm = null
@@ -470,15 +470,18 @@ async function executeMutation(e, person) {
 
 async function executeReport(e, range) {
 
-    const transactions = await rssm.getTransactionList(range.startDate, range.endDate);
-    const kapital = await rssm.getShareKapital(range.endDate);
+    const startDateStr = helpers.dateToDbString(range.startDate)
+    const endDateStr = helpers.dateToDbString(range.endDate)
+    
+    const transactions = await rssm.getTransactionList(startDateStr, endDateStr);
+    const kapital = await rssm.getShareKapital(endDateStr);
 
     //console.log("executeReport", range, transactions, kapital);
 
     mainWindow.webContents.send('report:data:show', {
         today          : helpers.dateToString(),
-        startDate      : helpers.dateToString(new Date(range.startDate)),
-        endDate        : helpers.dateToString(new Date(range.endDate)),
+        startDate      : helpers.dateToString(range.startDate),
+        endDate        : helpers.dateToString(range.endDate),
         transactions   : transactions,
         stock          : transactions[transactions.length-1].share_stock,
         shares_total   : kapital[0].shares_total,
