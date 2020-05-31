@@ -1,8 +1,9 @@
 
 // setup report ui specific event handlers
-document.querySelector('#report-start-date-input').addEventListener('input', setReportRange);
-document.querySelector('#report-end-date-input').addEventListener('input', setReportRange);
 document.querySelector('#report-pdf-btn').addEventListener('click', exportReport);
+
+const startDateEl = document.querySelector('#report-start-date-input')
+const endDateEl = document.querySelector('#report-end-date-input')
 
 
 let reportData;
@@ -12,16 +13,39 @@ const reportRange = {
 };
 
 
+/**
+ * handler for the transaction range start date onSelect event
+ * @param {Date} date  selected date
+ */
+function setStartDate(date) {
+    reportRange.startDate = date
+    setReportRange()
+}
+
+/**
+ * handler for the transaction range end date onSelect event
+ * @param {Date} date  selected date
+ */
+function setEndDate(date) {
+    reportRange.endDate = date
+    prevYear = new Date(date)
+    prevYear.setFullYear(prevYear.getFullYear() -1 )
+    prevYear.setDate( prevYear.getDate() +1 )
+
+    const startDateM = M.Datepicker.getInstance(startDateEl)
+    startDateM.setDate(prevYear)
+    startDateM._finishSelection()
+    setReportRange()
+}
+
+/**
+ * sends 'report:execute' message back to main if transaction range is complete
+ */
 function setReportRange() {
-
-    reportRange.startDate = $('#report-start-date-input').val();
-    reportRange.endDate = $('#report-end-date-input').val();
-
     if(reportRange.startDate && reportRange.endDate) {
         ipcRenderer.send('report:execute', reportRange);
     }
 }
-
 
 /**
  * handler for the report:show IPC event.
@@ -32,6 +56,31 @@ function setReportRange() {
 function showReport(e, report) {
     // show target element
     showElement('content-report');
+
+
+    // reset date picker options
+    let dateOpts = {    
+        autoClose : true,
+        defaultDate : new Date(),
+        //setDefaultDate : true,
+        format: 'dd.mm.yyyy',
+        firstDay: 1,
+        i18n : {
+            months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 
+            'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+            monthsShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+            weekdays : ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+            weekdaysShort : ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+            weekdaysAbbrev: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
+            cancel : 'Abbrechen'
+        }
+    }
+
+    dateOpts.onSelect = setStartDate
+    M.Datepicker.init(startDateEl, dateOpts)
+
+    dateOpts.onSelect = setEndDate
+    M.Datepicker.init(endDateEl, dateOpts)
 }
 
 
@@ -76,7 +125,9 @@ function showReportData(e, data) {
 }
 
 
-
+/**
+ * sends 'report:export' back to main
+ */
 function exportReport() {
     ipcRenderer.send('report:export', reportData);
 }
