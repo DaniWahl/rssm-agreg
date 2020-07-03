@@ -5,7 +5,7 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 
-const VERSION = '1.5.1'
+const VERSION = '1.5.2'
 const CONFIGNAME = 'config.json'
 
 let rssm = null
@@ -286,7 +286,15 @@ async function setExportPath(e) {
  */
 async function executeRepurchase(e, data) {
 
-    rssm.repurchase(data.shares, data.a_code, data.booking_date)
+    // convert booking date to correctly formatted db date string
+    let booking_date
+    if(data.booking_date) {
+        booking_date = helpers.dateToDbString( helpers.dmyToDate(data.booking_date) )
+    } else {
+        booking_date = helpers.dateToDbString()
+    }
+
+    rssm.repurchase(data.shares, data.a_code, booking_date)
         .then(async function(info) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
@@ -365,6 +373,14 @@ async function executeTransfer(e, data) {
  * @param data
  */
 async function executeSale(e, data) {
+
+    // convert booking date to correctly formatted db date string
+    if (data.transaction.booking_date) {
+        data.transaction.booking_date = helpers.dateToDbString( helpers.dmyToDate(data.transaction.booking_date) )
+    } else {
+        data.transaction.booking_date = helpers.dateToDbString()
+    }
+    
 
     rssm.sale(data.transaction, data.buyer)
         .then(async function(info) {
