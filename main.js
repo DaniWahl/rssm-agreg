@@ -286,7 +286,10 @@ async function setExportPath(e) {
  */
 async function executeRepurchase(e, data) {
 
-    rssm.repurchase(data.shares, data.a_code, data.booking_date)
+    // convert booking date to correctly formatted db date string
+    booking_date = helpers.dateToDbString( helpers.dmyToDate(data.booking_date) )
+
+    rssm.repurchase(data.shares, data.a_code, booking_date)
         .then(async function(info) {
 
             mainWindow.webContents.send('journal:show', rssm.data.journal);
@@ -365,6 +368,9 @@ async function executeTransfer(e, data) {
  * @param data
  */
 async function executeSale(e, data) {
+
+    // convert booking date to correctly formatted db date string
+    data.transaction.booking_date = helpers.dateToDbString( helpers.dmyToDate(data.transaction.booking_date) )
 
     rssm.sale(data.transaction, data.buyer)
         .then(async function(info) {
