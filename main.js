@@ -287,7 +287,12 @@ async function setExportPath(e) {
 async function executeRepurchase(e, data) {
 
     // convert booking date to correctly formatted db date string
-    booking_date = helpers.dateToDbString( helpers.dmyToDate(data.booking_date) )
+    let booking_date
+    if(data.booking_date) {
+        booking_date = helpers.dateToDbString( helpers.dmyToDate(data.booking_date) )
+    } else {
+        booking_date = helpers.dateToDbString()
+    }
 
     rssm.repurchase(data.shares, data.a_code, booking_date)
         .then(async function(info) {
@@ -370,7 +375,12 @@ async function executeTransfer(e, data) {
 async function executeSale(e, data) {
 
     // convert booking date to correctly formatted db date string
-    data.transaction.booking_date = helpers.dateToDbString( helpers.dmyToDate(data.transaction.booking_date) )
+    if (data.transaction.booking_date) {
+        data.transaction.booking_date = helpers.dateToDbString( helpers.dmyToDate(data.transaction.booking_date) )
+    } else {
+        data.transaction.booking_date = helpers.dateToDbString()
+    }
+    
 
     rssm.sale(data.transaction, data.buyer)
         .then(async function(info) {
