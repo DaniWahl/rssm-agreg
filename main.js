@@ -5,7 +5,7 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 
-const VERSION = '1.5.2'
+const VERSION = '1.6.0'
 const CONFIGNAME = 'config.json'
 
 let rssm = null
@@ -83,7 +83,7 @@ function app_init() {
             loadPanel = 'settings'
         }
 
-        // TODO: load settings panel if problems detected
+        // load default panel 
         loadContentData(null, loadPanel)
 
     });
@@ -95,7 +95,7 @@ function app_init() {
 
 
 
-    // TODO: build menu from template
+    // build application menu 
     const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
     Menu.setApplicationMenu(mainMenu)
 }
