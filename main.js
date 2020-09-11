@@ -5,7 +5,7 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 
-const VERSION = '1.5.2'
+const VERSION = '1.5.3'
 const CONFIGNAME = 'config.json'
 
 let rssm = null
