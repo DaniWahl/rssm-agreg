@@ -28,14 +28,20 @@ function setStartDate(date) {
  */
 function setEndDate(date) {
     reportRange.endDate = date
-    prevYear = new Date(date)
-    prevYear.setFullYear(prevYear.getFullYear() -1 )
-    prevYear.setDate( prevYear.getDate() +1 )
 
-    const startDateM = M.Datepicker.getInstance(startDateEl)
-    startDateM.setDate(prevYear)
-    startDateM._finishSelection()
-    setReportRange()
+    if(!reportRange.startDate) {
+        // start date not set, set it to 1 year before end date
+        prevYear = new Date(date)
+        prevYear.setFullYear(prevYear.getFullYear() -1 )
+        prevYear.setDate( prevYear.getDate() +1 )
+    
+        const startDateM = M.Datepicker.getInstance(startDateEl)
+        startDateM.setDate(prevYear)
+        startDateM._finishSelection()    
+    } else { 
+        // start was set by user already
+        setReportRange()   
+    }
 }
 
 /**
@@ -102,8 +108,7 @@ function showReportData(e, data) {
             {data: 'journal_no'},
             {data: 'transaction_type'},
             {data: 'name'},
-            {data: 'share_number'},
-            {data: 'share_stock'},
+            {data: 'stock_change'},
             {data: 'shares'}
         ];
         //config.order = [[0, 'desc']]; // order first col descending
