@@ -5,7 +5,7 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 
-const VERSION = '1.5.3'
+const VERSION = '1.5.4'
 const CONFIGNAME = 'config.json'
 
 let rssm = null
@@ -496,22 +496,30 @@ async function executeReport(e, range) {
     const endDateStr = helpers.dateToDbString(range.endDate)
     const endDate = Date.parse(endDateStr)
     
-    const rssmShares = await rssm.getRSSMShares()
-    const transactionsAll = await rssm.getTransactionList(startDateStr, todayStr)
-    const kapital = await rssm.getShareKapital(endDateStr)
-    let rssmStock = rssmShares.length  // todays stock of RSSM shares
+    const kapital = await rssm.getShareKapital(endDateStr) // total number of shares and kapital values
+    const rssmShares = await rssm.getRSSMShares() // get all RSSM shares as of today
+    let rssmStock = rssmShares.length  // todays stock of RSSM shares   
+    const transactionsAll = await rssm.getTransactionList(startDateStr, todayStr) // get all transactions between today and beginning of report
     const transactions = []
+    let sharesBought = 0
+    let sharesSold = 0
 
-    for (i=transactionsAll.length-1; i>0; i--) {
+    // evaluate transactions 
+    for (i=transactionsAll.length-1; i>=0; i--) {
         const t = transactionsAll[i]
         const transactionDate = Date.parse(t['transaction_date'])
 
         if(transactionDate > endDate) {
-            // transaction is after report range, correct rssmStock towards endDate
+            // transaction is after report range, correct rssmStock towards report endDate
             rssmStock = rssmStock + t['stock_change']
         } else {
             // transaction is in report range, add to list
             transactions.unshift(t)
+            if(t['stock_change'] < 0) {
+                sharesSold = sharesSold + Math.abs(t['stock_change'])
+            } else {
+                sharesBought = sharesBought + t['stock_change']
+            }
         }
     }
 
@@ -523,9 +531,10 @@ async function executeReport(e, range) {
         transactions   : transactions,
         stock          : rssmStock,
         shares_total   : kapital[0].shares_total,
-        shares_kapital : kapital[0].shares_kapital
+        shares_kapital : kapital[0].shares_kapital,
+        shares_bought  : sharesBought,
+        shares_sold    : sharesSold
     })
-
 }
 
 
