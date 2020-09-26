@@ -37,16 +37,15 @@ process.on('uncaughtException',   errorHandler);
 /**
  * application startup handler
  */
-function app_init() {
+async function app_init() {
 
     const PATHSEP    = getPathSeparator()
     const configSet  = process.env.ELECTRON_DEV ? 'dev' : 'default'
     const configFile = app.getPath('userData') + PATHSEP + CONFIGNAME
     
     // initialize main RSSMShares object
-    rssm = new RSSMShares(configFile, configSet);
-    rssm.init();
-
+    rssm = new RSSMShares(configFile, configSet)
+    await rssm.init()
 
     // create UI window
     if(mainWindow === null) {
