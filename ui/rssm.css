@@ -116,6 +116,14 @@ div.datepicker-date-display  {
 .btn, .btn-large, .btn-small {
     background-color: var(--action-item-blue-dark) !important;
 }
+.btn-table-icon {
+    color: var(--action-item-blue-dark) !important;
+    cursor: pointer;
+}
+
+div.modal-wide {
+    width: 65% !important;
+}
 
 /* Tabs */
 li.tab { 
@@ -210,7 +218,6 @@ div.rssm-app-info {
     background-size: 200px;
     background-repeat: no-repeat;
     background-color: var(--nav-item-grey-highlight);
-    background-color: ;
 }
 
 div.rssm-app-info p {
