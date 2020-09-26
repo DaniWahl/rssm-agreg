@@ -210,6 +210,7 @@
                 <table id="table-persons-all" class="compact nowrap compact stripe hover row-border order-column">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>A-Code</th>
                         <th>Name</th>
                         <th>Vorname</th>
@@ -803,6 +804,71 @@
 
 
 <!-- Modal Structure -->
+
+<div id="person-info-modal" class="modal modal-fixed-footer modal-wide">
+    <div class="modal-content" style="overflow: visible !important;">
+        <h5></h5>
+        <div class="row">
+            <div class="col s6"><p class="address"></p></div>
+            <div class="col s6">
+                <p class="correspondence"></p>
+                <p class="shares"></p>
+            </div>
+        </div>
+        <div class="row z-depth-1" style="height: 450px !important">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s4"><a class="active" href="#shares">Aktien</a></li>
+                    <li class="tab col s4"><a href="#comments">Kommentare</a></li>
+                    <li class="tab col s4"><a href="#trail">Protokol</a></li>
+                </ul>
+                <div class="col s12" id="shares">
+                    <table id="persons-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Aktien Nr</th>
+                                <th>Aktien Typ</th>
+                                <th>Wert (CHF)</th>
+                                <th>Kaufdatum</th>
+                                <th>Journal Nr</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col s12" id="comments">
+                    <table id="persons-info-comments-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Kommentar</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col s12" id="trail">
+                    <table id="persons-info-trail-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Typ</th>
+                                <th>Wert Neu</th>
+                                <th>Wert Original</th>
+                                <th>Feld</th>
+                                <th>Benutzer</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div id="confirmation-modal-enter-person" class="modal modal-fixed-footer">
     <div class="modal-content">
         <h4>Person Erfassen</h4>

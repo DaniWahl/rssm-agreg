@@ -5,7 +5,7 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 
-const VERSION = '1.5.4'
+const VERSION = '1.6.0'
 const CONFIGNAME = 'config.json'
 
 let rssm = null
@@ -30,6 +30,7 @@ ipcMain.on('exportpath:set',      setExportPath);
 ipcMain.on('dbbackup:create',     createDbBackup);
 ipcMain.on('dbexport:create',     createDbExport);
 ipcMain.on('settings:update',     saveSettings);
+ipcMain.on('personinfo:load',     loadPersonInfo);
 process.on('uncaughtException',   errorHandler);
 
 
@@ -82,7 +83,7 @@ async function app_init() {
             loadPanel = 'settings'
         }
 
-        // TODO: load settings panel if problems detected
+        // load default panel 
         loadContentData(null, loadPanel)
 
     });
@@ -94,11 +95,17 @@ async function app_init() {
 
 
 
-    // TODO: build menu from template
+    // build application menu 
     const mainMenu = Menu.buildFromTemplate( getMainMenuTemplate() )
     Menu.setApplicationMenu(mainMenu)
 }
 
+
+async function loadPersonInfo(e, data) {
+    const person_info = await rssm.getPersonDetail(data['person_id'])
+    console.log(person_info)
+    mainWindow.webContents.send('personsinfo:show', person_info);
+}
 
 
 async function saveSettings(e, data) {
