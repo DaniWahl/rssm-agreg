@@ -30,6 +30,7 @@ ipcMain.on('exportpath:set',      setExportPath);
 ipcMain.on('dbbackup:create',     createDbBackup);
 ipcMain.on('dbexport:create',     createDbExport);
 ipcMain.on('settings:update',     saveSettings);
+ipcMain.on('personinfo:load',     loadPersonInfo);
 process.on('uncaughtException',   errorHandler);
 
 
@@ -100,6 +101,12 @@ function app_init() {
     Menu.setApplicationMenu(mainMenu)
 }
 
+
+async function loadPersonInfo(e, data) {
+    const person_info = await rssm.getPersonDetail(data['person_id'])
+    console.log(person_info)
+    mainWindow.webContents.send('personsinfo:show', person_info);
+}
 
 
 async function saveSettings(e, data) {
