@@ -103,7 +103,6 @@ async function app_init() {
 
 async function loadPersonInfo(e, data) {
     const person_info = await rssm.getPersonDetail(data['person_id'])
-    console.log(person_info)
     mainWindow.webContents.send('personsinfo:show', person_info);
 }
 
