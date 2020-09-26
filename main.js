@@ -38,16 +38,15 @@ process.on('uncaughtException',   errorHandler);
 /**
  * application startup handler
  */
-function app_init() {
+async function app_init() {
 
     const PATHSEP    = getPathSeparator()
     const configSet  = process.env.ELECTRON_DEV ? 'dev' : 'default'
     const configFile = app.getPath('userData') + PATHSEP + CONFIGNAME
     
     // initialize main RSSMShares object
-    rssm = new RSSMShares(configFile, configSet);
-    rssm.init();
-
+    rssm = new RSSMShares(configFile, configSet)
+    await rssm.init()
 
     // create UI window
     if(mainWindow === null) {
@@ -491,35 +490,67 @@ async function executeMutation(e, person) {
 }
 
 
+/**
+ * collect data for annual report and send to report ui
+ * @param {Event} e 
+ * @param {Object} range  constains report start and end date 
+ */
 async function executeReport(e, range) {
-
+    const today = new Date()
+    const todayStr = helpers.dateToDbString(today)
     const startDateStr = helpers.dateToDbString(range.startDate)
     const endDateStr = helpers.dateToDbString(range.endDate)
+    const endDate = Date.parse(endDateStr)
     
-    const transactions = await rssm.getTransactionList(startDateStr, endDateStr);
-    const kapital = await rssm.getShareKapital(endDateStr);
+    const kapital = await rssm.getShareKapital(endDateStr) // total number of shares and kapital values
+    const rssmShares = await rssm.getRSSMShares() // get all RSSM shares as of today
+    let rssmStock = rssmShares.length  // todays stock of RSSM shares   
+    const transactionsAll = await rssm.getTransactionList(startDateStr, todayStr) // get all transactions between today and beginning of report
+    const transactions = []
+    let sharesBought = 0
+    let sharesSold = 0
 
-    //console.log("executeReport", range, transactions, kapital);
+    // evaluate transactions 
+    for (i=transactionsAll.length-1; i>=0; i--) {
+        const t = transactionsAll[i]
+        const transactionDate = Date.parse(t['transaction_date'])
 
+        if(transactionDate > endDate) {
+            // transaction is after report range, correct rssmStock towards report endDate
+            rssmStock = rssmStock + t['stock_change']
+        } else {
+            // transaction is in report range, add to list
+            transactions.unshift(t)
+            if(t['stock_change'] < 0) {
+                sharesSold = sharesSold + Math.abs(t['stock_change'])
+            } else {
+                sharesBought = sharesBought + t['stock_change']
+            }
+        }
+    }
+
+    // Send data to report ui
     mainWindow.webContents.send('report:data:show', {
         today          : helpers.dateToString(),
         startDate      : helpers.dateToString(range.startDate),
         endDate        : helpers.dateToString(range.endDate),
         transactions   : transactions,
-        stock          : transactions[transactions.length-1].share_stock,
+        stock          : rssmStock,
         shares_total   : kapital[0].shares_total,
-        shares_kapital : kapital[0].shares_kapital
-    });
-
+        shares_kapital : kapital[0].shares_kapital,
+        shares_bought  : sharesBought,
+        shares_sold    : sharesSold
+    })
 }
 
 
+/**
+ * renerate and open report document
+ * @param {Event} e 
+ * @param {Object} reportData 
+ */
 async function exportReport(e, reportData) {
-
-    // generate document
     const report_path = await RSSMDocs.makeAnnualReport(reportData, rssm);
-
-    // open document
     shell.openItem(report_path);
 }
 
