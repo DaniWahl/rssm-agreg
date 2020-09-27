@@ -377,9 +377,17 @@
 
                         <div class="row">
                             <div class="row">
-                                <div class="input-field col s5">
+                                <div class="input-field col s8">
                                     <label for="mutation-a-code-select"><i class="fas fa-search"></i> Aktionär</label>
-                                    <input type="text" id="mutation-a-code-select" class=autocomplete" name="holder">
+                                    <input type="text" id="mutation-a-code-select" class="autocomplete" name="holder">
+                                </div>
+
+                                <div class="switch col s2">
+                                    <label>
+                                        <i class="far fa-envelope"></i> Korrespondenz
+                                        <input type="checkbox" id="mutation-correspondence-input" name="correspondence"/>
+                                        <span class="lever"></span>
+                                    </label>
                                 </div>
                             </div>
 
@@ -428,7 +436,7 @@
                                     <input type="text" id="mutation-city-input" name="city">
                                 </div>
                             </div>
-
+                            <div class="row">&nbsp;</div>
                             <div class="row">
                                 <div class="input-field col s10">
                                     <label for="mutation-comment-input">Kommentar</label>
@@ -436,16 +444,6 @@
                                 </div>
                             </div>
 
-                        </div>
-
-                        <div class="row">
-                            <div class="switch col s10">
-                                <label>
-                                    <i class="far fa-envelope"></i> Korrespondenz
-                                    <input type="checkbox" id="mutation-correspondence-input" name="correspondence"/>
-                                    <span class="lever"></span>
-                                </label>
-                            </div>
                         </div>
 
 
@@ -820,7 +818,7 @@
                 <ul class="tabs">
                     <li class="tab col s4"><a class="active" href="#shares">Aktien</a></li>
                     <li class="tab col s4"><a href="#comments">Kommentare</a></li>
-                    <li class="tab col s4"><a href="#trail">Protokol</a></li>
+                    <li class="tab col s4"><a href="#trail">Protokoll</a></li>
                 </ul>
                 <div class="col s12" id="shares">
                     <table id="persons-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
