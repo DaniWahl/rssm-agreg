@@ -73,7 +73,6 @@ function showPersons(e, holders) {
 }
 
 function loadPersonInfo(e) {
-    data = {}
     target = e.currentTarget
     ipcRenderer.send('personinfo:load', { 'person_id': target.getAttribute('person_id') });
 }

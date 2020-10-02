@@ -232,7 +232,8 @@
                 <table id="table-journal" class="compact nowrap stripe hover row-border order-column">
                     <thead>
                     <tr>
-                        <th>Journal</th>
+                        <th></th>
+                        <th>Journal Nr</th>
                         <th width="100">Datum</th>
                         <th>A-Code</th>
                         <th width="200">Name</th>
@@ -655,6 +656,7 @@
                     <div class="col s12">
                         <ul class="tabs tabs-fixed-width z-depth-1" id="settings-tabs">
                             <li class="tab col"><a href="#settings-app" class="active">Applikation</a></li>
+                            <li class="tab col"><a href="#settings-db" class="active">Datenbank</a></li>
                             <li class="tab col"><a href="#settings-agreg">Aktienregister</a></li>
                         </ul>
                     </div>
@@ -706,13 +708,62 @@
 
                     </div>
 
+                    <div id="settings-db" class="col s12">                        
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th width="200"><i class="fas fa-code"></i> Version</th>
+                                    <td width="*"><span class="setting-info" id="admin-info-dbversion"></span></td>
+                                    <td width="150"></td>
+                                </tr> 
+                                <tr id="admin-info-dbpath-row">
+                                    <th ><i class="fas fa-database"></i> Datenbank</th>
+                                    <td><span class="setting-info" id="admin-info-dbpath"></span></td>
+                                    <td>
+                                        <button id="admin-db-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th ><i class="fas fa-folder"></i> Backupordner</th>
+                                    <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
+                                    <td>
+                                        <button id="admin-backup-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="fas fa-copy"></i> Datenbank Backups</th>
+                                    <td><div class="setting-info" id="admin-info-backup-list"></div></td>
+                                    <td>
+                                        <button id="admin-db-backup-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th ><i class="fas fa-folder"></i> Exportordner</th>
+                                    <td><span class="setting-info" id="admin-info-exportspath"></span></td>
+                                    <td>
+                                        <button id="admin-export-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
+                                    <td><span class="setting-info" id="admin-info-export-list"></span></td>
+                                    <td>
+                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
                     <div id="settings-app" class="col s12">
                         
                         <table>
                             <tbody>
                                 <tr>
                                     <th width="200"><i class="fas fa-code"></i> Version</th>
-                                    <td width="*"><span class="setting-info" id="admin-info-version"></span></td>
+                                    <td width="*"><span class="setting-info" id="admin-info-appversion"></span></td>
                                     <td width="150"></td>
                                 </tr>
                                 <tr>
@@ -725,54 +776,13 @@
                                     <td width="*"><span class="setting-info" id="admin-info-configset"></span></td>
                                     <td width="150"></td>
                                 </tr>
-
-                                
-                                <tr id="admin-info-dbpath-row">
-                                    <th ><i class="fas fa-database"></i> Datenbank</th>
-                                    <td><span class="setting-info" id="admin-info-dbpath"></span></td>
-                                    <td>
-                                        <button id="admin-db-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
                                 <tr>
-                                    <th ><i class="fas fa-clone"></i> Backups</th>
-                                    <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
-                                    <td>
-                                        <button id="admin-backup-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th ><i class="fas fa-file-pdf"></i> Dokumente</th>
+                                    <th ><i class="fas fa-folder"></i> Dokumenteordner</th>
                                     <td><span class="setting-info" id="admin-info-documentspath"></span></td>
                                     <td>
                                         <button id="admin-document-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
                                     </td>
                                 </tr>
-
-                                <tr>
-                                    <th ><i class="fas fa-file-excel"></i> Exporte</th>
-                                    <td><span class="setting-info" id="admin-info-exportspath"></span></td>
-                                    <td>
-                                        <button id="admin-export-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <th><i class="fas fa-archive"></i> Datenbank Backups</th>
-                                    <td><div class="setting-info" id="admin-info-backup-list"></div></td>
-                                    <td>
-                                        <button id="admin-db-backup-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
-                                    <td><span class="setting-info" id="admin-info-export-list"></span></td>
-                                    <td>
-                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
-                                    </td>
-                                </tr>
-                                
                             </tbody>
                         </table>
                         
@@ -866,6 +876,56 @@
 </div>
 
 
+<div id="journal-info-modal" class="modal modal-fixed-footer modal-wide">
+    <div class="modal-content" style="overflow: visible !important;">
+        <h5></h5>
+        <div class="row">
+            <div class="col s3">
+                <p class="journal_date"></p>
+                <p class="transaction_date"></p>
+            </div>
+            <div class="col s3">
+                <p class="action"></p>
+                <p class="shares"></p>
+            </div>
+            <div class="col s6">
+                <p class="person"></p>
+            </div>
+        </div>
+        <div class="row z-depth-1" style="height: 450px !important">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s6"><a class="active" href="#journal-shares">Aktien</a></li>
+                    <li class="tab col s6"><a href="#journal-comments">Kommentare</a></li>
+                </ul>
+                <div class="col s12" id="journal-shares">
+                    <table id="journal-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Aktien Nr</th>
+                                <th>Aktien Typ</th>
+                                <th>Wert (CHF)</th>
+                                <th>Kaufdatum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col s12" id="journal-comments">
+                    <table id="journal-info-comments-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Kommentar</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="confirmation-modal-enter-person" class="modal modal-fixed-footer">
     <div class="modal-content">

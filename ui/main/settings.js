@@ -133,7 +133,9 @@ function setValues(data) {
     }
 
         
-    document.querySelector('#admin-info-version').textContent = data.version
+    document.querySelector('#admin-info-appversion').textContent = data.app_version
+    document.querySelector('#admin-info-dbversion').textContent = data.db_version
+    
     document.querySelector('#admin-info-configfile').textContent = data.user_config_file
     document.querySelector('#admin-info-configset').textContent = data.user_config_set
     

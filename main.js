@@ -31,6 +31,7 @@ ipcMain.on('dbbackup:create',     createDbBackup);
 ipcMain.on('dbexport:create',     createDbExport);
 ipcMain.on('settings:update',     saveSettings);
 ipcMain.on('personinfo:load',     loadPersonInfo);
+ipcMain.on('journalinfo:load',    loadJournalInfo);
 process.on('uncaughtException',   errorHandler);
 
 
@@ -104,6 +105,12 @@ async function app_init() {
 async function loadPersonInfo(e, data) {
     const person_info = await rssm.getPersonDetail(data['person_id'])
     mainWindow.webContents.send('personsinfo:show', person_info);
+}
+
+async function loadJournalInfo(e, data) {
+    console.log(data)
+    const journal_info = await rssm.getJournalDetail(data['journal_id'])
+    mainWindow.webContents.send('journalinfo:show', journal_info);
 }
 
 
@@ -632,7 +639,7 @@ async function loadContentData(e, element_id) {
 
         case 'settings':
             mainWindow.webContents.send('admin:settings:show', {
-                version : VERSION,
+                app_version : VERSION,
                 user_config_file : rssm.config.file, 
                 user_config_set : rssm.config.set,
                 dbpath : rssm.config.get('dbpath'),
@@ -641,7 +648,7 @@ async function loadContentData(e, element_id) {
                 documentpath : rssm.config.get('documentpath'),
                 db_backup_list : rssm.config.get('backups'),
                 db_export_list : rssm.config.get('exports'),
-                
+                db_version : await rssm.getConfig('VERSION'),
                 A_CODE_SEQ : await rssm.getConfig('A_CODE_SEQ'),
                 AG_SECRETARY : await rssm.getConfig('AG_SECRETARY'),
                 AG_REGISTER : await rssm.getConfig('AG_REGISTER'),

@@ -11,7 +11,7 @@ require( 'datatables.net-scroller' )();
 
 
 // load ui modules
-const {showJournal} = require('./journal');
+const {showJournal, showJournalInfo} = require('./journal');
 const {showMutation} = require('./mutation');
 const {showPersons, showPersonInfo} = require('./persons');
 const {showRepurchase} = require('./repurchase');
@@ -62,6 +62,7 @@ ipcRenderer.on('holders:all:show',      showShareHoldersAll);
 ipcRenderer.on('persons:show',          showPersons);
 ipcRenderer.on('personsinfo:show',      showPersonInfo);
 ipcRenderer.on('journal:show',          showJournal);
+ipcRenderer.on('journalinfo:show',      showJournalInfo);
 ipcRenderer.on('report:show',           showReport);
 ipcRenderer.on('report:data:show',      showReportData);
 ipcRenderer.on('transfer:show',         showTransfer);
