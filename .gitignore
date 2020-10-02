@@ -2,3 +2,4 @@ build/*
 exports/*
 node_modules/*
 data/*
+db/complete*
