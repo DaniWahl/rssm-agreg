@@ -80,13 +80,53 @@ async function updateData(db) {
         const journalComments = await selectAllSql(db, "SELECT journal_id, person_id, comment FROM journal WHERE comment != ''")
         for(let i in journalComments) {
             const comment = journalComments[i]
-            log(`  inseting remark for journal ${comment['journal_id']}`)
+            log(`  inserting remark for journal ${comment['journal_id']}`)
             const resp = await runSql(db, "INSERT INTO remark (remark, user) VALUES (?,?)", [comment['comment'], info.file])
             await runSql(db, "INSERT INTO entity_remark (entity, entity_id, remark_id) VALUES (?,?,?)", ['journal', comment['journal_id'], resp['lastID']])
             if(comment['person_id']) {
                 await runSql(db, "INSERT INTO entity_remark (entity, entity_id, remark_id) VALUES (?,?,?)", ['person', comment['person_id'], resp['lastID']])
             }
         }
+
+        log(" updateData() fixing missing share_chunk records...")
+        const sql = `SELECT * FROM journal 
+        WHERE action NOT IN ('Mutation') AND journal_id NOT IN (
+            SELECT DISTINCT journal_id FROM share_chunk 
+        )`
+        const journals = await selectAllSql(db, sql)
+        for (let i in journals) {
+            const shares = await selectAllSql(db, 'SELECT share_id, journal_id FROM certificate WHERE journal_id=?', [journals[i]['journal_id']])
+            for (let j in shares) {
+                const share = shares[j]
+                log(`  inserting share_chunk for share ${share['share_id']} and journal ${share['journal_id']}`)
+                const resp = await runSql(db, "INSERT INTO share_chunk (share_id, journal_id) VALUES (?,?)", [share['share_id'], share['journal_id'] ])
+            }
+        }
+
+        log(" updateData() undating certificate status...")
+        await runSql(db, `update certificate set status = 'electronic' where certificate_id in (
+            select certificate_id from certificate
+            join share using (certificate_id)
+            where person_id = (
+                select person_id from person where a_code = '999010'
+            )
+        )`)
+        await runSql(db, `update certificate set status = 'issued' where certificate_id in (
+            select certificate_id from certificate
+            join share using (certificate_id)
+            where person_id != (
+                select person_id from person where a_code = '999010'
+            )
+        )`)
+        await runSql(db, `update certificate set status = 'canceled' where certificate_id in (
+            select certificate_id from certificate where status is null
+        )`)
+        await runSql(db, `update certificate set status = 'invalidated' where certificate_id in (
+            select certificate_id from certificate
+            join share using (certificate_id)
+            where person_id = (select person_id from person where a_code = '929000')
+        )`)
+
 
         log(" updateData() updating database version...")
         await runSql(db, "UPDATE config SET value=? WHERE param='VERSION'", [info.target])
@@ -197,6 +237,9 @@ const ddl = [
         "entity_id"	INTEGER NOT NULL,
         "remark_id"	INTEGER NOT NULL
     )`,
+    `ALTER TABLE "certificate" RENAME COLUMN "status" TO "check_status"`,
+    `ALTER TABLE "certificate" ADD COLUMN "status" TEXT`,
+    `ALTER TABLE "certificate" ADD COLUMN "hash" TEXT`,
     `CREATE INDEX audit_trail_i1 ON audit_trail(entity, entity_id)`,
     `CREATE INDEX entity_remark_i1 ON entity_remark(entity, entity_id, remark_id)`
 ]
