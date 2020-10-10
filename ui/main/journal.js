@@ -1,3 +1,9 @@
+// setup journal ui specific event handlers
+document.querySelector('#new-journal-comment-save-btn').addEventListener('click', submitJournalComment);
+document.querySelector('#new-journal-comment').addEventListener('keyup', enableSubmitBtn);
+
+
+
 /**
  * handler for the journal:show IPC event.
  * displays the journal data on it's table
@@ -61,13 +67,15 @@ function showJournal(e, journal) {
 
 function loadJournalInfo(e) {
     target = e.currentTarget
-    console.log(target)
     ipcRenderer.send('journalinfo:load', { 'journal_id': target.getAttribute('journal_id') });
 }
 
 
 
 function showJournalInfo(e, data) {
+
+    console.log(data)
+
     // prepare data table configuration
     const config = getDataTableConfig();
     config.paging = false
@@ -75,21 +83,29 @@ function showJournalInfo(e, data) {
     config.bInfo = false
     config.scrollY = "310px"
     config.scollCollapse = true
+    config.ordering = false
     let shares = data.journal_info.repurchased + data.journal_info.sold
     if (shares=='0') {
         shares = ''
+    } else if (shares=='1') {
+        shares = shares + ' Aktie'
     } else {
         shares = shares + ' Aktien'
+    }
+    let prep = 'von'
+    if(data.journal_info.action == 'Verkauf') {
+        prep = 'für'
     }
 
     // initialize and show dialog
     const dialogEl = document.querySelector('#journal-info-modal')
     dialogEl.querySelector('div > div.modal-content > h5').innerHTML = `${data.journal_info.journal_no}  ${data.journal_info.transaction_type}`
     dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.journal_date').innerHTML = `<b>Journal Datum:</b> ${data.journal_info.journal_date}`
-    dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.transaction_date').innerHTML = `<b>Buchungs Datum:</b> ${data.transaction_date || ''}`
-    dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.action').innerHTML = `${data.journal_info.action}`
+    dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.transaction_date').innerHTML = `<b>Buchungs Datum:</b> ${data.journal_info.booking_date || ''}`
+    dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.action').innerHTML = `<b>${data.journal_info.action}</b>`
     dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.shares').innerHTML = `${shares}`
-    dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.person').innerHTML = `${data.journal_info.name} (${data.journal_info.a_code})`
+    dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.person').innerHTML = `${prep} ${data.journal_info.name} (${data.journal_info.a_code})`
+    document.querySelector('#new-journal-comment-id').value = data.journal_info.journal_id
 
     const tableSharesEl = $('#journal-info-shares-table');
     const tableCommentsEl = $('#journal-info-comments-table');
@@ -117,6 +133,7 @@ function showJournalInfo(e, data) {
             {data : 'remark'},
             {
                 data : 'timestamp',
+                type : 'data',
                 render : function(data, type, row) {
                     return helpers.timestampUTCtoString(data)
                 } 
@@ -142,6 +159,37 @@ function showJournalInfo(e, data) {
     dialog.open()
 }
 
+
+function enableSubmitBtn(e) {
+    document.querySelector('#new-journal-comment-save-btn').classList.remove('disabled')
+}
+
+function submitJournalComment(e) {
+    // extract comment data from from
+    const journal_id = document.querySelector('#new-journal-comment-id').value
+    const comment = document.querySelector('#new-journal-comment').value
+
+    // send data to main process
+    ipcRenderer.send('journalcomment:set', { 'journal_id': journal_id, 'remark': comment });
+
+    // empty comment form
+    document.querySelector('#new-journal-comment').value = ''
+    document.querySelector('#new-journal-comment-save-btn').classList.add('disabled')
+
+    // fill new comment into table
+    const now = new Date()
+    const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000)
+
+    const tableComments = $('#journal-info-comments-table').DataTable();
+    tableComments.row.add({
+        'remark' : comment,
+        'timestamp' : utc
+    }).draw()
+
+    // select comments tab
+    const tabs = M.Tabs.getInstance(document.querySelector('#journal-info-tabs'))
+    tabs.select('journal-comments')
+}
 
 module.exports = {
     showJournal,

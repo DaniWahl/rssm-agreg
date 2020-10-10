@@ -1,5 +1,10 @@
 const helpers = require('../../lib/app.helpers');
 
+// setup journal ui specific event handlers
+document.querySelector('#new-person-comment-save-btn').addEventListener('click', submitPersonComment);
+document.querySelector('#new-person-comment').addEventListener('keyup', enableSubmitBtn);
+
+
 function showPersons(e, holders) {
 
     // show target element
@@ -86,6 +91,7 @@ function showPersonInfo(e, data) {
     config.bInfo = false
     config.scrollY = "310px"
     config.scollCollapse = true
+    config.ordering = false
 
     correspondence = "Aktiv"
     if (data.person_info.correspondence == '0') {
@@ -98,7 +104,7 @@ function showPersonInfo(e, data) {
     dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.address').innerHTML = `${data.person_info.address}<br>${data.person_info.post_code} ${data.person_info.city}`
     dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.correspondence').innerHTML = `<b>Korrespondenz:</b> ${correspondence}`
     dialogEl.querySelector('div > div.modal-content > div.row > div.col > p.shares').innerHTML = `<b>Anzahl Aktien:</b> ${data.shares.length}`
-
+    document.querySelector('#new-person-comment-id').value = data.person_info.person_id
 
     const tableSharesEl = $('#persons-info-shares-table');
     const tableCommentsEl = $('#persons-info-comments-table');
@@ -145,6 +151,7 @@ function showPersonInfo(e, data) {
             {data : 'user'},
             {
                 data : 'timestamp',
+                type : 'date',
                 render : function(data, type, row) {
                     return helpers.timestampUTCtoString(data)
                 } 
@@ -174,6 +181,37 @@ function showPersonInfo(e, data) {
     dialog.open()
 }
 
+
+function enableSubmitBtn(e) {
+    document.querySelector('#new-person-comment-save-btn').classList.remove('disabled')
+}
+
+function submitPersonComment(e) {
+    // extract comment data from from
+    const person_id = document.querySelector('#new-person-comment-id').value
+    const comment = document.querySelector('#new-person-comment').value
+
+    // send data to main process
+    ipcRenderer.send('personcomment:set', { 'person_id': person_id, 'remark': comment });
+
+    // empty comment form
+    document.querySelector('#new-person-comment').value = ''
+    document.querySelector('#new-person-comment-save-btn').classList.add('disabled')
+
+    // fill new comment into table
+    const now = new Date()
+    const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000)
+
+    const tableComments = $('#persons-info-comments-table').DataTable();
+    tableComments.row.add({
+        'remark' : comment,
+        'timestamp' : utc
+    }).draw()
+
+    // select comments tab
+    const tabs = M.Tabs.getInstance(document.querySelector('#person-info-tabs'))
+    tabs.select('person-comments')
+}
 
 
 module.exports = {
