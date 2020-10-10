@@ -538,6 +538,17 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="input-field col s4">
+                                    <select id="sale-cert-type" name="cert_type">
+                                        <option value="paper" selected>Papier</option>
+                                        <option value="electronic" >Elektronisch</option>
+                                        <option value="reservation">Reservation</option>
+                                    </select>
+                                    <label>Zertifikat</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="input-field col s10">
                                     <label for="sale-comment-input">Kommentar</label>
                                     <input type="text" id="sale-comment-input" name="comment">
@@ -547,7 +558,7 @@
                         </div>
 
                         <div class="row">
-                            <div id="sale-list" class="col s12 share-dd-container" style="height:200px">
+                            <div id="sale-list" class="col s12 share-dd-container" style="height:150px">
                             </div>
                         </div>
 

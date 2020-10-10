@@ -402,30 +402,36 @@ async function executeSale(e, data) {
             mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
 
             // generate documents
-            const cert_path = await RSSMDocs.makeCertificates(info, rssm);
-            rssm.registerDocument({
-                journal_id : info.journal_id,
-                path : cert_path
-            });
 
-            const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
-            rssm.registerDocument({
-                journal_id : info.journal_id,
-                path : letter_path
-            });
+            if(data.transaction.cert_type == 'paper') {
+                const cert_path = await RSSMDocs.makeCertificates(info, rssm);
+                rssm.registerDocument({
+                    journal_id : info.journal_id,
+                    path : cert_path
+                });
+                shell.openItem(cert_path);
+            }
+
+            if(data.transaction.cert_type == 'paper' ) {
+                const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
+                rssm.registerDocument({
+                    journal_id : info.journal_id,
+                    path : letter_path
+                });
+                shell.openItem(letter_path);
+            }
 
 
             const journal_path = await RSSMDocs.makeJournalSale(info, rssm);
             rssm.registerDocument({
                 journal_id : info.journal_id,
                 path : journal_path
-            });
-
-
-            // open documents
-            shell.openItem(cert_path);
-            shell.openItem(letter_path);
+            });            
             shell.openItem(journal_path);
+
+
+            
+            
 
         })
         .catch(err => {

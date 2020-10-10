@@ -128,6 +128,7 @@ function submitSale(e) {
 
     // get selected shares
     const shares = getSelectedShares(SALE_TYPE);
+    const cert_type = formData.get('cert_type');
 
 
     let buyer_status = 'new';
@@ -136,7 +137,21 @@ function submitSale(e) {
     }
 
     // form dialog message
-    let msg = `Die folgenden <b>${shares.length}</b> Aktien werden dem Aktionär <b>${buyer.name}</b> verkauft:<br> `;
+    let msg = `Die folgenden <b>${shares.length}</b> Aktien werden`;
+    if (cert_type == 'paper') {
+        msg += `dem Aktionär <b>${buyer.name}</b> verkauft:<br>`;
+        msg += `Die Zertifikate werden ausgestellt und gedruckt.`
+    } 
+    else if (cert_type == 'reservation') {
+        msg += `für den Aktionär <b>${buyer.name}</b> reserviert:<br>`;
+        msg += `Die Zertifikate werden mit dem Vermerk 'reserviert' ausgestellt aber nicht gedruckt.`
+    } 
+    else if (cert_type == 'electronic') {
+        msg += `dem Aktionär <b>${buyer.name}</b> verkauft:<br>`;
+        msg += `Die Zertifikate werden mit dem Vermerk 'elektronisch' ausgestellt aber nicht gedruckt.`
+    }
+    
+    
     msg += `<ul style="list-style-type:disc"><b>`;
     shares.forEach(share_no => {
         msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
@@ -180,6 +195,7 @@ function doSale(e) {
       sale.transaction = {
           comment :    formData.get('comment'),
           booking_date : formData.get('transaction'),
+          cert_type : formData.get('cert_type'),
           shares : getSelectedShares(SALE_TYPE)
       };
 

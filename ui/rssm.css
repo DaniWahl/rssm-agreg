@@ -23,6 +23,7 @@ a.current {
     background: var(--action-item-blue-light) !important;
     border: none !important;
 }
+
 a.paginate_button:hover {
     background: var(--action-item-blue-ultra-light) !important;
     border: none !important;

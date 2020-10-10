@@ -26,8 +26,9 @@ const {showEnterPerson} = require('./newPerson');
 
 // initialize Materialze library
 M.AutoInit();
-const datePickers = document.querySelectorAll('input.datepicker');
-M.Datepicker.init(datePickers, {
+M.Modal.init(document.querySelectorAll('.modal'));
+M.FormSelect.init(document.querySelectorAll('select'));
+M.Datepicker.init(document.querySelectorAll('input.datepicker'), {
     autoClose : true,
     defaultDate : new Date(),
     //setDefaultDate : true,
@@ -43,8 +44,10 @@ M.Datepicker.init(datePickers, {
         cancel : 'Abbrechen'
     }
 });
-const modals = document.querySelectorAll('.modal')
-M.Modal.init(modals)
+
+
+                                        
+                                        
 
 
 
