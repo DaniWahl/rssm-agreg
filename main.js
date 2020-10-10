@@ -32,6 +32,8 @@ ipcMain.on('dbexport:create',     createDbExport);
 ipcMain.on('settings:update',     saveSettings);
 ipcMain.on('personinfo:load',     loadPersonInfo);
 ipcMain.on('journalinfo:load',    loadJournalInfo);
+ipcMain.on('journalcomment:set',  setJournalComment);
+ipcMain.on('personcomment:set',   setPersonComment);
 process.on('uncaughtException',   errorHandler);
 
 
@@ -108,7 +110,6 @@ async function loadPersonInfo(e, data) {
 }
 
 async function loadJournalInfo(e, data) {
-    console.log(data)
     const journal_info = await rssm.getJournalDetail(data['journal_id'])
     mainWindow.webContents.send('journalinfo:show', journal_info);
 }
@@ -494,6 +495,18 @@ async function executeMutation(e, person) {
 
         });
 }
+
+async function setJournalComment(e, data) {
+    await rssm.logComment(data.remark, {'journal': data.journal_id})
+    mainWindow.webContents.send('toast:show', 'Kommentar gespeichert');
+}
+
+async function setPersonComment(e, data) {
+    console.log(data)
+    await rssm.logComment(data.remark, {'person': data.person_id})
+    mainWindow.webContents.send('toast:show', 'Kommentar gespeichert');
+}
+
 
 
 /**
