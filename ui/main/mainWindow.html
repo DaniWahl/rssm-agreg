@@ -825,12 +825,13 @@
         </div>
         <div class="row z-depth-1" style="height: 450px !important">
             <div class="col s12">
-                <ul class="tabs">
-                    <li class="tab col s4"><a class="active" href="#shares">Aktien</a></li>
-                    <li class="tab col s4"><a href="#comments">Kommentare</a></li>
-                    <li class="tab col s4"><a href="#trail">Protokoll</a></li>
+                <ul id="person-info-tabs" class="tabs">
+                    <li class="tab col s3"><a class="active" href="#person-shares">Aktien</a></li>
+                    <li class="tab col s3"><a href="#person-comments">Kommentare</a></li>
+                    <li class="tab col s3"><a href="#add-person-comment">Kommentar erfassen</a></li>
+                    <li class="tab col s3"><a href="#person-trail">Protokoll</a></li>
                 </ul>
-                <div class="col s12" id="shares">
+                <div class="col s12" id="person-shares">
                     <table id="persons-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
                         <thead>
                             <tr>
@@ -844,7 +845,7 @@
                         <tbody></tbody>
                     </table>
                 </div>
-                <div class="col s12" id="comments">
+                <div class="col s12" id="person-comments">
                     <table id="persons-info-comments-table" class="compact nowrap compact stripe hover row-border order-column">
                         <thead>
                             <tr>
@@ -855,7 +856,15 @@
                         <tbody></tbody>
                     </table>
                 </div>
-                <div class="col s12" id="trail">
+                <div class="input-field col s12" id="add-person-comment" style="height: 350px;">
+                    <textarea id="new-person-comment" class="input-field materialize-textarea"></textarea>
+                    <input type="hidden" id="new-person-comment-id">
+                    <label for="new-person-comment">Kommentar</label>
+                    <button id="new-person-comment-save-btn" class="btn btn-small waves-effect disabled" type="submit" style="position: absolute; bottom: 0; left: 0;">
+                        <i class="fas fa-save"></i> Speichern
+                    </button>
+                </div>
+                <div class="col s12" id="person-trail">
                     <table id="persons-info-trail-table" class="compact nowrap compact stripe hover row-border order-column">
                         <thead>
                             <tr>
@@ -880,23 +889,24 @@
     <div class="modal-content" style="overflow: visible !important;">
         <h5></h5>
         <div class="row">
-            <div class="col s3">
+            <div class="col s4">
                 <p class="journal_date"></p>
                 <p class="transaction_date"></p>
             </div>
-            <div class="col s3">
+            <div class="col s4">
                 <p class="action"></p>
                 <p class="shares"></p>
             </div>
-            <div class="col s6">
+            <div class="col s4">
                 <p class="person"></p>
             </div>
         </div>
         <div class="row z-depth-1" style="height: 450px !important">
             <div class="col s12">
-                <ul class="tabs">
-                    <li class="tab col s6"><a class="active" href="#journal-shares">Aktien</a></li>
-                    <li class="tab col s6"><a href="#journal-comments">Kommentare</a></li>
+                <ul id="journal-info-tabs" class="tabs">
+                    <li class="tab col s4"><a class="active" href="#journal-shares">Aktien</a></li>
+                    <li class="tab col s4"><a href="#journal-comments">Kommentare</a></li>
+                    <li class="tab col s4"><a href="#add-journal-comment">Kommentar erfassen</a></li>
                 </ul>
                 <div class="col s12" id="journal-shares">
                     <table id="journal-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
@@ -921,6 +931,14 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+                </div>
+                <div class="input-field col s12" id="add-journal-comment" style="height: 350px;">
+                    <textarea id="new-journal-comment" class="input-field materialize-textarea"></textarea>
+                    <input type="hidden" id="new-journal-comment-id">
+                    <label for="new-journal-comment">Kommentar</label>
+                    <button id="new-journal-comment-save-btn" class="btn btn-small waves-effect disabled" type="submit" style="position: absolute; bottom: 0; left: 0;">
+                        <i class="fas fa-save"></i> Speichern
+                    </button>
                 </div>
             </div>
         </div>
