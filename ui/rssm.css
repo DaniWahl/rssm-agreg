@@ -7,6 +7,7 @@ html, body  {
     height: 99%;
     font-family: Helvetica;
     --content-grey-normal: #E0E0E0;
+    --content-grey-light: #ECECEC;
     --nav-item-grey-normal : #E0E0E0;
     --nav-item-grey-highlight : #ECEFF1 ;
     --nav-item-blue-grey-highlight: #CFD8DC;
@@ -85,6 +86,17 @@ input:focus {
     border-bottom: 1px solid var(--action-item-blue-normal) !important;
 }
 
+.input-field textarea:focus + label {
+    color: var(--action-item-blue-normal) !important;
+}
+.row .input-field textarea:focus {
+    border-bottom: 1px solid var(--action-item-blue-normal) !important;
+    box-shadow: 0 1px 0 0 #2196f3 !important
+}
+textarea {
+    color: var(--action-item-blue-dark) !important;
+}
+
 /* search fields - dropdown text color */
 ul.dropdown-content li span {
     color: var(--action-item-blue-dark) !important;
@@ -123,6 +135,7 @@ div.datepicker-date-display  {
 
 div.modal-wide {
     width: 65% !important;
+    background-color: var(--content-grey-light) !important;
 }
 
 /* Tabs */
