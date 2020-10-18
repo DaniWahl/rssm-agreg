@@ -2,6 +2,8 @@ const SALE_TYPE = 'sale';
 
 // setup repurchase ui specific event handlers
 document.querySelector('#sale-submit').addEventListener('click', submitSale);
+document.querySelector('#sale-reserved-submit').addEventListener('click', submitSale);
+
 document.querySelector('#confirmation-sale-ok').addEventListener('click', doSale);
 document.querySelector('#sale-n-shares').addEventListener('input', updateShareList);
 
@@ -110,6 +112,8 @@ function indexShareList(rssmSharesNo) {
 function submitSale(e) {
     e.preventDefault();
 
+    let transaction_type = 'sale'
+
     // get form data
     const formData = new FormData(document.querySelector('form[name=sale]'));
 
@@ -130,6 +134,13 @@ function submitSale(e) {
     const shares = getSelectedShares(SALE_TYPE);
     const cert_type = formData.get('cert_type');
 
+    console.log(e)
+
+    if(e.target.id == 'sale-reserved-submit') {
+        // this is a sale of reserved shares - need to remember this
+        transaction_type = 'sale-reserved'    
+    }
+    formData.set('transaction-type', transaction_type)
 
     let buyer_status = 'new';
     if (holder !== '') {
@@ -138,18 +149,22 @@ function submitSale(e) {
 
     // form dialog message
     let msg = `Die folgenden <b>${shares.length}</b> Aktien werden`;
+    if(transaction_type == 'sale-reserved') {
+        msg +=  ` nun definitiv auf den Aktionär <b>${buyer.name}</b> ausgestellt:<br>`
+    } else {
+        msg += ` dem Aktionär <b>${buyer.name}</b> verkauft:<br>`;
+    }
+
     if (cert_type == 'paper') {
-        msg += `dem Aktionär <b>${buyer.name}</b> verkauft:<br>`;
         msg += `Die Zertifikate werden ausgestellt und gedruckt.`
     } 
     else if (cert_type == 'reservation') {
-        msg += `für den Aktionär <b>${buyer.name}</b> reserviert:<br>`;
         msg += `Die Zertifikate werden mit dem Vermerk 'reserviert' ausgestellt aber nicht gedruckt.`
     } 
     else if (cert_type == 'electronic') {
-        msg += `dem Aktionär <b>${buyer.name}</b> verkauft:<br>`;
         msg += `Die Zertifikate werden mit dem Vermerk 'elektronisch' ausgestellt aber nicht gedruckt.`
-    }
+    }        
+
     
     
     msg += `<ul style="list-style-type:disc"><b>`;
@@ -196,6 +211,7 @@ function doSale(e) {
           comment :    formData.get('comment'),
           booking_date : formData.get('transaction'),
           cert_type : formData.get('cert_type'),
+          transaction_type : formData.get('transaction-type'),
           shares : getSelectedShares(SALE_TYPE)
       };
 
@@ -218,6 +234,8 @@ function doSale(e) {
  * @param {Object} data
  */
 function showSale(e, data) {
+
+    console.log(data)
 
     // show target element
     showElement('content-sale');
@@ -254,6 +272,12 @@ function showSale(e, data) {
 
             // get share holder with a_code
             const holder = data.a_codes[a_code];
+            const reserved = []
+            for (i in holder.shares) {
+                if(data.shares[holder.shares[i]]['status'] == 'reserved') {
+                    reserved.push(data.shares[holder.shares[i]])
+                }
+            }
 
             // save data global
             holder_orig = Object.assign({}, holder);
@@ -261,7 +285,21 @@ function showSale(e, data) {
             // load person data to form
             initSaleForm(holder);
 
-            document.querySelector('#sale-submit').classList.remove('disabled');
+
+            if(reserved.length) {
+                showShares(reserved, SALE_TYPE)
+                document.querySelector('#sale-reserved-submit').classList.remove('hidden');
+                document.querySelector('#sale-submit').classList.add('disabled');
+                ipcRenderer.send('dialog:show', {
+                    type: "info",
+                    message: "Diese Person hat reservierte Aktien.",
+                    title: "Reservierte Aktien",
+                    detail: 'Sie können die Zertifikate jetzt ausstellen. Dadurch werden die Zertifikate in elektronische oder ausgedruckte Aktienzertifikate umgewandelt.'
+                });
+
+            } else {
+                document.querySelector('#sale-submit').classList.remove('disabled');
+            }
 
         }
     });

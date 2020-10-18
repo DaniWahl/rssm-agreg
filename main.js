@@ -34,7 +34,9 @@ ipcMain.on('personinfo:load',     loadPersonInfo);
 ipcMain.on('journalinfo:load',    loadJournalInfo);
 ipcMain.on('journalcomment:set',  setJournalComment);
 ipcMain.on('personcomment:set',   setPersonComment);
+ipcMain.on('dialog:show',         showDialog);
 process.on('uncaughtException',   errorHandler);
+
 
 
 
@@ -395,57 +397,93 @@ async function executeSale(e, data) {
     }
     
 
-    rssm.sale(data.transaction, data.buyer)
-        .then(async function(info) {
+    if(data.transaction.transaction_type = 'sale-reserved') {
 
-            mainWindow.webContents.send('journal:show', rssm.data.journal);
-            mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
-
-            // generate documents
-
-            if(data.transaction.cert_type == 'paper') {
-                const cert_path = await RSSMDocs.makeCertificates(info, rssm);
-                rssm.registerDocument({
-                    journal_id : info.journal_id,
-                    path : cert_path
-                });
-                shell.openItem(cert_path);
-            }
-
-            if(data.transaction.cert_type == 'paper' ) {
-                const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
-                rssm.registerDocument({
-                    journal_id : info.journal_id,
-                    path : letter_path
-                });
-                shell.openItem(letter_path);
-            }
-
-
-            const journal_path = await RSSMDocs.makeJournalSale(info, rssm);
+        info = await rssm.saleReserved(data.transaction, data.buyer)
+        mainWindow.webContents.send('journal:show', rssm.data.journal);
+        mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
+        
+        // generate documents
+        if (data.transaction.cert_type == 'paper') {
+            const cert_path = await RSSMDocs.makeCertificates(info, rssm);
             rssm.registerDocument({
-                journal_id : info.journal_id,
-                path : journal_path
-            });            
-            shell.openItem(journal_path);
-
-
-            
-            
-
-        })
-        .catch(err => {
-
-            console.error(err);
-
-            dialog.showMessageBox(mainWindow, {
-                type: 'error',
-                title: 'Verkauf',
-                message: 'Verkauf fehler!',
-                detail: err.message
+                journal_id: info.journal_id,
+                path: cert_path
             });
+            shell.openItem(cert_path);
+        }
 
+        if (data.transaction.cert_type == 'paper') {
+            const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
+            rssm.registerDocument({
+                journal_id: info.journal_id,
+                path: letter_path
+            });
+            shell.openItem(letter_path);
+        }
+
+
+        const journal_path = await RSSMDocs.makeJournalSale(info, rssm);
+        rssm.registerDocument({
+            journal_id: info.journal_id,
+            path: journal_path
         });
+        shell.openItem(journal_path);    
+
+        console.log(info)
+    } else {
+
+    
+        rssm.sale(data.transaction, data.buyer)
+            .then(async function(info) {
+
+                mainWindow.webContents.send('journal:show', rssm.data.journal);
+                mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
+
+                // generate documents
+
+                if(data.transaction.cert_type == 'paper') {
+                    const cert_path = await RSSMDocs.makeCertificates(info, rssm);
+                    rssm.registerDocument({
+                        journal_id : info.journal_id,
+                        path : cert_path
+                    });
+                    shell.openItem(cert_path);
+                }
+
+                if(data.transaction.cert_type == 'paper' ) {
+                    const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
+                    rssm.registerDocument({
+                        journal_id : info.journal_id,
+                        path : letter_path
+                    });
+                    shell.openItem(letter_path);
+                }
+
+
+                const journal_path = await RSSMDocs.makeJournalSale(info, rssm);
+                rssm.registerDocument({
+                    journal_id : info.journal_id,
+                    path : journal_path
+                });            
+                shell.openItem(journal_path);        
+                
+
+            })
+            .catch(err => {
+
+                console.error(err);
+
+                dialog.showMessageBox(mainWindow, {
+                    type: 'error',
+                    title: 'Verkauf',
+                    message: 'Verkauf fehler!',
+                    detail: err.message
+                });
+
+            });
+    
+        }
 }
 
 /**
@@ -790,6 +828,10 @@ function errorHandler(e) {
         title: "Error"
     });
 
+}
+
+function showDialog(e, message) {
+    dialog.showMessageBox(message);
 }
 
 function getPathSeparator() {

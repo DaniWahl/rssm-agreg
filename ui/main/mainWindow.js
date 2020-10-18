@@ -159,6 +159,8 @@ function showElement(element_id) {
         document.querySelector(`#${element_id}`).classList.remove('hidden');
         console.log(`mainWindow.showElement: element '${element_id}' showed`);
     }
+
+    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
 }
 
 
@@ -171,8 +173,16 @@ function showElement(element_id) {
 function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
+    const exclamation_icon = '<div class="share-dd-icon"><i class="fas fa-question-circle"></i></a>'
+    let icon = ''
+
+    console.log(share)
+    if(share.status == 'reserved') {
+        icon = exclamation_icon
+    }
 
     const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-dd-item">
+        ${icon}
         <img src="../../assets/linden.png">
         <p class="share-no">${no}</p>
         <p class="name">${share.first_name} ${share.name}</p>

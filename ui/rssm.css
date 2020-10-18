@@ -210,7 +210,7 @@ ul.tabs {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 
@@ -307,6 +307,13 @@ share-dd-item p img {
     border: #949494 1px dashed !important;
 }
 
+
+.share-dd-icon  {
+    text-align: right;
+}
+.share-dd-icon i {
+    color: var(--action-item-blue-dark) !important; 
+}
 .share-dd-item img {
     width: 100%;
 }

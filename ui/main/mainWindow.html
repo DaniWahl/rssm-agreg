@@ -571,6 +571,7 @@
                                                                                       id="sale-journal"></span></div>
                                 <div class="collection-item summary">Anzahl Aktien <span class="secondary-content"
                                                                                          id="sale-shares"></span></div>
+                                <div class="input-field"><input type="hidden" name="transaction-type" id="sale-transaction-type"></div>
                             </div>
                             <div class="col s7 right-align" style="height: 100%;">
 
@@ -584,6 +585,9 @@
             <div class="card-action">
                 <button id="sale-submit" class="btn-large waves-effect disabled" type="submit">
                     Verkauf
+                </button>
+                <button id="sale-reserved-submit" class="btn-large waves-effect hidden" type="submit">
+                    Zertifikate ausstellen
                 </button>
             </div>
 
