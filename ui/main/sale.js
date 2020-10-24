@@ -2,9 +2,9 @@ const SALE_TYPE = 'sale';
 
 // setup repurchase ui specific event handlers
 document.querySelector('#sale-submit').addEventListener('click', submitSale);
-document.querySelector('#sale-reserved-submit').addEventListener('click', submitSale);
-
+document.querySelector('#sale-reserved-submit').addEventListener('click', submitIssueReserved);
 document.querySelector('#confirmation-sale-ok').addEventListener('click', doSale);
+document.querySelector('#confirmation-issuereserved-ok').addEventListener('click', doIssueReserved);
 document.querySelector('#sale-n-shares').addEventListener('input', updateShareList);
 
 //let rssmSharesNo;
@@ -23,6 +23,9 @@ function updateShareList(e) {
     if (isNaN(value)) {
         return;
     }
+
+    // override any reserved shares being displayed
+    document.querySelector('#sale-reserved-submit').classList.add("hidden")
 
     // pull list of available shares
     const list = getShareList(value);
@@ -112,7 +115,74 @@ function indexShareList(rssmSharesNo) {
 function submitSale(e) {
     e.preventDefault();
 
-    let transaction_type = 'sale'
+    // get form data
+    const formData = new FormData(document.querySelector('form[name=sale]'));
+
+    const holder = formData.get('holder');
+    const buyer = {
+        a_code: formData.get('a_code'),
+        salutation: formData.get('salutation'),
+        family: formData.get('family'),
+        first_name: formData.get('first_name'),
+        name: formData.get('name'),
+        address: formData.get('address'),
+        post_code: formData.get('post_code'),
+        city: formData.get('city'),
+        comment: formData.get('comment')
+    };
+
+    // get selected shares
+    const shares = getSelectedShares(SALE_TYPE);
+    const cert_type = formData.get('cert_type');
+
+    let buyer_status = 'new';
+    if (holder !== '') {
+        buyer_status = 'exists';
+    }
+
+    // form dialog message
+    let msg = `Die folgenden <b>${shares.length}</b> Aktien werden`;
+
+
+    if (cert_type == 'reservation') {
+        msg += ` für den Aktionär <b>${buyer.name}</b> reserviert.<br>`
+        msg += `Dabei werden Zertifikate mit dem Vermerk 'reserviert' erstellt aber noch nicht gedruckt.<br>`
+    } else {
+        msg += ` dem Aktionär <b>${buyer.name}</b> verkauft:<br>`
+    }
+    
+    if (cert_type == 'paper') {
+        msg += `Die Zertifikate werden ausgestellt und gedruckt.`
+    } 
+    else if (cert_type == 'electronic') {
+        msg += `Die Zertifikate werden mit dem Vermerk 'elektronisch' ausgestellt aber nicht gedruckt.`
+    }        
+    
+    msg += `<ul style="list-style-type:disc"><b>`;
+    shares.forEach(share_no => {
+        msg += `<li>${helpers.pad0(share_no, 3)}</li>`;
+    })
+    msg += '</b></ul>';
+
+    if (buyer_status === 'new') {
+        msg += '<p>Für den Aktionär werden neue Stammdaten erstellt.</p>';
+    }
+
+    // initialize and show dialog
+    let dialogEl = document.querySelector('#confirmation-modal-sale')
+    dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
+    M.Modal.getInstance(dialogEl).open()
+}
+
+
+
+ /**
+  * event handler for the Transfer Submit button.
+  * displays a confirmation dialog
+  * @param e
+  */
+ function submitIssueReserved(e) {
+    e.preventDefault();
 
     // get form data
     const formData = new FormData(document.querySelector('form[name=sale]'));
@@ -134,38 +204,21 @@ function submitSale(e) {
     const shares = getSelectedShares(SALE_TYPE);
     const cert_type = formData.get('cert_type');
 
-    console.log(e)
-
-    if(e.target.id == 'sale-reserved-submit') {
-        // this is a sale of reserved shares - need to remember this
-        transaction_type = 'sale-reserved'    
-    }
-    formData.set('transaction-type', transaction_type)
-
     let buyer_status = 'new';
     if (holder !== '') {
         buyer_status = 'exists';
     }
 
     // form dialog message
-    let msg = `Die folgenden <b>${shares.length}</b> Aktien werden`;
-    if(transaction_type == 'sale-reserved') {
-        msg +=  ` nun definitiv auf den Aktionär <b>${buyer.name}</b> ausgestellt:<br>`
-    } else {
-        msg += ` dem Aktionär <b>${buyer.name}</b> verkauft:<br>`;
-    }
+    let msg = `Die folgenden <b>${shares.length}</b> reservierten Aktien werden`;
+    msg +=  ` nun definitiv auf den Aktionär <b>${buyer.name}</b> ausgestellt:<br>`
 
     if (cert_type == 'paper') {
         msg += `Die Zertifikate werden ausgestellt und gedruckt.`
     } 
-    else if (cert_type == 'reservation') {
-        msg += `Die Zertifikate werden mit dem Vermerk 'reserviert' ausgestellt aber nicht gedruckt.`
-    } 
     else if (cert_type == 'electronic') {
         msg += `Die Zertifikate werden mit dem Vermerk 'elektronisch' ausgestellt aber nicht gedruckt.`
-    }        
-
-    
+    }         
     
     msg += `<ul style="list-style-type:disc"><b>`;
     shares.forEach(share_no => {
@@ -178,10 +231,9 @@ function submitSale(e) {
     }
 
     // initialize and show dialog
-    const dialogEl = document.querySelector('#confirmation-modal-sale')
+    const dialogEl = document.querySelector('#confirmation-modal-reserved')
     dialogEl.querySelector('div > div.modal-content > p').innerHTML = msg
-    const dialog = M.Modal.getInstance(dialogEl)
-    dialog.open()
+    M.Modal.getInstance(dialogEl).open()
 }
 
 
@@ -224,7 +276,51 @@ function doSale(e) {
           sale.buyer.a_code = null;
       }
 
+
       ipcRenderer.send('sale:execute', sale);
+}
+
+
+  /**
+   * event handler for the modal dialog ok button click.
+   * passes the data back to main for being processed
+   * @param e
+   */
+  function doIssueReserved(e) {
+
+    // get form data
+    const formData = new FormData(document.querySelector('form[name=sale]'));
+    const sale = {};
+
+    const holder = formData.get('holder');
+    sale.buyer = {
+        a_code :     formData.get('a_code'),
+        salutation : formData.get('salutation'),
+        family     : formData.get('family'),
+        first_name : formData.get('first_name'),
+        name :       formData.get('name'),
+        address :    formData.get('address'),
+        post_code :  formData.get('post_code'),
+        city :       formData.get('city')
+    };
+    sale.transaction = {
+        comment :    formData.get('comment'),
+        booking_date : formData.get('transaction'),
+        cert_type : formData.get('cert_type'),
+        transaction_type : formData.get('transaction-type'),
+        shares : getSelectedShares(SALE_TYPE)
+    };
+
+    // extract a_code
+    let reg = /.+ \((.+)\)$/;
+    let matches = reg.exec(holder);
+    if(matches) {
+        sale.buyer.a_code = matches[1];
+    } else {
+        sale.buyer.a_code = null;
+    }
+
+    ipcRenderer.send('issuereserved:execute', sale);
 }
 
 /**

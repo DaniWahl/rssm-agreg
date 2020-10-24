@@ -173,19 +173,18 @@ function showElement(element_id) {
 function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
-    const exclamation_icon = '<div class="share-dd-icon"><i class="fas fa-question-circle"></i></a>'
+    const reserved_icon = '<div class="share-dd-icon"><i class="far fa-registered"></i></a>'
     let icon = ''
 
-    console.log(share)
     if(share.status == 'reserved') {
-        icon = exclamation_icon
+        icon = reserved_icon
     }
 
-    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-dd-item">
-        ${icon}
+    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-status-${share.status} share-dd-item">
         <img src="../../assets/linden.png">
         <p class="share-no">${no}</p>
         <p class="name">${share.first_name} ${share.name}</p>
+        ${icon}
     </div>`;
 
     return html;
@@ -279,6 +278,14 @@ function updateSelected(type) {
     const selected = $(`${container_id} div.share-dd-item-selected`);
     document.querySelector(summary_id).innerHTML = selected.length;
 
+    for(let i=0; i<selected.length; i++) {
+        // stop here if any of the selected shares is a reserved certificate
+        if($(selected[i]).hasClass('share-status-reserved') && type == 'sale') {
+            return
+        }
+    }
+
+    // if we reach this, en-disable the sale submit button
     if(selected.length) {
         $(submit_id).removeClass('disabled');
     } else {

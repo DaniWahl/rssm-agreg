@@ -542,7 +542,7 @@
                                     <select id="sale-cert-type" name="cert_type">
                                         <option value="paper" selected>Papier</option>
                                         <option value="electronic" >Elektronisch</option>
-                                        <option value="reservation">Reservation</option>
+                                        <option value="reservation">Reservierung</option>
                                     </select>
                                     <label>Zertifikat</label>
                                 </div>
@@ -571,7 +571,7 @@
                                                                                       id="sale-journal"></span></div>
                                 <div class="collection-item summary">Anzahl Aktien <span class="secondary-content"
                                                                                          id="sale-shares"></span></div>
-                                <div class="input-field"><input type="hidden" name="transaction-type" id="sale-transaction-type"></div>
+                                <div class="input-field"><input type="hidden" name="transaction-type" id="sale-transaction-type" value="sale"></div>
                             </div>
                             <div class="col s7 right-align" style="height: 100%;">
 
@@ -979,6 +979,20 @@
     <div class="modal-footer">
         <a href="#!" id='confirmation-sale-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Verkauf
             OK</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+    </div>
+</div>
+
+
+<div id="confirmation-modal-reserved" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Reservierte Zertifikate ausstellen</h4>
+        <p style="margin: 40px"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" id='confirmation-issuereserved-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">
+            OK
+        </a>
         <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
     </div>
 </div>

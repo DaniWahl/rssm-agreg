@@ -309,11 +309,14 @@ share-dd-item p img {
 
 
 .share-dd-icon  {
-    text-align: right;
+    font-size: 85px;
+    bottom: -20px;
+    right: 2px;
+    position: absolute;
+    z-index: -1 !important;
+    color: rgb(30,30,30,.25) !important;
 }
-.share-dd-icon i {
-    color: var(--action-item-blue-dark) !important; 
-}
+
 .share-dd-item img {
     width: 100%;
 }
