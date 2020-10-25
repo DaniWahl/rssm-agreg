@@ -320,7 +320,8 @@ function doSale(e) {
         sale.buyer.a_code = null;
     }
 
-    ipcRenderer.send('issuereserved:execute', sale);
+    document.querySelector('#sale-reserved-submit').classList.add('hidden')
+    ipcRenderer.send('issuereserved:execute', sale)
 }
 
 /**
