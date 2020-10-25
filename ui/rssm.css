@@ -124,6 +124,12 @@ div.datepicker-date-display  {
 .switch label input[type=checkbox]:checked + .lever:after {
     background-color: var(--action-item-blue-normal) !important;
 }
+.switch-stayon label input[type=checkbox] + .lever {
+    background-color: var(--action-item-blue-light) !important;
+}
+.switch-stayon label input[type=checkbox] + .lever:after {
+    background-color: var(--action-item-blue-normal) !important;
+}
 
 /* buttons */ 
 .btn, .btn-large, .btn-small {
