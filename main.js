@@ -904,12 +904,7 @@ function getMainMenuTemplate() {
                     loadContentData(e, 'dashboard')
                 }
             }, {
-                label: 'Aktienregister Aktuell',
-                click(item, window, e) {
-                    loadContentData(e, 'content-share-holders-current')
-                }
-            }, {
-                label: 'Aktienregister Historie',
+                label: 'Aktienregister',
                 click(item, window, e) {
                     loadContentData(e, 'content-share-holders-all')
                 }
