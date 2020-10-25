@@ -3,6 +3,7 @@ const helpers = require('../../lib/app.helpers');
 // setup journal ui specific event handlers
 document.querySelector('#new-person-comment-save-btn').addEventListener('click', submitPersonComment);
 document.querySelector('#new-person-comment').addEventListener('keyup', enableSubmitBtn);
+document.querySelector('#shareholders-all-filter-switch').addEventListener('change', switchFilter);
 
 
 function showPersons(e, holders) {
@@ -71,6 +72,7 @@ function showPersons(e, holders) {
 
     table.clear();
     table.rows.add(tableData).draw();
+    table.column(6).search("[1-9]", true).draw();
     console.log('showPersons: loaded table data');
 
 
@@ -213,6 +215,17 @@ function submitPersonComment(e) {
     tabs.select('person-comments')
 }
 
+
+
+function switchFilter(e) {
+    e.preventDefault()
+
+    if(e.target.checked) {
+        $('#table-persons-all').DataTable().column(6).search("^0$", true, false).draw();
+    } else {
+        $('#table-persons-all').DataTable().column(6).search("[1-9]", true, false).draw();
+    }
+}
 
 module.exports = {
     showPersons,

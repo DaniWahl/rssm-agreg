@@ -72,18 +72,13 @@ function showShareHoldersAll(e, holders) {
 
 function switchFilter(e) {
     e.preventDefault()
-
     if(e.target.checked) {
-        filterCurrent('')
+        $('#table-share-holders-all').DataTable().table.column(8).search('').draw();
     } else {
-        filterCurrent('1')
+        $('#table-share-holders-all').DataTable().table.column(8).search('1').draw();
     }
 }
 
-function filterCurrent(val) {
-    const table = $('#table-share-holders-all').DataTable();
-    table.column(8).search(val).draw();
-}
 
 module.exports = {
     showShareHoldersAll

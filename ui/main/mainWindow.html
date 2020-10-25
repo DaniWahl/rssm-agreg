@@ -27,7 +27,6 @@
             <a target="content-share-holders-all" class="collection-item" href="#">Aktienregister</a>
             <a target="content-persons" class="collection-item" href="#">Aktionäre</a>
             <a target="content-journal" class="collection-item" href="#">Journal</a>
-            
             <div class="collection-item menu-category">Aktionen</div>
             <a target="content-sale" class="collection-item" href="#">Verkauf</a>
             <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
@@ -157,34 +156,9 @@
             </div>
         </div>
 
-
-        <div id="content-share-holders-current" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Aktienregister Aktuell</span>
-
-
-                <table id="table-share-holders-current" class="compact nowrap stripe hover row-border order-column">
-                    <thead>
-                    <tr>
-                        <th width="80">Aktien Nr</th>
-                        <th>A-Code</th>
-                        <th>Name</th>
-                        <th>Vorname</th>
-                        <th>Adresse</th>
-                        <th>Ort</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-            </div>
-
-
-        </div>
-
         <div id="content-share-holders-all" class="content-element card hidden z-depth-3">
             <div class="card-content">
-                <span class="card-title">Aktienregister Historie</span>
+                <span class="card-title">Aktienregister</span>
                 <div class="row center-align">
                     <div class="switch switch-stayon col s12" id="shares-all-filter-switch">
                         <label>
@@ -215,7 +189,17 @@
 
         <div id="content-persons" class="content-element card hidden z-depth-3">
             <div class="card-content">
-                <span class="card-title">Aktienregister - Aktionäre</span>
+                <span class="card-title">Aktionäre</span>
+                <div class="row center-align">
+                    <div class="switch switch-stayon col s12" id="shareholders-all-filter-switch">
+                        <label>
+                            Aktuell
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            Historisch
+                          </label>
+                    </div>
+                </div>
                 <table id="table-persons-all" class="compact nowrap compact stripe hover row-border order-column">
                     <thead>
                     <tr>
@@ -237,7 +221,7 @@
 
         <div id="content-journal" class="content-element card hidden z-depth-3">
             <div class="card-content">
-                <span class="card-title">Aktienregister - Journal</span>
+                <span class="card-title">Journal</span>
                 <table id="table-journal" class="compact nowrap stripe hover row-border order-column">
                     <thead>
                     <tr>
