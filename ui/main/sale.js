@@ -420,7 +420,6 @@ function initSaleSummary(data) {
  * @param {Object} holder
  */
 function initSaleForm(holder = {}) {
-
     if (!holder.a_code) {
         document.querySelector('#sale-a-code-select').value = '';
     }
@@ -434,10 +433,14 @@ function initSaleForm(holder = {}) {
     document.querySelector('#sale-city-input').value = holder.city || '';
     document.querySelector('#sale-comment-input').value = holder.comment || '';
     document.querySelector('#sale-n-shares').value = '';
+    document.querySelector('#sale-transaction').value = '';
+    document.querySelector('#sale-cert-type').value = 'paper';
     document.querySelector('#sale-list').innerHTML = '';
+
     document.querySelector('#sale-submit').classList.add('disabled');
 
     M.updateTextFields();
+    M.FormSelect.init(document.querySelector('#sale-cert-type'));
 }
 
 
