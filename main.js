@@ -649,7 +649,7 @@ async function loadContentData(e, element_id) {
             });
             break;
 
-        case 'content-register':)
+        case 'content-register':
             mainWindow.webContents.send('shareregister:show', rssm.data.history);
             break;
 
