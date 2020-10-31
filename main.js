@@ -421,6 +421,16 @@ async function executeIssueReserved(e, data) {
         shell.openItem(letter_path);
     }
 
+    console.log(typeof(info.transfer), info.transfer)
+    if (typeof(info.transfer) == 'object') {
+        const transfer_journal_path = await RSSMDocs.makeJournalTransfer(info.transfer, rssm);
+        rssm.registerDocument({
+            journal_id: info.transfer.journal_id,
+            path: transfer_journal_path
+        });
+        shell.openItem(transfer_journal_path);
+    }
+
 
     const journal_path = await RSSMDocs.makeJournalIssueReserved(info, rssm);
     rssm.registerDocument({
