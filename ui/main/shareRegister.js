@@ -2,11 +2,11 @@
 // shares-all-filter-switch
 document.querySelector('#shares-all-filter-switch').addEventListener('change', switchFilter);
 
-function showShareHoldersAll(e, holders) {
+function showShareRegister(e, holders) {
 
 
     // show target element
-    showElement('content-share-holders-all');
+    showElement('content-register');
     const tableEl = $('#table-share-holders-all');
     let table;
 
@@ -73,13 +73,13 @@ function showShareHoldersAll(e, holders) {
 function switchFilter(e) {
     e.preventDefault()
     if(e.target.checked) {
-        $('#table-share-holders-all').DataTable().table.column(8).search('').draw();
+        $('#table-share-holders-all').DataTable().column(8).search('').draw();
     } else {
-        $('#table-share-holders-all').DataTable().table.column(8).search('1').draw();
+        $('#table-share-holders-all').DataTable().column(8).search('1').draw();
     }
 }
 
 
 module.exports = {
-    showShareHoldersAll
+    showShareRegister
 };

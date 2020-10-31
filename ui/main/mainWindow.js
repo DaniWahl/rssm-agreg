@@ -17,7 +17,7 @@ const {showPersons, showPersonInfo} = require('./persons');
 const {showRepurchase} = require('./repurchase');
 const {showTransfer} = require('./transfer');
 const {showSale} = require('./sale');
-const {showShareHoldersAll} = require('./shareHoldersAll');
+const {showShareRegister} = require('./shareRegister');
 const {showDashboard} = require('./dashboard');
 const {showSettings} = require('./settings');
 const {showReport, showReportData} = require('./report');
@@ -45,10 +45,6 @@ M.Datepicker.init(document.querySelectorAll('input.datepicker'), {
 });
 
 
-                                        
-                                        
-
-
 
 // are these still needed ? 
 // let row_group;
@@ -59,7 +55,7 @@ ipcRenderer.on('version:show',          showVersion);
 ipcRenderer.on('information:show',      showInfo);
 ipcRenderer.on('dashboard:show',        showDashboard);
 ipcRenderer.on('repurchase:show',       showRepurchase);
-ipcRenderer.on('holders:all:show',      showShareHoldersAll);
+ipcRenderer.on('shareregister:show',    showShareRegister);
 ipcRenderer.on('persons:show',          showPersons);
 ipcRenderer.on('personsinfo:show',      showPersonInfo);
 ipcRenderer.on('journal:show',          showJournal);

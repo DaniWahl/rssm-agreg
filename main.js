@@ -649,12 +649,8 @@ async function loadContentData(e, element_id) {
             });
             break;
 
-        case 'content-share-holders-current':
-            mainWindow.webContents.send('holders:current:show', rssm.data.shareHolders);
-            break;
-
-        case 'content-share-holders-all':
-            mainWindow.webContents.send('holders:all:show', rssm.data.history);
+        case 'content-register':)
+            mainWindow.webContents.send('shareregister:show', rssm.data.history);
             break;
 
         case 'content-persons':
@@ -906,7 +902,7 @@ function getMainMenuTemplate() {
             }, {
                 label: 'Aktienregister',
                 click(item, window, e) {
-                    loadContentData(e, 'content-share-holders-all')
+                    loadContentData(e, 'content-register')
                 }
             }, {
                 label: 'Aktionäre',
