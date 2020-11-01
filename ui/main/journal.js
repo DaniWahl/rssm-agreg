@@ -93,7 +93,7 @@ function showJournalInfo(e, data) {
         shares = shares + ' Aktien'
     }
     let prep = 'von'
-    if(data.journal_info.action == 'Verkauf') {
+    if(data.journal_info.action == 'Verkauf' || data.journal_info.action == 'Reservierung') {
         prep = 'für'
     }
 
