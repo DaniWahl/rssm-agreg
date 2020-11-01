@@ -436,7 +436,6 @@ function initSaleForm(holder = {}) {
     document.querySelector('#sale-transaction').value = '';
     document.querySelector('#sale-cert-type').value = 'paper';
     document.querySelector('#sale-list').innerHTML = '';
-
     document.querySelector('#sale-submit').classList.add('disabled');
 
     M.updateTextFields();
