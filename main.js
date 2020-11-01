@@ -421,8 +421,7 @@ async function executeIssueReserved(e, data) {
         shell.openItem(letter_path);
     }
 
-    console.log(typeof(info.transfer), info.transfer)
-    if (typeof(info.transfer) == 'object') {
+    if (info.transfer != null) {
         const transfer_journal_path = await RSSMDocs.makeJournalTransfer(info.transfer, rssm);
         rssm.registerDocument({
             journal_id: info.transfer.journal_id,
@@ -568,7 +567,6 @@ async function setJournalComment(e, data) {
 }
 
 async function setPersonComment(e, data) {
-    console.log(data)
     await rssm.logComment(data.remark, { 'person': data.person_id })
     mainWindow.webContents.send('toast:show', 'Kommentar gespeichert');
 }
