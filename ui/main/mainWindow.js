@@ -167,18 +167,25 @@ function showElement(element_id) {
 function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
-    const reserved_icon = '<div class="share-dd-icon"><i class="far fa-registered"></i></a>'
-    let icon = ''
+    let icon_div = ''
+    let hash_div = ''
 
     if(share.status == 'reserved') {
-        icon = reserved_icon
+        icon_div = '<div class="share-dd-icon"><i class="far fa-registered"></i></a>'
+    }
+    if(share.status == 'invalidated') {
+        icon_div = '<div class="share-dd-icon"><i class="fas fa-ban"></i></a>'
+    }
+    if(type == 'repurchase' && share.hash) {
+        hash_div = `<div class="share-dd-hash">${share.hash.substr(0, 8)}</div>`
     }
 
     const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-status-${share.status} share-dd-item">
         <img src="../../assets/linden.png">
         <p class="share-no">${no}</p>
         <p class="name">${share.first_name} ${share.name}</p>
-        ${icon}
+        ${hash_div}
+        ${icon_div}
     </div>`;
 
     return html;
