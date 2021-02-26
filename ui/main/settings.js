@@ -60,10 +60,10 @@ function saveSettings() {
         originalSettings.A_CODE_SEQ = settings.A_CODE_SEQ;
     }
 
-    if(settings.AG_SECRETARY == originalSettings.AG_SECRETARY) {
-        delete settings.AG_SECRETARY;
+    if(settings.AG_SIGNTATURE2 == originalSettings.AG_SIGNTATURE2) {
+        delete settings.AG_SIGNTATURE2;
     } else {
-        originalSettings.AG_SECRETARY = settings.AG_SECRETARY;
+        originalSettings.AG_SIGNTATURE2 = settings.AG_SIGNTATURE2;
     }
 
     if(settings.AG_REGISTER == originalSettings.AG_REGISTER) {
@@ -72,10 +72,16 @@ function saveSettings() {
         originalSettings.AG_REGISTER = settings.AG_REGISTER;
     }
 
-    if(settings.AG_REGISTER_INITIALS == originalSettings.AG_REGISTER_INITIALS) {
-        delete settings.AG_REGISTER_INITIALS;
+    if(settings.AG_REGISTER_ADDRESS == originalSettings.AG_REGISTER_ADDRESS) {
+        delete settings.AG_REGISTER_ADDRESS;
     } else {
-        originalSettings.AG_REGISTER_INITIALS = settings.AG_REGISTER_INITIALS;
+        originalSettings.AG_REGISTER_ADDRESS = settings.AG_REGISTER_ADDRESS;
+    }
+
+    if(settings.AG_REGISTER_POSTCODE == originalSettings.AG_REGISTER_POSTCODE) {
+        delete settings.AG_REGISTER_POSTCODE;
+    } else {
+        originalSettings.AG_REGISTER_POSTCODE = settings.AG_REGISTER_POSTCODE;
     }
 
     if(settings.AG_REGISTER_CITY == originalSettings.AG_REGISTER_CITY) {
@@ -108,22 +114,28 @@ function setValues(data) {
         issues.push("Bitte Nummer für A-Code Sequenz definieren.")
     }
 
-    if(data.AG_SECRETARY) {
-        document.querySelector('#setting-edit-AG_SECRETARY').value = data.AG_SECRETARY
+    if(data.AG_SIGNATURE2) {
+        document.querySelector('#setting-edit-AG_SIGNATURE2').value = data.AG_SIGNATURE2
     } else {
-        issues.push("Bitte Person für Sekretariat definieren.")
+        issues.push("Bitte VR Mitglied für 2. Unterschrift definieren.")
     }
 
     if(data.AG_REGISTER) {
         document.querySelector('#setting-edit-AG_REGISTER').value = data.AG_REGISTER
     } else {
-        issues.push("Bitte Person für Aktienregisterführer definieren.")
+        issues.push("Bitte Vorname & Name für Aktienregisterführer definieren.")
     }
 
-    if(data.AG_REGISTER_INITIALS) {
-        document.querySelector('#setting-edit-AG_REGISTER_INITIALS').value = data.AG_REGISTER_INITIALS
+    if(data.AG_REGISTER_ADDRESS) {
+        document.querySelector('#setting-edit-AG_REGISTER_ADDRESS').value = data.AG_REGISTER_ADDRESS
     } else {
-        issues.push("Bitte Kürzel für Aktienregisterführer definieren.")
+        issues.push("Bitte Adresse für Aktienregisterführer definieren.")
+    }
+    
+    if(data.AG_REGISTER_POSTCODE) {
+        document.querySelector('#setting-edit-AG_REGISTER_POSTCODE').value = data.AG_REGISTER_POSTCODE
+    } else {
+        issues.push("Bitte Postleitzahl für Aktienregisterführer definieren.")
     }
 
     if(data.AG_REGISTER_CITY) {
@@ -219,9 +231,10 @@ function getValues() {
     const data = {};
 
     data.A_CODE_SEQ = parseInt($('#setting-edit-A_CODE_SEQ').val());
-    data.AG_SECRETARY = $('#setting-edit-AG_SECRETARY').val();
+    data.AG_SIGNATURE2 = $('#setting-edit-AG_SIGNATURE2').val();
     data.AG_REGISTER = $('#setting-edit-AG_REGISTER').val();
-    data.AG_REGISTER_INITIALS = $('#setting-edit-AG_REGISTER_INITIALS').val();
+    data.AG_REGISTER_ADDRESS = $('#setting-edit-AG_REGISTER_ADDRESS').val();
+    data.AG_REGISTER_POSTCODE = $('#setting-edit-AG_REGISTER_POSTCODE').val();
     data.AG_REGISTER_CITY = $('#setting-edit-AG_REGISTER_CITY').val();
     data.EXPORT_PATH = $('#setting-edit-EXPORT_PATH').val();
 

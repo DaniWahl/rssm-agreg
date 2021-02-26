@@ -125,24 +125,29 @@ async function saveSettings(e, data) {
         mainWindow.webContents.send('toast:show', 'A-Code Sequenz gespeichert : ' + data.A_CODE_SEQ);
     }
 
-    if (data.AG_SECRETARY) {
-        rssm.setConfig('AG_SECRETARY', data.AG_SECRETARY);
-        mainWindow.webContents.send('toast:show', 'AG Sekretariat gespeichert : ' + data.AG_SECRETARY);
+    if (data.AG_SIGNATURE2) {
+        rssm.setConfig('AG_SIGNATURE2', data.AG_SIGNATURE2);
+        mainWindow.webContents.send('toast:show', 'AG VR 2. Unterschrift gespeichert : ' + data.AG_SIGNATURE2);
     }
 
     if (data.AG_REGISTER) {
         await rssm.setConfig('AG_REGISTER', data.AG_REGISTER);
-        mainWindow.webContents.send('toast:show', 'AG Aktien Register gespeichert : ' + data.AG_REGISTER);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer gespeichert : ' + data.AG_REGISTER);
     }
 
-    if (data.AG_REGISTER_INITIALS) {
-        rssm.setConfig('AG_REGISTER_INITIALS', data.AG_REGISTER_INITIALS);
-        mainWindow.webContents.send('toast:show', 'Aktien Register, Initialen gespeichert : ' + data.AG_REGISTER_INITIALS);
+    if (data.AG_REGISTER_ADDRESS) {
+        rssm.setConfig('AG_REGISTER_ADDRESS', data.AG_REGISTER_ADDRESS);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer, Adresse gespeichert : ' + data.AG_REGISTER_ADDRESS);
+    }
+
+    if (data.AG_REGISTER_POSTCODE) {
+        rssm.setConfig('AG_REGISTER_POSTCODE', data.AG_REGISTER_POSTCODE);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer, PLZ gespeichert : ' + data.AG_REGISTER_POSTCODE);
     }
 
     if (data.AG_REGISTER_CITY) {
         rssm.setConfig('AG_REGISTER_CITY', data.AG_REGISTER_CITY);
-        mainWindow.webContents.send('toast:show', 'Aktien Register, Ort gespeichert : ' + data.AG_REGISTER_CITY);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer, Ort gespeichert : ' + data.AG_REGISTER_CITY);
     }
 
     if (data.EXPORT_PATH) {
@@ -723,9 +728,10 @@ async function loadContentData(e, element_id) {
                 db_export_list: rssm.config.get('exports'),
                 db_version: await rssm.getConfig('VERSION'),
                 A_CODE_SEQ: await rssm.getConfig('A_CODE_SEQ'),
-                AG_SECRETARY: await rssm.getConfig('AG_SECRETARY'),
+                AG_SIGNATURE2: await rssm.getConfig('AG_SIGNATURE2'),
                 AG_REGISTER: await rssm.getConfig('AG_REGISTER'),
-                AG_REGISTER_INITIALS: await rssm.getConfig('AG_REGISTER_INITIALS'),
+                AG_REGISTER_ADDRESS: await rssm.getConfig('AG_REGISTER_ADDRESS'),
+                AG_REGISTER_POSTCODE: await rssm.getConfig('AG_REGISTER_POSTCODE'),
                 AG_REGISTER_CITY: await rssm.getConfig('AG_REGISTER_CITY')
             });
             break;
