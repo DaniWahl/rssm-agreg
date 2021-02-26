@@ -7,6 +7,7 @@ html, body  {
     height: 99%;
     font-family: Helvetica;
     --content-grey-normal: #E0E0E0;
+    --content-grey-light: #ECECEC;
     --nav-item-grey-normal : #E0E0E0;
     --nav-item-grey-highlight : #ECEFF1 ;
     --nav-item-blue-grey-highlight: #CFD8DC;
@@ -22,6 +23,7 @@ a.current {
     background: var(--action-item-blue-light) !important;
     border: none !important;
 }
+
 a.paginate_button:hover {
     background: var(--action-item-blue-ultra-light) !important;
     border: none !important;
@@ -85,6 +87,17 @@ input:focus {
     border-bottom: 1px solid var(--action-item-blue-normal) !important;
 }
 
+.input-field textarea:focus + label {
+    color: var(--action-item-blue-normal) !important;
+}
+.row .input-field textarea:focus {
+    border-bottom: 1px solid var(--action-item-blue-normal) !important;
+    box-shadow: 0 1px 0 0 #2196f3 !important
+}
+textarea {
+    color: var(--action-item-blue-dark) !important;
+}
+
 /* search fields - dropdown text color */
 ul.dropdown-content li span {
     color: var(--action-item-blue-dark) !important;
@@ -111,10 +124,25 @@ div.datepicker-date-display  {
 .switch label input[type=checkbox]:checked + .lever:after {
     background-color: var(--action-item-blue-normal) !important;
 }
+.switch-stayon label input[type=checkbox] + .lever {
+    background-color: var(--action-item-blue-light) !important;
+}
+.switch-stayon label input[type=checkbox] + .lever:after {
+    background-color: var(--action-item-blue-normal) !important;
+}
 
 /* buttons */ 
 .btn, .btn-large, .btn-small {
     background-color: var(--action-item-blue-dark) !important;
+}
+.btn-table-icon {
+    color: var(--action-item-blue-dark) !important;
+    cursor: pointer;
+}
+
+div.modal-wide {
+    width: 65% !important;
+    background-color: var(--content-grey-light) !important;
 }
 
 /* Tabs */
@@ -188,7 +216,7 @@ ul.tabs {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 
@@ -210,7 +238,6 @@ div.rssm-app-info {
     background-size: 200px;
     background-repeat: no-repeat;
     background-color: var(--nav-item-grey-highlight);
-    background-color: ;
 }
 
 div.rssm-app-info p {
@@ -284,6 +311,25 @@ div.rssm-app-info span {
 
 share-dd-item p img {
     border: #949494 1px dashed !important;
+}
+
+.share-dd-hash {
+    position: absolute;
+    bottom: 5px;
+    text-align: center;
+    width: 80%;
+    font-size: 10px;
+    color: grey;
+    font-family: sans-serif;
+}
+
+.share-dd-icon  {
+    font-size: 85px;
+    bottom: -20px;
+    right: 2px;
+    position: absolute;
+    z-index: -1 !important;
+    color: rgb(30,30,30,.25) !important;
 }
 
 .share-dd-item img {

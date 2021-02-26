@@ -24,11 +24,9 @@
 
             <div class="collection-item menu-category">Aktienregister</div>
             <a target="dashboard" class="collection-item" href="#">Dashboard</a>
-            <a target="content-share-holders-current" class="collection-item" href="#">Aktienregister Aktuell</a>
-            <a target="content-share-holders-all" class="collection-item" href="#">Aktienregister Historie</a>
+            <a target="content-register" class="collection-item" href="#">Aktienregister</a>
             <a target="content-persons" class="collection-item" href="#">Aktionäre</a>
             <a target="content-journal" class="collection-item" href="#">Journal</a>
-            
             <div class="collection-item menu-category">Aktionen</div>
             <a target="content-sale" class="collection-item" href="#">Verkauf</a>
             <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
@@ -92,7 +90,7 @@
                         <th>Journal Nr</th>
                         <th>Transaktion</th>
                         <th>Aktionär</th>
-                        <th>Anzahl</th>
+                        <th>Kapitaländerung</th>
                         <th>Zertifikate</th>
                     </tr>
                     </thead>
@@ -158,41 +156,27 @@
             </div>
         </div>
 
-
-        <div id="content-share-holders-current" class="content-element card hidden z-depth-3">
+        <div id="content-register" class="content-element card hidden z-depth-3">
             <div class="card-content">
-                <span class="card-title">Aktienregister Aktuell</span>
-
-
-                <table id="table-share-holders-current" class="compact nowrap stripe hover row-border order-column">
-                    <thead>
-                    <tr>
-                        <th width="80">Aktien Nr</th>
-                        <th>A-Code</th>
-                        <th>Name</th>
-                        <th>Vorname</th>
-                        <th>Adresse</th>
-                        <th>Ort</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-            </div>
-
-
-        </div>
-
-        <div id="content-share-holders-all" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Aktienregister Historie</span>
+                <span class="card-title">Aktienregister</span>
+                <div class="row center-align">
+                    <div class="switch switch-stayon col s12" id="shares-all-filter-switch">
+                        <label>
+                            Aktuell
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            Historisch
+                          </label>
+                    </div>
+                </div>
                 <table id="table-share-holders-all" class="compact nowrap stripe hover row-border order-column">
                     <thead>
                     <tr>
                         <th width="80">Aktien Nr</th>
-                        <th>Generation</th>
-                        <th>Datum</th>
-                        <th>A-Code</th>
+                        <th width="80">Generation</th>
+                        <th width="80">Zertifikat</th>
+                        <th width="80">Datum</th>
+                        <th width="80">A-Code</th>
                         <th>Name</th>
                         <th>Vorname</th>
                         <th>Adresse</th>
@@ -206,10 +190,21 @@
 
         <div id="content-persons" class="content-element card hidden z-depth-3">
             <div class="card-content">
-                <span class="card-title">Aktienregister - Aktionäre</span>
+                <span class="card-title">Aktionäre</span>
+                <div class="row center-align">
+                    <div class="switch switch-stayon col s12" id="shareholders-all-filter-switch">
+                        <label>
+                            Aktuell
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            Historisch
+                          </label>
+                    </div>
+                </div>
                 <table id="table-persons-all" class="compact nowrap compact stripe hover row-border order-column">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>A-Code</th>
                         <th>Name</th>
                         <th>Vorname</th>
@@ -227,11 +222,12 @@
 
         <div id="content-journal" class="content-element card hidden z-depth-3">
             <div class="card-content">
-                <span class="card-title">Aktienregister - Journal</span>
+                <span class="card-title">Journal</span>
                 <table id="table-journal" class="compact nowrap stripe hover row-border order-column">
                     <thead>
                     <tr>
-                        <th>Journal</th>
+                        <th></th>
+                        <th>Journal Nr</th>
                         <th width="100">Datum</th>
                         <th>A-Code</th>
                         <th width="200">Name</th>
@@ -376,9 +372,17 @@
 
                         <div class="row">
                             <div class="row">
-                                <div class="input-field col s5">
+                                <div class="input-field col s8">
                                     <label for="mutation-a-code-select"><i class="fas fa-search"></i> Aktionär</label>
-                                    <input type="text" id="mutation-a-code-select" class=autocomplete" name="holder">
+                                    <input type="text" id="mutation-a-code-select" class="autocomplete" name="holder">
+                                </div>
+
+                                <div class="switch col s2">
+                                    <label>
+                                        <i class="far fa-envelope"></i> Korrespondenz
+                                        <input type="checkbox" id="mutation-correspondence-input" name="correspondence"/>
+                                        <span class="lever"></span>
+                                    </label>
                                 </div>
                             </div>
 
@@ -427,7 +431,7 @@
                                     <input type="text" id="mutation-city-input" name="city">
                                 </div>
                             </div>
-
+                            <div class="row">&nbsp;</div>
                             <div class="row">
                                 <div class="input-field col s10">
                                     <label for="mutation-comment-input">Kommentar</label>
@@ -435,16 +439,6 @@
                                 </div>
                             </div>
 
-                        </div>
-
-                        <div class="row">
-                            <div class="switch col s10">
-                                <label>
-                                    <i class="far fa-envelope"></i> Korrespondenz
-                                    <input type="checkbox" id="mutation-correspondence-input" name="correspondence"/>
-                                    <span class="lever"></span>
-                                </label>
-                            </div>
                         </div>
 
 
@@ -538,6 +532,17 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="input-field col s4">
+                                    <select id="sale-cert-type" name="cert_type">
+                                        <option value="paper" selected>Papier</option>
+                                        <option value="electronic" >Elektronisch</option>
+                                        <option value="reservation">Reservierung</option>
+                                    </select>
+                                    <label>Zertifikat</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="input-field col s10">
                                     <label for="sale-comment-input">Kommentar</label>
                                     <input type="text" id="sale-comment-input" name="comment">
@@ -547,7 +552,7 @@
                         </div>
 
                         <div class="row">
-                            <div id="sale-list" class="col s12 share-dd-container" style="height:200px">
+                            <div id="sale-list" class="col s12 share-dd-container" style="height:150px">
                             </div>
                         </div>
 
@@ -560,6 +565,7 @@
                                                                                       id="sale-journal"></span></div>
                                 <div class="collection-item summary">Anzahl Aktien <span class="secondary-content"
                                                                                          id="sale-shares"></span></div>
+                                <div class="input-field"><input type="hidden" name="transaction-type" id="sale-transaction-type" value="sale"></div>
                             </div>
                             <div class="col s7 right-align" style="height: 100%;">
 
@@ -573,6 +579,9 @@
             <div class="card-action">
                 <button id="sale-submit" class="btn-large waves-effect disabled" type="submit">
                     Verkauf
+                </button>
+                <button id="sale-reserved-submit" class="btn-large waves-effect hidden" type="submit">
+                    Zertifikate ausstellen
                 </button>
             </div>
 
@@ -656,6 +665,7 @@
                     <div class="col s12">
                         <ul class="tabs tabs-fixed-width z-depth-1" id="settings-tabs">
                             <li class="tab col"><a href="#settings-app" class="active">Applikation</a></li>
+                            <li class="tab col"><a href="#settings-db" class="active">Datenbank</a></li>
                             <li class="tab col"><a href="#settings-agreg">Aktienregister</a></li>
                         </ul>
                     </div>
@@ -707,13 +717,62 @@
 
                     </div>
 
+                    <div id="settings-db" class="col s12">                        
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th width="200"><i class="fas fa-code"></i> Version</th>
+                                    <td width="*"><span class="setting-info" id="admin-info-dbversion"></span></td>
+                                    <td width="150"></td>
+                                </tr> 
+                                <tr id="admin-info-dbpath-row">
+                                    <th ><i class="fas fa-database"></i> Datenbank</th>
+                                    <td><span class="setting-info" id="admin-info-dbpath"></span></td>
+                                    <td>
+                                        <button id="admin-db-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th ><i class="fas fa-folder"></i> Backupordner</th>
+                                    <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
+                                    <td>
+                                        <button id="admin-backup-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="fas fa-copy"></i> Datenbank Backups</th>
+                                    <td><div class="setting-info" id="admin-info-backup-list"></div></td>
+                                    <td>
+                                        <button id="admin-db-backup-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th ><i class="fas fa-folder"></i> Exportordner</th>
+                                    <td><span class="setting-info" id="admin-info-exportspath"></span></td>
+                                    <td>
+                                        <button id="admin-export-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
+                                    <td><span class="setting-info" id="admin-info-export-list"></span></td>
+                                    <td>
+                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
                     <div id="settings-app" class="col s12">
                         
                         <table>
                             <tbody>
                                 <tr>
                                     <th width="200"><i class="fas fa-code"></i> Version</th>
-                                    <td width="*"><span class="setting-info" id="admin-info-version"></span></td>
+                                    <td width="*"><span class="setting-info" id="admin-info-appversion"></span></td>
                                     <td width="150"></td>
                                 </tr>
                                 <tr>
@@ -726,54 +785,13 @@
                                     <td width="*"><span class="setting-info" id="admin-info-configset"></span></td>
                                     <td width="150"></td>
                                 </tr>
-
-                                
-                                <tr id="admin-info-dbpath-row">
-                                    <th ><i class="fas fa-database"></i> Datenbank</th>
-                                    <td><span class="setting-info" id="admin-info-dbpath"></span></td>
-                                    <td>
-                                        <button id="admin-db-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
                                 <tr>
-                                    <th ><i class="fas fa-clone"></i> Backups</th>
-                                    <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
-                                    <td>
-                                        <button id="admin-backup-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th ><i class="fas fa-file-pdf"></i> Dokumente</th>
+                                    <th ><i class="fas fa-folder"></i> Dokumenteordner</th>
                                     <td><span class="setting-info" id="admin-info-documentspath"></span></td>
                                     <td>
                                         <button id="admin-document-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
                                     </td>
                                 </tr>
-
-                                <tr>
-                                    <th ><i class="fas fa-file-excel"></i> Exporte</th>
-                                    <td><span class="setting-info" id="admin-info-exportspath"></span></td>
-                                    <td>
-                                        <button id="admin-export-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <th><i class="fas fa-archive"></i> Datenbank Backups</th>
-                                    <td><div class="setting-info" id="admin-info-backup-list"></div></td>
-                                    <td>
-                                        <button id="admin-db-backup-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
-                                    <td><span class="setting-info" id="admin-info-export-list"></span></td>
-                                    <td>
-                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
-                                    </td>
-                                </tr>
-                                
                             </tbody>
                         </table>
                         
@@ -803,6 +821,139 @@
 
 
 <!-- Modal Structure -->
+
+<div id="person-info-modal" class="modal modal-fixed-footer modal-wide">
+    <div class="modal-content" style="overflow: visible !important;">
+        <h5></h5>
+        <div class="row">
+            <div class="col s6"><p class="address"></p></div>
+            <div class="col s6">
+                <p class="correspondence"></p>
+                <p class="shares"></p>
+            </div>
+        </div>
+        <div class="row z-depth-1" style="height: 450px !important">
+            <div class="col s12">
+                <ul id="person-info-tabs" class="tabs">
+                    <li class="tab col s3"><a class="active" href="#person-shares">Aktien</a></li>
+                    <li class="tab col s3"><a href="#person-comments">Kommentare</a></li>
+                    <li class="tab col s3"><a href="#add-person-comment">Kommentar erfassen</a></li>
+                    <li class="tab col s3"><a href="#person-trail">Protokoll</a></li>
+                </ul>
+                <div class="col s12" id="person-shares">
+                    <table id="persons-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Aktien Nr</th>
+                                <th>Aktien Typ</th>
+                                <th>Wert (CHF)</th>
+                                <th>Kaufdatum</th>
+                                <th>Journal Nr</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col s12" id="person-comments">
+                    <table id="persons-info-comments-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Kommentar</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="input-field col s12" id="add-person-comment" style="height: 350px;">
+                    <textarea id="new-person-comment" class="input-field materialize-textarea"></textarea>
+                    <input type="hidden" id="new-person-comment-id">
+                    <label for="new-person-comment">Kommentar</label>
+                    <button id="new-person-comment-save-btn" class="btn btn-small waves-effect disabled" type="submit" style="position: absolute; bottom: 0; left: 0;">
+                        <i class="fas fa-save"></i> Speichern
+                    </button>
+                </div>
+                <div class="col s12" id="person-trail">
+                    <table id="persons-info-trail-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Typ</th>
+                                <th>Wert Neu</th>
+                                <th>Wert Original</th>
+                                <th>Feld</th>
+                                <th>Benutzer</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="journal-info-modal" class="modal modal-fixed-footer modal-wide">
+    <div class="modal-content" style="overflow: visible !important;">
+        <h5></h5>
+        <div class="row">
+            <div class="col s4">
+                <p class="journal_date"></p>
+                <p class="transaction_date"></p>
+            </div>
+            <div class="col s4">
+                <p class="action"></p>
+                <p class="shares"></p>
+            </div>
+            <div class="col s4">
+                <p class="person"></p>
+            </div>
+        </div>
+        <div class="row z-depth-1" style="height: 450px !important">
+            <div class="col s12">
+                <ul id="journal-info-tabs" class="tabs">
+                    <li class="tab col s4"><a class="active" href="#journal-shares">Aktien</a></li>
+                    <li class="tab col s4"><a href="#journal-comments">Kommentare</a></li>
+                    <li class="tab col s4"><a href="#add-journal-comment">Kommentar erfassen</a></li>
+                </ul>
+                <div class="col s12" id="journal-shares">
+                    <table id="journal-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Aktien Nr</th>
+                                <th>Aktien Typ</th>
+                                <th>Wert (CHF)</th>
+                                <th>Kaufdatum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col s12" id="journal-comments">
+                    <table id="journal-info-comments-table" class="compact nowrap compact stripe hover row-border order-column">
+                        <thead>
+                            <tr>
+                                <th>Kommentar</th>
+                                <th>Datum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="input-field col s12" id="add-journal-comment" style="height: 350px;">
+                    <textarea id="new-journal-comment" class="input-field materialize-textarea"></textarea>
+                    <input type="hidden" id="new-journal-comment-id">
+                    <label for="new-journal-comment">Kommentar</label>
+                    <button id="new-journal-comment-save-btn" class="btn btn-small waves-effect disabled" type="submit" style="position: absolute; bottom: 0; left: 0;">
+                        <i class="fas fa-save"></i> Speichern
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="confirmation-modal-enter-person" class="modal modal-fixed-footer">
     <div class="modal-content">
         <h4>Person Erfassen</h4>
@@ -822,6 +973,20 @@
     <div class="modal-footer">
         <a href="#!" id='confirmation-sale-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Verkauf
             OK</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+    </div>
+</div>
+
+
+<div id="confirmation-modal-reserved" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Reservierte Zertifikate ausstellen</h4>
+        <p style="margin: 40px"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" id='confirmation-issuereserved-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">
+            OK
+        </a>
         <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
     </div>
 </div>

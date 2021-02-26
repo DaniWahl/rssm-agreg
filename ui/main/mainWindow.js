@@ -11,14 +11,13 @@ require( 'datatables.net-scroller' )();
 
 
 // load ui modules
-const {showJournal} = require('./journal');
+const {showJournal, showJournalInfo} = require('./journal');
 const {showMutation} = require('./mutation');
-const {showPersons} = require('./persons');
+const {showPersons, showPersonInfo} = require('./persons');
 const {showRepurchase} = require('./repurchase');
 const {showTransfer} = require('./transfer');
 const {showSale} = require('./sale');
-const {showShareHoldersAll} = require('./shareHoldersAll');
-const {showShareHoldersCurrent} = require('./shareHoldersCurrent');
+const {showShareRegister} = require('./shareRegister');
 const {showDashboard} = require('./dashboard');
 const {showSettings} = require('./settings');
 const {showReport, showReportData} = require('./report');
@@ -26,8 +25,9 @@ const {showEnterPerson} = require('./newPerson');
 
 // initialize Materialze library
 M.AutoInit();
-const datePickers = document.querySelectorAll('input.datepicker');
-M.Datepicker.init(datePickers, {
+M.Modal.init(document.querySelectorAll('.modal'));
+M.FormSelect.init(document.querySelectorAll('select'));
+M.Datepicker.init(document.querySelectorAll('input.datepicker'), {
     autoClose : true,
     defaultDate : new Date(),
     //setDefaultDate : true,
@@ -43,8 +43,6 @@ M.Datepicker.init(datePickers, {
         cancel : 'Abbrechen'
     }
 });
-const modals = document.querySelectorAll('.modal')
-M.Modal.init(modals)
 
 
 
@@ -57,10 +55,11 @@ ipcRenderer.on('version:show',          showVersion);
 ipcRenderer.on('information:show',      showInfo);
 ipcRenderer.on('dashboard:show',        showDashboard);
 ipcRenderer.on('repurchase:show',       showRepurchase);
-ipcRenderer.on('holders:current:show',  showShareHoldersCurrent);
-ipcRenderer.on('holders:all:show',      showShareHoldersAll);
+ipcRenderer.on('shareregister:show',    showShareRegister);
 ipcRenderer.on('persons:show',          showPersons);
+ipcRenderer.on('personsinfo:show',      showPersonInfo);
 ipcRenderer.on('journal:show',          showJournal);
+ipcRenderer.on('journalinfo:show',      showJournalInfo);
 ipcRenderer.on('report:show',           showReport);
 ipcRenderer.on('report:data:show',      showReportData);
 ipcRenderer.on('transfer:show',         showTransfer);
@@ -154,6 +153,8 @@ function showElement(element_id) {
         document.querySelector(`#${element_id}`).classList.remove('hidden');
         console.log(`mainWindow.showElement: element '${element_id}' showed`);
     }
+
+    M.Tooltip.init(document.querySelectorAll('.tooltipped'));
 }
 
 
@@ -166,11 +167,25 @@ function showElement(element_id) {
 function  makeShareElement(share, type) {
 
     const no = helpers.pad0(share.share_no, 3);
+    let icon_div = ''
+    let hash_div = ''
 
-    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-dd-item">
+    if(share.status == 'reserved') {
+        icon_div = '<div class="share-dd-icon"><i class="far fa-registered"></i></a>'
+    }
+    if(share.status == 'invalidated') {
+        icon_div = '<div class="share-dd-icon"><i class="fas fa-ban"></i></a>'
+    }
+    if(type == 'repurchase' && share.hash) {
+        hash_div = `<div class="share-dd-hash">${share.hash.substr(0, 8)}</div>`
+    }
+
+    const html = `<div id="${type}-share-${share.share_no}" class="card-panel hoverable waves-effect waves-light share-status-${share.status} share-dd-item">
         <img src="../../assets/linden.png">
         <p class="share-no">${no}</p>
         <p class="name">${share.first_name} ${share.name}</p>
+        ${hash_div}
+        ${icon_div}
     </div>`;
 
     return html;
@@ -264,6 +279,14 @@ function updateSelected(type) {
     const selected = $(`${container_id} div.share-dd-item-selected`);
     document.querySelector(summary_id).innerHTML = selected.length;
 
+    for(let i=0; i<selected.length; i++) {
+        // stop here if any of the selected shares is a reserved certificate
+        if($(selected[i]).hasClass('share-status-reserved') && type == 'sale') {
+            return
+        }
+    }
+
+    // if we reach this, en-disable the sale submit button
     if(selected.length) {
         $(submit_id).removeClass('disabled');
     } else {
