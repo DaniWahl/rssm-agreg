@@ -331,7 +331,7 @@ async function executeRepurchase(e, data) {
 
 
             // open document
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
         })
         .catch(err => {
@@ -371,7 +371,7 @@ async function executeTransfer(e, data) {
 
 
             // open document
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
         })
         .catch(err => {
@@ -414,7 +414,7 @@ async function executeIssueReserved(e, data) {
             journal_id: info.journal_id,
             path: cert_path
         });
-        shell.openItem(cert_path);
+        shell.openExternal('file://' + cert_path);
     }
 
     if (data.transaction.cert_type == 'paper') {
@@ -423,7 +423,7 @@ async function executeIssueReserved(e, data) {
             journal_id: info.journal_id,
             path: letter_path
         });
-        shell.openItem(letter_path);
+        shell.openExternal('file://' + letter_path);
     }
 
     if (info.transfer != null) {
@@ -432,7 +432,7 @@ async function executeIssueReserved(e, data) {
             journal_id: info.transfer.journal_id,
             path: transfer_journal_path
         });
-        shell.openItem(transfer_journal_path);
+        shell.openExternal('file://' + transfer_journal_path);
     }
 
 
@@ -441,7 +441,7 @@ async function executeIssueReserved(e, data) {
         journal_id: info.journal_id,
         path: journal_path
     });
-    shell.openItem(journal_path);
+    shell.openExternal('file://' + journal_path);
 
 }
 
@@ -475,7 +475,7 @@ async function executeSale(e, data) {
                     journal_id: info.journal_id,
                     path: cert_path
                 });
-                shell.openItem(cert_path);
+                shell.openExternal('file://' + cert_path);
             }
 
             if (data.transaction.cert_type == 'paper') {
@@ -484,7 +484,16 @@ async function executeSale(e, data) {
                     journal_id: info.journal_id,
                     path: letter_path
                 });
-                shell.openItem(letter_path);
+                shell.openExternal('file://' + letter_path);
+            }
+
+            if (data.transaction.cert_type == 'reservation') {
+                const naming_form_path = await RSSMDocs.makeNamingForm(info, rssm);
+                rssm.registerDocument({
+                    journal_id: info.journal_id,
+                    path: naming_form_path
+                })
+                shell.openExternal('file://' + naming_form_path)
             }
 
 
@@ -493,7 +502,7 @@ async function executeSale(e, data) {
                 journal_id: info.journal_id,
                 path: journal_path
             });
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
 
         })
@@ -548,7 +557,7 @@ async function executeMutation(e, person) {
             });
 
             // open document
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
 
         })
@@ -639,7 +648,7 @@ async function executeReport(e, range) {
  */
 async function exportReport(e, reportData) {
     const report_path = await RSSMDocs.makeAnnualReport(reportData, rssm);
-    shell.openItem(report_path);
+    shell.openExternal('file://' + report_path);
 }
 
 
