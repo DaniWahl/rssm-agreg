@@ -3,10 +3,9 @@ const RSSMShares = require('../lib/RSSMShares').RSSMShares
 const helpers = require('../lib/app.helpers');
 
 
-makeForm()
+makeLetter()
 
-
-async function makeForm() {
+async function makeLetter() {
     const configSet = 'dev' 
     const configFile = "C:\\Users\\Dani\\AppData\\Roaming\\aktienregister-rssm\\config.json"
 
@@ -20,15 +19,16 @@ async function makeForm() {
         a_code: 'A00000',
         family: 'Mustermann',
         purchase_date: '2021-02-27',
-        comment: 'Die Aktien wurden für den Aktionär reserviert. Es wurden keine Zertifikate ausgestellt\n',
+        comment: '',
         journal_no: '21-000' + new Date().getTime(),
         journal_id: 900,
-        shares: [ '000' ]
+        shares: [ '000', '001', '002' ]
     }
     
     // initialize main RSSMShares object
     rssm = new RSSMShares(configFile, configSet)
     await rssm.init()
 
-    const naming_form_path = await RSSMDocs.makeNamingForm(info, rssm);
+    const naming_form_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm);
 }
+

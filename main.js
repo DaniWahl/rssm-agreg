@@ -7,6 +7,7 @@ const helpers = require('./lib/app.helpers');
 
 const VERSION = '1.6.0'
 const CONFIGNAME = 'config.json'
+const assetPath = __dirname + '/assets';
 
 let rssm = null
 let mainWindow = null
@@ -396,6 +397,8 @@ async function executeTransfer(e, data) {
  */
 async function executeIssueReserved(e, data) {
 
+    const repurchase_info_path = assetPath + '/repurchase_info2013.pdf'
+
     // convert booking date to correctly formatted db date string
     if (data.transaction.booking_date) {
         data.transaction.booking_date = helpers.dateToDbString(helpers.dmyToDate(data.transaction.booking_date))
@@ -407,24 +410,35 @@ async function executeIssueReserved(e, data) {
     mainWindow.webContents.send('journal:show', rssm.data.journal);
     mainWindow.webContents.send('toast:show', 'Ausstellung reservierter Zertifikate erfolgreich durchgeführt');
 
-    // generate documents
-    if (data.transaction.cert_type == 'paper') {
-        const cert_path = await RSSMDocs.makeCertificates(info, rssm);
-        rssm.registerDocument({
-            journal_id: info.journal_id,
-            path: cert_path
-        });
-        shell.openExternal('file://' + cert_path);
-    }
 
-    if (data.transaction.cert_type == 'paper') {
-        const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
-        rssm.registerDocument({
-            journal_id: info.journal_id,
-            path: letter_path
-        });
-        shell.openExternal('file://' + letter_path);
-    }
+    // generate documents
+    switch (data.transaction.cert_type) {
+
+        case 'paper':
+            const cert_path = await RSSMDocs.makeCertificates(info, rssm);
+            rssm.registerDocument({
+                journal_id: info.journal_id,
+                path: cert_path
+            })
+            const letter1_path = await RSSMDocs.makeSharesLetter(info, rssm);
+            rssm.registerDocument({
+                journal_id: info.journal_id,
+                path: letter1_path
+            })
+            shell.openExternal('file://' + letter1_path)
+            shell.openExternal('file://' + cert_path)
+            shell.openExternal('file://' + repurchase_info_path)
+
+        case 'electronic':
+            const letter2_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm);
+            rssm.registerDocument({
+                journal_id: info.journal_id,
+                path: letter2_path
+            })
+            shell.openExternal('file://' + letter2_path)
+            shell.openExternal('file://' + repurchase_info_path)
+
+    } 
 
     if (info.transfer != null) {
         const transfer_journal_path = await RSSMDocs.makeJournalTransfer(info.transfer, rssm);
@@ -434,7 +448,6 @@ async function executeIssueReserved(e, data) {
         });
         shell.openExternal('file://' + transfer_journal_path);
     }
-
 
     const journal_path = await RSSMDocs.makeJournalIssueReserved(info, rssm);
     rssm.registerDocument({
@@ -464,38 +477,56 @@ async function executeSale(e, data) {
     rssm.sale(data.transaction, data.buyer)
         .then(async function (info) {
 
+            const repurchase_info_path = assetPath + '/repurchase_info2013.pdf'
+            
+
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
 
+
             // generate documents
+            switch (data.transaction.cert_type) {
+                case 'reservation':
+                    const naming_form_path = await RSSMDocs.makeNamingForm(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: naming_form_path
+                    })
+                    shell.openExternal('file://' + naming_form_path)
+                    break
 
-            if (data.transaction.cert_type == 'paper') {
-                const cert_path = await RSSMDocs.makeCertificates(info, rssm);
-                rssm.registerDocument({
-                    journal_id: info.journal_id,
-                    path: cert_path
-                });
-                shell.openExternal('file://' + cert_path);
+                case 'paper':
+                    const cert_path = await RSSMDocs.makeCertificates(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: cert_path
+                    });
+ 
+                    const letter1_path = await RSSMDocs.makeSharesLetter(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: letter1_path
+                    });
+                    
+                    shell.openExternal('file://' + cert_path);
+                    shell.openExternal('file://' + letter1_path);
+                    shell.openExternal('file://' + repurchase_info_path);
+                    break
+                    
+                case 'electronic':
+                    const letter2_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: letter2_path
+                    });
+                    shell.openExternal('file://' + letter2_path);
+                    shell.openExternal('file://' + repurchase_info_path);
+                    break
+
+                default:
+                    console.error("invalid transaction type ", data.transaction.cert_type)
             }
-
-            if (data.transaction.cert_type == 'paper') {
-                const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
-                rssm.registerDocument({
-                    journal_id: info.journal_id,
-                    path: letter_path
-                });
-                shell.openExternal('file://' + letter_path);
-            }
-
-            if (data.transaction.cert_type == 'reservation') {
-                const naming_form_path = await RSSMDocs.makeNamingForm(info, rssm);
-                rssm.registerDocument({
-                    journal_id: info.journal_id,
-                    path: naming_form_path
-                })
-                shell.openExternal('file://' + naming_form_path)
-            }
-
+                
 
             const journal_path = await RSSMDocs.makeJournalSale(info, rssm);
             rssm.registerDocument({
