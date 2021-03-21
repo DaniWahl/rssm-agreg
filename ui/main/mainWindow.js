@@ -176,6 +176,9 @@ function  makeShareElement(share, type) {
     if(share.status == 'invalidated') {
         icon_div = '<div class="share-dd-icon"><i class="fas fa-ban"></i></a>'
     }
+    if(share.status == 'electronic') {
+        icon_div = '<div class="share-dd-icon"><i class="fas fa-microchip"></i></a>'
+    }
     if(type == 'repurchase' && share.hash) {
         hash_div = `<div class="share-dd-hash">${share.hash.substr(0, 8)}</div>`
     }

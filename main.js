@@ -7,6 +7,7 @@ const helpers = require('./lib/app.helpers');
 
 const VERSION = '1.6.0'
 const CONFIGNAME = 'config.json'
+const assetPath = __dirname + '/assets';
 
 let rssm = null
 let mainWindow = null
@@ -125,24 +126,29 @@ async function saveSettings(e, data) {
         mainWindow.webContents.send('toast:show', 'A-Code Sequenz gespeichert : ' + data.A_CODE_SEQ);
     }
 
-    if (data.AG_SECRETARY) {
-        rssm.setConfig('AG_SECRETARY', data.AG_SECRETARY);
-        mainWindow.webContents.send('toast:show', 'AG Sekretariat gespeichert : ' + data.AG_SECRETARY);
+    if (data.AG_SIGNATURE2) {
+        rssm.setConfig('AG_SIGNATURE2', data.AG_SIGNATURE2);
+        mainWindow.webContents.send('toast:show', 'AG VR 2. Unterschrift gespeichert : ' + data.AG_SIGNATURE2);
     }
 
     if (data.AG_REGISTER) {
         await rssm.setConfig('AG_REGISTER', data.AG_REGISTER);
-        mainWindow.webContents.send('toast:show', 'AG Aktien Register gespeichert : ' + data.AG_REGISTER);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer gespeichert : ' + data.AG_REGISTER);
     }
 
-    if (data.AG_REGISTER_INITIALS) {
-        rssm.setConfig('AG_REGISTER_INITIALS', data.AG_REGISTER_INITIALS);
-        mainWindow.webContents.send('toast:show', 'Aktien Register, Initialen gespeichert : ' + data.AG_REGISTER_INITIALS);
+    if (data.AG_REGISTER_ADDRESS) {
+        rssm.setConfig('AG_REGISTER_ADDRESS', data.AG_REGISTER_ADDRESS);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer, Adresse gespeichert : ' + data.AG_REGISTER_ADDRESS);
+    }
+
+    if (data.AG_REGISTER_POSTCODE) {
+        rssm.setConfig('AG_REGISTER_POSTCODE', data.AG_REGISTER_POSTCODE);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer, PLZ gespeichert : ' + data.AG_REGISTER_POSTCODE);
     }
 
     if (data.AG_REGISTER_CITY) {
         rssm.setConfig('AG_REGISTER_CITY', data.AG_REGISTER_CITY);
-        mainWindow.webContents.send('toast:show', 'Aktien Register, Ort gespeichert : ' + data.AG_REGISTER_CITY);
+        mainWindow.webContents.send('toast:show', 'AG Aktienregisterführer, Ort gespeichert : ' + data.AG_REGISTER_CITY);
     }
 
     if (data.EXPORT_PATH) {
@@ -326,7 +332,7 @@ async function executeRepurchase(e, data) {
 
 
             // open document
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
         })
         .catch(err => {
@@ -366,7 +372,7 @@ async function executeTransfer(e, data) {
 
 
             // open document
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
         })
         .catch(err => {
@@ -391,6 +397,8 @@ async function executeTransfer(e, data) {
  */
 async function executeIssueReserved(e, data) {
 
+    const repurchase_info_path = assetPath + '/repurchase_info2013.pdf'
+
     // convert booking date to correctly formatted db date string
     if (data.transaction.booking_date) {
         data.transaction.booking_date = helpers.dateToDbString(helpers.dmyToDate(data.transaction.booking_date))
@@ -402,24 +410,35 @@ async function executeIssueReserved(e, data) {
     mainWindow.webContents.send('journal:show', rssm.data.journal);
     mainWindow.webContents.send('toast:show', 'Ausstellung reservierter Zertifikate erfolgreich durchgeführt');
 
-    // generate documents
-    if (data.transaction.cert_type == 'paper') {
-        const cert_path = await RSSMDocs.makeCertificates(info, rssm);
-        rssm.registerDocument({
-            journal_id: info.journal_id,
-            path: cert_path
-        });
-        shell.openItem(cert_path);
-    }
 
-    if (data.transaction.cert_type == 'paper') {
-        const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
-        rssm.registerDocument({
-            journal_id: info.journal_id,
-            path: letter_path
-        });
-        shell.openItem(letter_path);
-    }
+    // generate documents
+    switch (data.transaction.cert_type) {
+
+        case 'paper':
+            const cert_path = await RSSMDocs.makeCertificates(info, rssm);
+            rssm.registerDocument({
+                journal_id: info.journal_id,
+                path: cert_path
+            })
+            const letter1_path = await RSSMDocs.makeSharesLetter(info, rssm);
+            rssm.registerDocument({
+                journal_id: info.journal_id,
+                path: letter1_path
+            })
+            shell.openExternal('file://' + letter1_path)
+            shell.openExternal('file://' + cert_path)
+            shell.openExternal('file://' + repurchase_info_path)
+
+        case 'electronic':
+            const letter2_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm);
+            rssm.registerDocument({
+                journal_id: info.journal_id,
+                path: letter2_path
+            })
+            shell.openExternal('file://' + letter2_path)
+            shell.openExternal('file://' + repurchase_info_path)
+
+    } 
 
     if (info.transfer != null) {
         const transfer_journal_path = await RSSMDocs.makeJournalTransfer(info.transfer, rssm);
@@ -427,16 +446,15 @@ async function executeIssueReserved(e, data) {
             journal_id: info.transfer.journal_id,
             path: transfer_journal_path
         });
-        shell.openItem(transfer_journal_path);
+        shell.openExternal('file://' + transfer_journal_path);
     }
-
 
     const journal_path = await RSSMDocs.makeJournalIssueReserved(info, rssm);
     rssm.registerDocument({
         journal_id: info.journal_id,
         path: journal_path
     });
-    shell.openItem(journal_path);
+    shell.openExternal('file://' + journal_path);
 
 }
 
@@ -459,36 +477,63 @@ async function executeSale(e, data) {
     rssm.sale(data.transaction, data.buyer)
         .then(async function (info) {
 
+            const repurchase_info_path = assetPath + '/repurchase_info2013.pdf'
+            
+
             mainWindow.webContents.send('journal:show', rssm.data.journal);
             mainWindow.webContents.send('toast:show', 'Verkauf erfolgreich durchgeführt');
 
+
             // generate documents
+            switch (data.transaction.cert_type) {
+                case 'reservation':
+                    const naming_form_path = await RSSMDocs.makeNamingForm(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: naming_form_path
+                    })
+                    shell.openExternal('file://' + naming_form_path)
+                    break
 
-            if (data.transaction.cert_type == 'paper') {
-                const cert_path = await RSSMDocs.makeCertificates(info, rssm);
-                rssm.registerDocument({
-                    journal_id: info.journal_id,
-                    path: cert_path
-                });
-                shell.openItem(cert_path);
+                case 'paper':
+                    const cert_path = await RSSMDocs.makeCertificates(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: cert_path
+                    });
+ 
+                    const letter1_path = await RSSMDocs.makeSharesLetter(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: letter1_path
+                    });
+                    
+                    shell.openExternal('file://' + cert_path);
+                    shell.openExternal('file://' + letter1_path);
+                    shell.openExternal('file://' + repurchase_info_path);
+                    break
+                    
+                case 'electronic':
+                    const letter2_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm);
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: letter2_path
+                    });
+                    shell.openExternal('file://' + letter2_path);
+                    shell.openExternal('file://' + repurchase_info_path);
+                    break
+
+                default:
+                    console.error("invalid transaction type ", data.transaction.cert_type)
             }
-
-            if (data.transaction.cert_type == 'paper') {
-                const letter_path = await RSSMDocs.makeSharesLetter(info, rssm);
-                rssm.registerDocument({
-                    journal_id: info.journal_id,
-                    path: letter_path
-                });
-                shell.openItem(letter_path);
-            }
-
+                
 
             const journal_path = await RSSMDocs.makeJournalSale(info, rssm);
             rssm.registerDocument({
                 journal_id: info.journal_id,
                 path: journal_path
             });
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
 
         })
@@ -543,7 +588,7 @@ async function executeMutation(e, person) {
             });
 
             // open document
-            shell.openItem(journal_path);
+            shell.openExternal('file://' + journal_path);
 
 
         })
@@ -634,7 +679,7 @@ async function executeReport(e, range) {
  */
 async function exportReport(e, reportData) {
     const report_path = await RSSMDocs.makeAnnualReport(reportData, rssm);
-    shell.openItem(report_path);
+    shell.openExternal('file://' + report_path);
 }
 
 
@@ -723,9 +768,10 @@ async function loadContentData(e, element_id) {
                 db_export_list: rssm.config.get('exports'),
                 db_version: await rssm.getConfig('VERSION'),
                 A_CODE_SEQ: await rssm.getConfig('A_CODE_SEQ'),
-                AG_SECRETARY: await rssm.getConfig('AG_SECRETARY'),
+                AG_SIGNATURE2: await rssm.getConfig('AG_SIGNATURE2'),
                 AG_REGISTER: await rssm.getConfig('AG_REGISTER'),
-                AG_REGISTER_INITIALS: await rssm.getConfig('AG_REGISTER_INITIALS'),
+                AG_REGISTER_ADDRESS: await rssm.getConfig('AG_REGISTER_ADDRESS'),
+                AG_REGISTER_POSTCODE: await rssm.getConfig('AG_REGISTER_POSTCODE'),
                 AG_REGISTER_CITY: await rssm.getConfig('AG_REGISTER_CITY')
             });
             break;

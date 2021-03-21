@@ -324,9 +324,9 @@ share-dd-item p img {
 }
 
 .share-dd-icon  {
-    font-size: 85px;
-    bottom: -20px;
-    right: 2px;
+    font-size: 50px;
+    bottom: -10px;
+    right: 5px;
     position: absolute;
     z-index: -1 !important;
     color: rgb(30,30,30,.25) !important;
