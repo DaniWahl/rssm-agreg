@@ -410,7 +410,6 @@ async function executeIssueReserved(e, data) {
     mainWindow.webContents.send('journal:show', rssm.data.journal);
     mainWindow.webContents.send('toast:show', 'Ausstellung reservierter Zertifikate erfolgreich durchgeführt');
 
-
     // generate documents
     switch (data.transaction.cert_type) {
 
@@ -428,6 +427,7 @@ async function executeIssueReserved(e, data) {
             shell.openExternal('file://' + letter1_path)
             shell.openExternal('file://' + cert_path)
             shell.openExternal('file://' + repurchase_info_path)
+            break
 
         case 'electronic':
             const letter2_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm);
@@ -437,6 +437,7 @@ async function executeIssueReserved(e, data) {
             })
             shell.openExternal('file://' + letter2_path)
             shell.openExternal('file://' + repurchase_info_path)
+            break
 
     } 
 
