@@ -22,7 +22,8 @@ async function makeLetter() {
         comment: '',
         journal_no: '21-000' + new Date().getTime(),
         journal_id: 900,
-        shares: [ '000', '001', '002' ]
+        shares: [ '000', '001', '002' ],
+        shares_old: ['143', '144', '145', '146']
     }
     
     // initialize main RSSMShares object
