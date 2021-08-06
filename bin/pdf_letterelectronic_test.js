@@ -16,14 +16,13 @@ async function makeLetter() {
         address: 'Musterweg 123',
         post_code: '1234',
         city: 'Musterhausen',
-        a_code: 'A00000',
+        a_code: '928001',
         family: 'Mustermann',
         purchase_date: '2021-02-27',
         comment: '',
         journal_no: '21-000' + new Date().getTime(),
         journal_id: 900,
-        shares: [ '000', '001', '002' ],
-        shares_old: ['143', '144', '145', '146']
+        shares: [ '104', '105', '106' ]
     }
     
     // initialize main RSSMShares object
