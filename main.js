@@ -5,7 +5,7 @@ const RSSMShares = require('./lib/RSSMShares').RSSMShares
 const RSSMDocs = require('./lib/RSSMDocs');
 const helpers = require('./lib/app.helpers');
 
-const VERSION = '1.8.0'
+const VERSION = '1.8.1'
 const CONFIGNAME = 'config.json'
 const assetPath = __dirname + '/assets';
 
@@ -648,12 +648,14 @@ async function executeReport(e, range) {
             // transaction is after report range, correct rssmStock towards report endDate
             rssmStock = rssmStock + t['stock_change']
         } else {
-            // transaction is in report range, add to list
-            transactions.unshift(t)
-            if (t['stock_change'] < 0) {
-                sharesSold = sharesSold + Math.abs(t['stock_change'])
-            } else {
-                sharesBought = sharesBought + t['stock_change']
+            // transaction is in report range, add to list if there is stock change
+            if (t['stock_change'] != 0) {
+                transactions.unshift(t)
+                if (t['stock_change'] < 0) {
+                    sharesSold = sharesSold + Math.abs(t['stock_change'])
+                } else {
+                    sharesBought = sharesBought + t['stock_change']
+                }
             }
         }
     }
