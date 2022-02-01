@@ -60,6 +60,7 @@ M.Datepicker.init(document.querySelectorAll("input.datepicker"), {
 
 // register IPC event handlers
 ipcRenderer.on("version:show", showVersion)
+ipcRenderer.on("update:show", showUpdate)
 ipcRenderer.on("information:show", showInfo)
 ipcRenderer.on("dashboard:show", showDashboard)
 ipcRenderer.on("repurchase:show", showRepurchase)
@@ -120,13 +121,36 @@ function showInfo(e, version) {
  * @param version
  */
 function showVersion(e, version) {
-    console.log("showing version ", version)
     document.querySelector("#version-no").innerHTML = version.version
 
-    if ((version.tag = "dev")) {
+    if (version.tag !== "default") {
         const versionTagSpan = document.querySelector("#version-tag")
         versionTagSpan.innerHTML = version.tag
         versionTagSpan.classList.remove("hidden")
+    }
+}
+
+/**
+ * handler for the update:show event.
+ * displays the update status info.
+ * @param e
+ * @param update
+ */
+function showUpdate(e, update) {
+    const statusEl = document.querySelector("#update-status")
+    const progressEl = document.querySelector("#update-progress")
+
+    if (update.message) {
+        statusEl.classList.remove("hidden")
+        statusEl.innerHTML = update.message
+    } else {
+        statusEl.classList.add("hidden")
+    }
+    if (update.progress) {
+        progressEl.classList.remove("hidden")
+        progressEl.value = update.progress
+    } else {
+        progressEl.classList.add("hidden")
     }
 }
 

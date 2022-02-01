@@ -47,7 +47,25 @@ process.on("uncaughtException", errorHandler)
 
 // handle auto-update events
 autoUpdater.on("checking-for-update", () => {
-    log.info("checking for updates...")
+    mainWindow.webContents.send("update:show", { message: "suche nach Update..." })
+})
+autoUpdater.on("update-available", (info) => {
+    mainWindow.webContents.send("version:show", { version: VERSION, tag: `${info.version} verfügbar` })
+    mainWindow.webContents.send("update:show", { message: "starte Download..." })
+})
+autoUpdater.on("download-progress", (progress) => {
+    mainWindow.webContents.send("update:show", { message: "downloading...", progress: Math.round(progress.percent) })
+})
+autoUpdater.on("update-downloaded", (info) => {
+    mainWindow.webContents.send("update:show", { message: "restart to install version " + info.version })
+})
+autoUpdater.on("update-not-available", (info) => {
+    mainWindow.webContents.send("update:show", {})
+})
+autoUpdater.on("error", (error) => {
+    let msg = "Automatisches Update nicht möglich da ein Fehler aufgetreten ist"
+    mainWindow.webContents.send("update:show", {})
+    mainWindow.webContents.send("toast:show", msg, "red")
 })
 
 /**
