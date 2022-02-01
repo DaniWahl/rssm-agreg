@@ -14,9 +14,7 @@
         "test_letterelectronic": "node bin/pdf_letterelectronic_test.js",
         "postinstall": "electron-builder install-app-deps",
         "build": "electron-builder build --win --publish never",
-        "deploy": "electron-builder build --win --publish always",
-        "package-mac": "electron-packager ./ 'Aktienregister RSSM' --icon ./assets/icons/mac/icon.icns --out ./build/ --overwrite",
-        "package-win": "electron-packager ./ AktienregisterRSSM --icon ./assets/icons/win/icon.icns --out ./build/ --overwrite"
+        "deploy": "electron-builder build --win --publish always"
     },
     "dependencies": {
         "chart.js": "^3.7.0",
