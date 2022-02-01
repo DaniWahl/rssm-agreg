@@ -1,4 +1,6 @@
 const electron = require("electron")
+const { autoUpdater } = require("electron-updater")
+const log = require("electron-log")
 const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = electron
 const fs = require("fs")
 const RSSMShares = require("./lib/RSSMShares").RSSMShares
@@ -8,6 +10,11 @@ const helpers = require("./lib/app.helpers")
 const VERSION = app.getVersion()
 const CONFIGNAME = "config.json"
 const assetPath = __dirname + "/assets"
+
+// setup logging
+autoUpdater.logger = log
+autoUpdater.logger.transports.file.level = "info"
+log.info("AktienregisterRSSM starting...")
 
 let rssm = null
 let mainWindow = null
@@ -38,6 +45,11 @@ ipcMain.on("personcomment:set", setPersonComment)
 ipcMain.on("dialog:show", showDialog)
 process.on("uncaughtException", errorHandler)
 
+// handle auto-update events
+autoUpdater.on("checking-for-update", () => {
+    log.info("checking for updates...")
+})
+
 /**
  * application startup handler
  */
@@ -60,6 +72,7 @@ async function app_init() {
 
             webPreferences: {
                 nodeIntegration: true,
+                contextIsolation: false,
             },
         })
     }
@@ -87,8 +100,8 @@ async function app_init() {
         loadContentData(null, loadPanel)
     })
     mainWindow.on("ready-to-show", () => {
-        console.log("mainWindow ready-to-show")
         mainWindow.show()
+        autoUpdater.checkForUpdates()
     })
     mainWindow.once("closed", app_quit)
 
