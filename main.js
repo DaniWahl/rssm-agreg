@@ -66,7 +66,7 @@ async function app_init() {
     mainWindow.loadURL(`file://${__dirname}/ui/main/mainWindow.html`)
 
     mainWindow.webContents.on("dom-ready", () => {
-        mainWindow.webContents.send("version:show", VERSION)
+        mainWindow.webContents.send("version:show", { version: VERSION, tag: configSet })
 
         let loadPanel = "dashboard"
 

@@ -267,6 +267,16 @@ div.rssm-app-info span {
     color: #666666;
 }
 
+#version-tag {
+    background-color: orange;
+    color: #333333;
+    font-weight: bold;
+    font-size: 11px;
+    border-radius: 2px;
+    padding: 2px 5px;
+    margin: 5px;
+}
+
 .input-field {
     margin-top: 0px !important;
 }

@@ -121,7 +121,13 @@ function showInfo(e, version) {
  */
 function showVersion(e, version) {
     console.log("showing version ", version)
-    document.querySelector("#version-no").innerHTML = version
+    document.querySelector("#version-no").innerHTML = version.version
+
+    if ((version.tag = "dev")) {
+        const versionTagSpan = document.querySelector("#version-tag")
+        versionTagSpan.innerHTML = version.tag
+        versionTagSpan.classList.remove("hidden")
+    }
 }
 
 /**

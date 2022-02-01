@@ -32,14 +32,15 @@
 
                     <div class="collection-item menu-category">Administration</div>
 
-                    <!--
-            <a target="admin-db" class="collection-item" href="#">Datenbank</a>
-            <a target="admin-settings" class="collection-item" href="#">Einstellungen</a>
-            -->
                     <a target="settings" class="collection-item" href="#">Einstellungen</a>
                 </div>
 
-                <div class="version">Version: <span id="version-no"></span></div>
+                <div class="version">
+                    <p class="hidden" id="update-status">
+                        downloading <progress id="update-progress" value="23" max="100"></progress>
+                    </p>
+                    <p>Version: <span id="version-no"></span><span id="version-tag" class="hidden"></span></p>
+                </div>
             </div>
 
             <div class="col s10" id="content">
@@ -428,7 +429,6 @@
                                             <input type="text" id="mutation-name-input" name="name" />
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="input-field col s10">
                                             <label for="mutation-address-input">Adresse</label>
