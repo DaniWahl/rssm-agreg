@@ -1,1053 +1,1110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Aktienregister AG Schulgebäude RSSM</title>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Aktienregister AG Schulgebäude RSSM</title>
 
+        <link rel="stylesheet" href="../rssm.css" />
+        <link rel="stylesheet" href="../materialize.css" />
+        <link rel="stylesheet" href="../fontawesome-all.css" />
+        <link rel="stylesheet" href="../dataTable.css" />
+    </head>
+    <body>
+        <div class="row" id="container">
+            <div class="col s2" id="sidenav">
+                <div class="logo-container center-align">
+                    <img src="../../assets/linden.png" />
+                </div>
 
-    <link rel="stylesheet" href="../rssm.css">
-    <link rel="stylesheet" href="../materialize.css">
-    <link rel="stylesheet" href="../fontawesome-all.css">
-    <link rel="stylesheet" href="../dataTable.css">
+                <div class="collection hoverable" id="nav-menu">
+                    <div class="collection-item menu-category">Aktienregister</div>
+                    <a target="dashboard" class="collection-item" href="#">Dashboard</a>
+                    <a target="content-register" class="collection-item" href="#">Aktienregister</a>
+                    <a target="content-persons" class="collection-item" href="#">Aktionäre</a>
+                    <a target="content-journal" class="collection-item" href="#">Journal</a>
+                    <div class="collection-item menu-category">Aktionen</div>
+                    <a target="content-sale" class="collection-item" href="#">Verkauf</a>
+                    <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
+                    <a target="content-transfer" class="collection-item" href="#">Übertrag</a>
+                    <a target="content-mutation" class="collection-item" href="#">Mutation</a>
+                    <a target="content-enter-person" class="collection-item" href="#">Person Erfassen</a>
+                    <a target="content-report" class="collection-item" href="#">Jahresbericht</a>
 
+                    <div class="collection-item menu-category">Administration</div>
 
-</head>
-<body>
-
-<div class="row" id="container">
-    <div class="col s2" id="sidenav">
-        <div class="logo-container center-align">
-            <img src="../../assets/linden.png">
-        </div>
-
-        <div class="collection hoverable" id="nav-menu">
-
-            <div class="collection-item menu-category">Aktienregister</div>
-            <a target="dashboard" class="collection-item" href="#">Dashboard</a>
-            <a target="content-register" class="collection-item" href="#">Aktienregister</a>
-            <a target="content-persons" class="collection-item" href="#">Aktionäre</a>
-            <a target="content-journal" class="collection-item" href="#">Journal</a>
-            <div class="collection-item menu-category">Aktionen</div>
-            <a target="content-sale" class="collection-item" href="#">Verkauf</a>
-            <a target="content-repurchase" class="collection-item" href="#">Rückkauf</a>
-            <a target="content-transfer" class="collection-item" href="#">Übertrag</a>
-            <a target="content-mutation" class="collection-item" href="#">Mutation</a>
-            <a target="content-enter-person" class="collection-item" href="#">Person Erfassen</a>
-            <a target="content-report" class="collection-item" href="#">Jahresbericht</a>
-
-
-            <div class="collection-item menu-category">Administration</div>
-            
-            <!--
+                    <!--
             <a target="admin-db" class="collection-item" href="#">Datenbank</a>
             <a target="admin-settings" class="collection-item" href="#">Einstellungen</a>
             -->
-            <a target="settings" class="collection-item" href="#">Einstellungen</a>
-
-
-        </div>
-
-        <div class="version">
-            Version: <span id="version-no"></span>
-        </div>
-    </div>
-
-    <div class="col s10" id="content">
-
-
-        <div id="content-report" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Jahresbericht</span>
-
-
-                <div class="form-container">
-
-                    <form name="report-range">
-
-                        <div class="row">
-                            <div class="row">
-                                <div class="input-field col s3">
-                                    <label class="active" for="report-start-date-input">Transaktionen von</label>                                           
-                                    <input type="text" class="datepicker" id="report-start-date-input" name="start-date">
-                                </div>
-                                <div class="input-field col s3">
-                                    <label class="active" for="report-end-date-input">bis</label>
-                                    <input type="text" class="datepicker" id="report-end-date-input" name="end-date">
-                                </div>
-                                <div class="col push-s3">
-                                    <button id="report-pdf-btn" class="btn btn-small waves-effect disabled"><i class="fas fa-file-pdf"></i> Export</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </form>
+                    <a target="settings" class="collection-item" href="#">Einstellungen</a>
                 </div>
 
-                <table id="table-yearly-report" class="compact nowrap stripe hover row-border order-column">
-                    <thead>
-                    <tr>
-                        <th>Datum</th>
-                        <th>Journal Nr</th>
-                        <th>Transaktion</th>
-                        <th>Aktionär</th>
-                        <th>Kapitaländerung</th>
-                        <th>Zertifikate</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-
+                <div class="version">Version: <span id="version-no"></span></div>
             </div>
-        </div>
 
+            <div class="col s10" id="content">
+                <div id="content-report" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Jahresbericht</span>
 
-        <div id="dashboard" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Dashboard</span>
+                        <div class="form-container">
+                            <form name="report-range">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <label class="active" for="report-start-date-input"
+                                                >Transaktionen von</label
+                                            >
+                                            <input
+                                                type="text"
+                                                class="datepicker"
+                                                id="report-start-date-input"
+                                                name="start-date"
+                                            />
+                                        </div>
+                                        <div class="input-field col s3">
+                                            <label class="active" for="report-end-date-input">bis</label>
+                                            <input
+                                                type="text"
+                                                class="datepicker"
+                                                id="report-end-date-input"
+                                                name="end-date"
+                                            />
+                                        </div>
+                                        <div class="col push-s3">
+                                            <button id="report-pdf-btn" class="btn btn-small waves-effect disabled">
+                                                <i class="fas fa-file-pdf"></i> Export
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
-                <div class="row dash-row">
-                    <div class="col s6">
-                        <p class="dash-title">RSSM Aktien</p>
-                    </div>
-                    <div class="col s6">
-                        <p class="dash-title">Aktionäre</p>
-                    </div>
-                </div>
-
-                <div class="row dash-row">
-                    <div class="col s6">
-                        <table>
-                            <tbody>
+                        <table id="table-yearly-report" class="compact nowrap stripe hover row-border order-column">
+                            <thead>
                                 <tr>
-                                    <th class="dash-text" width="100">Total</th>
-                                    <td class="dash-text" id="dash-cell-total-shares"></td>
+                                    <th>Datum</th>
+                                    <th>Journal Nr</th>
+                                    <th>Transaktion</th>
+                                    <th>Aktionär</th>
+                                    <th>Kapitaländerung</th>
+                                    <th>Zertifikate</th>
                                 </tr>
-                                <tr>
-                                    <th class="dash-text">Verfügbar</th>
-                                    <td class="dash-text" id="dash-cell-avail-shares"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="col s6">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <th class="dash-text" width="100">Total</th>
-                                <td class="dash-text" id="dash-cell-total-holders"></td>
-                            </tr>
-                            <tr>
-                                <th class="dash-text">Aktiv</th>
-                                <td class="dash-text" id="dash-cell-active-holders"></td>
-                            </tr>
-                            </tbody>
+                            </thead>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="row dash-row">
-                    <div class="col s12 dash-chart">
-                        <canvas id="shares-chart" height="200"></canvas>
+                <div id="dashboard" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Dashboard</span>
+
+                        <div class="row dash-row">
+                            <div class="col s6">
+                                <p class="dash-title">RSSM Aktien</p>
+                            </div>
+                            <div class="col s6">
+                                <p class="dash-title">Aktionäre</p>
+                            </div>
+                        </div>
+
+                        <div class="row dash-row">
+                            <div class="col s6">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th class="dash-text" width="100">Total</th>
+                                            <td class="dash-text" id="dash-cell-total-shares"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="dash-text">Verfügbar</th>
+                                            <td class="dash-text" id="dash-cell-avail-shares"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col s6">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th class="dash-text" width="100">Total</th>
+                                            <td class="dash-text" id="dash-cell-total-holders"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="dash-text">Aktiv</th>
+                                            <td class="dash-text" id="dash-cell-active-holders"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row dash-row">
+                            <div class="col s12 dash-chart">
+                                <canvas id="shares-chart" height="200"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-            </div>
-        </div>
-
-        <div id="content-register" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Aktienregister</span>
-                <div class="row center-align">
-                    <div class="switch switch-stayon col s12" id="shares-all-filter-switch">
-                        <label>
-                            Aktuell
-                            <input type="checkbox">
-                            <span class="lever"></span>
-                            Historisch
-                          </label>
+                <div id="content-register" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Aktienregister</span>
+                        <div class="row center-align">
+                            <div class="switch switch-stayon col s12" id="shares-all-filter-switch">
+                                <label>
+                                    Aktuell
+                                    <input type="checkbox" />
+                                    <span class="lever"></span>
+                                    Historisch
+                                </label>
+                            </div>
+                        </div>
+                        <table id="table-share-holders-all" class="compact nowrap stripe hover row-border order-column">
+                            <thead>
+                                <tr>
+                                    <th width="80">Aktien Nr</th>
+                                    <th width="80">Generation</th>
+                                    <th width="80">Zertifikat</th>
+                                    <th width="80">Datum</th>
+                                    <th width="80">A-Code</th>
+                                    <th>Name</th>
+                                    <th>Vorname</th>
+                                    <th>Adresse</th>
+                                    <th>Ort</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
-                <table id="table-share-holders-all" class="compact nowrap stripe hover row-border order-column">
-                    <thead>
-                    <tr>
-                        <th width="80">Aktien Nr</th>
-                        <th width="80">Generation</th>
-                        <th width="80">Zertifikat</th>
-                        <th width="80">Datum</th>
-                        <th width="80">A-Code</th>
-                        <th>Name</th>
-                        <th>Vorname</th>
-                        <th>Adresse</th>
-                        <th>Ort</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
 
-        <div id="content-persons" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Aktionäre</span>
-                <div class="row center-align">
-                    <div class="switch switch-stayon col s12" id="shareholders-all-filter-switch">
-                        <label>
-                            Aktuell
-                            <input type="checkbox">
-                            <span class="lever"></span>
-                            Historisch
-                          </label>
+                <div id="content-persons" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Aktionäre</span>
+                        <div class="row center-align">
+                            <div class="switch switch-stayon col s12" id="shareholders-all-filter-switch">
+                                <label>
+                                    Aktuell
+                                    <input type="checkbox" />
+                                    <span class="lever"></span>
+                                    Historisch
+                                </label>
+                            </div>
+                        </div>
+                        <table
+                            id="table-persons-all"
+                            class="compact nowrap compact stripe hover row-border order-column"
+                        >
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>A-Code</th>
+                                    <th>Name</th>
+                                    <th>Vorname</th>
+                                    <th>Adresse</th>
+                                    <th>Ort</th>
+                                    <th>Aktien</th>
+                                    <th>Aktiv</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
-                <table id="table-persons-all" class="compact nowrap compact stripe hover row-border order-column">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>A-Code</th>
-                        <th>Name</th>
-                        <th>Vorname</th>
-                        <th>Adresse</th>
-                        <th>Ort</th>
-                        <th>Aktien</th>
-                        <th>Aktiv</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
 
+                <div id="content-journal" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Journal</span>
+                        <table id="table-journal" class="compact nowrap stripe hover row-border order-column">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Journal Nr</th>
+                                    <th width="100">Datum</th>
+                                    <th>A-Code</th>
+                                    <th width="200">Name</th>
+                                    <th width="100">Zertifikate</th>
+                                    <th width="150">Transaktion</th>
+                                    <th>Aktion</th>
+                                    <th>Anzahl</th>
+                                    <th>Bestand</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
 
-        <div id="content-journal" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Journal</span>
-                <table id="table-journal" class="compact nowrap stripe hover row-border order-column">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Journal Nr</th>
-                        <th width="100">Datum</th>
-                        <th>A-Code</th>
-                        <th width="200">Name</th>
-                        <th width="100">Zertifikate</th>
-                        <th width="150">Transaktion</th>
-                        <th>Aktion</th>
-                        <th>Anzahl</th>
-                        <th>Bestand</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
+                <div id="content-repurchase" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Aktien Rückkauf</span>
 
-        <div id="content-repurchase" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Aktien Rückkauf</span>
+                        <div class="form-container">
+                            <form name="repurchase">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="input-field col s6">
+                                            <label for="repurchase-a-code-input"
+                                                ><i class="fas fa-search"></i> Aktionär</label
+                                            >
+                                            <input
+                                                type="text"
+                                                id="repurchase-a-code-input"
+                                                class="autocomplete"
+                                                name="holder"
+                                            />
+                                        </div>
 
-                <div class="form-container">
+                                        <div class="input-field col s4">
+                                            <label class="active" for="repurchase-transaction">Buchung</label>
+                                            <input
+                                                type="text"
+                                                class="datepicker"
+                                                id="repurchase-transaction"
+                                                name="transaction"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <form name="repurchase">
+                                <div class="row">
+                                    <div id="repurchase-list" class="col s12 share-dd-container"></div>
+                                </div>
 
+                                <div class="row hidden">
+                                    <div class="col s5 collection">
+                                        <div class="collection-item summary">
+                                            Datum <span class="secondary-content" id="repurchase-date"></span>
+                                        </div>
+                                        <div class="collection-item summary">
+                                            Journal Nr <span class="secondary-content" id="repurchase-journal"></span>
+                                        </div>
+                                        <div class="collection-item summary">
+                                            Anzahl Aktien <span class="secondary-content" id="repurchase-shares"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button id="repurchase-submit" class="btn-large waves-effect disabled" type="submit">
+                            Rückkauf
+                        </button>
+                    </div>
+                </div>
 
+                <div id="content-transfer" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Aktien Übertrag</span>
+
+                        <div class="form-container">
+                            <form name="transfer">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="input-field col s5">
+                                            <label for="transfer-a-code-source-input"
+                                                ><i class="fas fa-search"></i> Aktionär Alt</label
+                                            >
+                                            <input
+                                                type="text"
+                                                id="transfer-a-code-source-input"
+                                                class="autocomplete"
+                                                name="source"
+                                            />
+                                        </div>
+                                        <div class="input-field col s5">
+                                            <label for="transfer-a-code-reciever-input"
+                                                ><i class="fas fa-search"></i> Aktionär Neu</label
+                                            >
+                                            <input
+                                                type="text"
+                                                id="transfer-a-code-reciever-input"
+                                                class="autocomplete"
+                                                name="reciever"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <label for="transfer-comment-input">Begründung</label>
+                                            <input type="text" id="transfer-comment-input" name="comment" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div id="transfer-list" class="col s12 share-dd-container"></div>
+                                </div>
+
+                                <div class="row hidden">
+                                    <div class="col s5 collection">
+                                        <div class="collection-item summary">
+                                            Datum <span class="secondary-content" id="transfer-date"></span>
+                                        </div>
+                                        <div class="collection-item summary">
+                                            Journal Nr <span class="secondary-content" id="transfer-journal"></span>
+                                        </div>
+                                        <div class="collection-item summary">
+                                            Anzahl Aktien <span class="secondary-content" id="transfer-shares"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button id="transfer-submit" class="btn-large waves-effect disabled" type="submit">
+                            Übertrag
+                        </button>
+                    </div>
+                </div>
+
+                <div id="content-mutation" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Mutation</span>
+
+                        <div class="form-container">
+                            <form name="mutation">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="input-field col s8">
+                                            <label for="mutation-a-code-select"
+                                                ><i class="fas fa-search"></i> Aktionär</label
+                                            >
+                                            <input
+                                                type="text"
+                                                id="mutation-a-code-select"
+                                                class="autocomplete"
+                                                name="holder"
+                                            />
+                                        </div>
+
+                                        <div class="switch col s2">
+                                            <label>
+                                                <i class="far fa-envelope"></i> Korrespondenz
+                                                <input
+                                                    type="checkbox"
+                                                    id="mutation-correspondence-input"
+                                                    name="correspondence"
+                                                />
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <label for="mutation-a-code-input">A-Code</label>
+                                            <input type="text" id="mutation-a-code-input" name="a_code" />
+                                        </div>
+
+                                        <div class="input-field col s6">
+                                            <label for="mutation-family-input">Familie</label>
+                                            <input type="text" id="mutation-family-input" name="family" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s2">
+                                            <label for="mutation-salutation-input">Anrede</label>
+                                            <input
+                                                type="text"
+                                                id="mutation-salutation-input"
+                                                name="salutation"
+                                                class="active"
+                                            />
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <label for="mutation-first-name-input">Vorname</label>
+                                            <input type="text" id="mutation-first-name-input" name="first_name" />
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <label for="mutation-name-input">Name</label>
+                                            <input type="text" id="mutation-name-input" name="name" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <label for="mutation-address-input">Adresse</label>
+                                            <input type="text" id="mutation-address-input" name="address" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <label for="mutation-post-code-input">PLZ</label>
+                                            <input type="text" id="mutation-post-code-input" name="post_code" />
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <label for="mutation-city-input">Ort</label>
+                                            <input type="text" id="mutation-city-input" name="city" />
+                                        </div>
+                                    </div>
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <label for="mutation-comment-input">Kommentar</label>
+                                            <input type="text" id="mutation-comment-input" name="comment" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row hidden">
+                                    <div class="col s5 collection">
+                                        <div class="collection-item summary">
+                                            Datum <span class="secondary-content" id="mutation-date"></span>
+                                        </div>
+                                        <div class="collection-item summary">
+                                            Journal Nr <span class="secondary-content" id="mutation-journal"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card-action">
+                        <button id="mutation-submit" class="btn-large waves-effect disabled" type="submit">
+                            Mutation
+                        </button>
+                    </div>
+                </div>
+
+                <div id="content-sale" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Aktien Verkauf</span>
+
+                        <div class="form-container">
+                            <form name="sale">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <label for="sale-a-code-select"
+                                                ><i class="fas fa-search"></i> Aktionär</label
+                                            >
+                                            <input type="text" id="sale-a-code-select" class=autocomplete"
+                                            name="holder">
+                                        </div>
+
+                                        <div class="input-field col s3">
+                                            <label for="sale-family-input">Familie</label>
+                                            <input type="text" id="sale-family-input" name="family" />
+                                        </div>
+
+                                        <div class="input-field col s2">
+                                            <label for="sale-n-shares">Anzahl Aktien</label>
+                                            <input type="text" id="sale-n-shares" name="n_shares" />
+                                        </div>
+
+                                        <div class="input-field col s2">
+                                            <label class="active" for="sale-transaction">Buchung</label>
+                                            <input
+                                                type="text"
+                                                class="datepicker"
+                                                id="sale-transaction"
+                                                name="transaction"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s2">
+                                            <label for="sale-salutation-input">Anrede</label>
+                                            <input
+                                                type="text"
+                                                id="sale-salutation-input"
+                                                name="salutation"
+                                                class="active"
+                                            />
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <label for="sale-first-name-input">Vorname</label>
+                                            <input type="text" id="sale-first-name-input" name="first_name" />
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <label for="sale-name-input">Name</label>
+                                            <input type="text" id="sale-name-input" name="name" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <label for="sale-address-input">Adresse</label>
+                                            <input type="text" id="sale-address-input" name="address" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <label for="sale-post-code-input">PLZ</label>
+                                            <input type="text" id="sale-post-code-input" name="post_code" />
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <label for="sale-city-input">Ort</label>
+                                            <input type="text" id="sale-city-input" name="city" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <select id="sale-cert-type" name="cert_type">
+                                                <option value="electronic" selected>Elektronisch</option>
+                                                <option value="paper">Papier</option>
+                                                <option value="reservation">Reservierung</option>
+                                            </select>
+                                            <label>Zertifikat</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <label for="sale-comment-input">Kommentar</label>
+                                            <input type="text" id="sale-comment-input" name="comment" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div id="sale-list" class="col s12 share-dd-container" style="height: 150px"></div>
+                                </div>
+
+                                <div class="row hidden">
+                                    <div class="col s5 collection">
+                                        <div class="collection-item summary">
+                                            Datum <span class="secondary-content" id="sale-date"></span>
+                                        </div>
+                                        <div class="collection-item summary">
+                                            Journal Nr <span class="secondary-content" id="sale-journal"></span>
+                                        </div>
+                                        <div class="collection-item summary">
+                                            Anzahl Aktien <span class="secondary-content" id="sale-shares"></span>
+                                        </div>
+                                        <div class="input-field">
+                                            <input
+                                                type="hidden"
+                                                name="transaction-type"
+                                                id="sale-transaction-type"
+                                                value="sale"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col s7 right-align" style="height: 100%"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button id="sale-submit" class="btn-large waves-effect disabled" type="submit">Verkauf</button>
+                        <button id="sale-reserved-submit" class="btn-large waves-effect hidden" type="submit">
+                            Zertifikate ausstellen
+                        </button>
+                    </div>
+                </div>
+
+                <div id="content-enter-person" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
+                        <span class="card-title">Person Erfassen</span>
+
+                        <div class="form-container">
+                            <form name="enterPerson">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <label for="enter-person-family-input">Familie</label>
+                                            <input type="text" id="enter-person-family-input" name="family" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s2">
+                                            <label for="enter-person-salutation-input">Anrede</label>
+                                            <input
+                                                type="text"
+                                                id="enter-person-salutation-input"
+                                                name="salutation"
+                                                class="active"
+                                            />
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <label for="enter-person-first-name-input">Vorname</label>
+                                            <input type="text" id="enter-person-first-name-input" name="first_name" />
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <label for="enter-person-name-input">Name</label>
+                                            <input type="text" id="enter-person-name-input" name="name" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <label for="enter-person-address-input">Adresse</label>
+                                            <input type="text" id="enter-person-address-input" name="address" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <label for="enter-person-post-code-input">PLZ</label>
+                                            <input type="text" id="enter-person-post-code-input" name="post_code" />
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <label for="enter-person-city-input">Ort</label>
+                                            <input type="text" id="enter-person-city-input" name="city" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s10">
+                                            <label for="enter-person-comment-input">Kommentar</label>
+                                            <input type="text" id="enter-person-comment-input" name="comment" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button id="enter-person-submit" class="btn-large waves-effect" type="submit">Erfassen</button>
+                    </div>
+                </div>
+
+                <div id="settings" class="content-element card hidden z-depth-3">
+                    <div class="card-content">
                         <div class="row">
+                            <div class="col s12">
+                                <ul class="tabs tabs-fixed-width z-depth-1" id="settings-tabs">
+                                    <li class="tab col"><a href="#settings-app" class="active">Applikation</a></li>
+                                    <li class="tab col"><a href="#settings-db" class="active">Datenbank</a></li>
+                                    <li class="tab col"><a href="#settings-agreg">Aktienregister</a></li>
+                                </ul>
+                            </div>
+
+                            <div id="settings-agreg" class="col s12">
+                                <table class="no-line">
+                                    <tbody>
+                                        <tr>
+                                            <th width="250">A-Code Sequenz</th>
+                                            <td>
+                                                <input id="setting-edit-A_CODE_SEQ" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>VR 2. Unterschrift</th>
+                                            <td>
+                                                <input id="setting-edit-AG_SIGNATURE2" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Aktienregisterführer</th>
+                                            <td>
+                                                <input id="setting-edit-AG_REGISTER" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Aktienregisterführer, Adresse</th>
+                                            <td>
+                                                <input id="setting-edit-AG_REGISTER_ADDRESS" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Aktienregisterführer, PLZ</th>
+                                            <td>
+                                                <input id="setting-edit-AG_REGISTER_POSTCODE" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Aktienregisterführer, Ort</th>
+                                            <td>
+                                                <input id="setting-edit-AG_REGISTER_CITY" type="text" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div style="margin-top: 100px">
+                                    <button id="settings-submit" class="btn waves-effect" type="submit">
+                                        <i class="fas fa-save"></i> Speichern
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="settings-db" class="col s12">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th width="200"><i class="fas fa-code"></i> Version</th>
+                                            <td width="*">
+                                                <span class="setting-info" id="admin-info-dbversion"></span>
+                                            </td>
+                                            <td width="150"></td>
+                                        </tr>
+                                        <tr id="admin-info-dbpath-row">
+                                            <th><i class="fas fa-database"></i> Datenbank</th>
+                                            <td><span class="setting-info" id="admin-info-dbpath"></span></td>
+                                            <td>
+                                                <button id="admin-db-select-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-folder"></i> Backupordner</th>
+                                            <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
+                                            <td>
+                                                <button id="admin-backup-select-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-copy"></i> Datenbank Backups</th>
+                                            <td><div class="setting-info" id="admin-info-backup-list"></div></td>
+                                            <td>
+                                                <button id="admin-db-backup-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-save"></i> Erstellen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-folder"></i> Exportordner</th>
+                                            <td><span class="setting-info" id="admin-info-exportspath"></span></td>
+                                            <td>
+                                                <button id="admin-export-select-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
+                                            <td><span class="setting-info" id="admin-info-export-list"></span></td>
+                                            <td>
+                                                <button id="admin-db-export-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-save"></i> Erstellen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="settings-app" class="col s12">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th width="200"><i class="fas fa-code"></i> Version</th>
+                                            <td width="*">
+                                                <span class="setting-info" id="admin-info-appversion"></span>
+                                            </td>
+                                            <td width="150"></td>
+                                        </tr>
+                                        <tr>
+                                            <th width="200"><i class="fas fa-cog"></i> Konfigurationsdatei</th>
+                                            <td width="*">
+                                                <span class="setting-info" id="admin-info-configfile"></span>
+                                            </td>
+                                            <td width="150"></td>
+                                        </tr>
+                                        <tr>
+                                            <th width="200"><i class="fas fa-cog"></i> Konfigurationsset</th>
+                                            <td width="*">
+                                                <span class="setting-info" id="admin-info-configset"></span>
+                                            </td>
+                                            <td width="150"></td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-folder"></i> Dokumenteordner</th>
+                                            <td><span class="setting-info" id="admin-info-documentspath"></span></td>
+                                            <td>
+                                                <button
+                                                    id="admin-document-select-btn"
+                                                    class="btn btn-small waves-effect"
+                                                >
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <div class="row">
-                                <div class="input-field col s6">
-                                    <label for="repurchase-a-code-input"><i class="fas fa-search"></i> Aktionär</label>
-                                    <input type="text" id="repurchase-a-code-input" class="autocomplete" name="holder">
-                                </div>
-
-                                <div class="input-field col s4">
-                                    <label class="active" for="repurchase-transaction">Buchung</label>
-                                    <input type="text" class="datepicker" id="repurchase-transaction" name="transaction">
-
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                        <div class="row">
-                            <div id="repurchase-list" class="col s12 share-dd-container">
+                                <div class="s12 hidden danger z-depth-1" id="admin-info-error"></div>
                             </div>
                         </div>
-
-
-                        <div class="row hidden">
-                            <div class="col s5 collection">
-                                <div class="collection-item summary">Datum <span class="secondary-content"
-                                                                                 id="repurchase-date"></span></div>
-                                <div class="collection-item summary">Journal Nr <span class="secondary-content"
-                                                                                      id="repurchase-journal"></span>
-                                </div>
-                                <div class="collection-item summary">Anzahl Aktien <span class="secondary-content"
-                                                                                         id="repurchase-shares"></span>
-                                </div>
-
-                        </div>
-
-                        </div>
-
-                    </form>
+                    </div>
                 </div>
             </div>
-            <div class="card-action">
-                <button id="repurchase-submit" class="btn-large waves-effect disabled" type="submit">
-                    Rückkauf
-                </button>
-            </div>
-
         </div>
 
-        <div id="content-transfer" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Aktien Übertrag</span>
+        <!-- Modal Structure -->
 
-                <div class="form-container">
-
-                    <form name="transfer">
-
-                        <div class="row">
-                            <div class="row">
-                                <div class="input-field col s5">
-                                    <label for="transfer-a-code-source-input"><i class="fas fa-search"></i> Aktionär
-                                        Alt</label>
-                                    <input type="text" id="transfer-a-code-source-input" class="autocomplete"
-                                           name="source">
-                                </div>
-                                <div class="input-field col s5">
-                                    <label for="transfer-a-code-reciever-input"><i class="fas fa-search"></i> Aktionär
-                                        Neu</label>
-                                    <input type="text" id="transfer-a-code-reciever-input" class="autocomplete"
-                                           name="reciever">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <label for="transfer-comment-input">Begründung</label>
-                                    <input type="text" id="transfer-comment-input" name="comment">
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div id="transfer-list" class="col s12 share-dd-container">
-                            </div>
-                        </div>
-
-                        <div class="row hidden">
-                            <div class="col s5 collection">
-                                <div class="collection-item summary">Datum <span class="secondary-content"
-                                                                                 id="transfer-date"></span></div>
-                                <div class="collection-item summary">Journal Nr <span class="secondary-content"
-                                                                                      id="transfer-journal"></span>
-                                </div>
-                                <div class="collection-item summary">Anzahl Aktien <span class="secondary-content"
-                                                                                         id="transfer-shares"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-            <div class="card-action">
-                <button id="transfer-submit" class="btn-large waves-effect disabled" type="submit">
-                    Übertrag
-                </button>
-            </div>
-        </div>
-
-        <div id="content-mutation" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Mutation</span>
-
-                <div class="form-container">
-
-                    <form name="mutation">
-
-                        <div class="row">
-                            <div class="row">
-                                <div class="input-field col s8">
-                                    <label for="mutation-a-code-select"><i class="fas fa-search"></i> Aktionär</label>
-                                    <input type="text" id="mutation-a-code-select" class="autocomplete" name="holder">
-                                </div>
-
-                                <div class="switch col s2">
-                                    <label>
-                                        <i class="far fa-envelope"></i> Korrespondenz
-                                        <input type="checkbox" id="mutation-correspondence-input" name="correspondence"/>
-                                        <span class="lever"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <label for="mutation-a-code-input">A-Code</label>
-                                    <input type="text" id="mutation-a-code-input" name="a_code">
-                                </div>
-
-                                <div class="input-field col s6">
-                                    <label for="mutation-family-input">Familie</label>
-                                    <input type="text" id="mutation-family-input" name="family">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s2">
-                                    <label for="mutation-salutation-input">Anrede</label>
-                                    <input type="text" id="mutation-salutation-input" name="salutation" class="active">
-                                </div>
-                                <div class="input-field col s4">
-                                    <label for="mutation-first-name-input">Vorname</label>
-                                    <input type="text" id="mutation-first-name-input" name="first_name">
-                                </div>
-                                <div class="input-field col s4">
-                                    <label for="mutation-name-input">Name</label>
-                                    <input type="text" id="mutation-name-input" name="name">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <label for="mutation-address-input">Adresse</label>
-                                    <input type="text" id="mutation-address-input" name="address">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <label for="mutation-post-code-input">PLZ</label>
-                                    <input type="text" id="mutation-post-code-input" name="post_code">
-                                </div>
-                                <div class="input-field col s6">
-                                    <label for="mutation-city-input">Ort</label>
-                                    <input type="text" id="mutation-city-input" name="city">
-                                </div>
-                            </div>
-                            <div class="row">&nbsp;</div>
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <label for="mutation-comment-input">Kommentar</label>
-                                    <input type="text" id="mutation-comment-input" name="comment">
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                        <div class="row hidden">
-                            <div class="col s5 collection">
-                                <div class="collection-item summary">Datum <span class="secondary-content"
-                                                                                 id="mutation-date"></span></div>
-                                <div class="collection-item summary">Journal Nr <span class="secondary-content"
-                                                                                      id="mutation-journal"></span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-
-
-            <div class="card-action">
-                <button id="mutation-submit" class="btn-large waves-effect disabled" type="submit">
-                    Mutation
-                </button>
-            </div>
-
-        </div>
-
-
-        <div id="content-sale" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Aktien Verkauf</span>
-
-                <div class="form-container">
-
-                    <form name="sale">
-
-                        <div class="row">
-                            <div class="row">
-                                <div class="input-field col s3">
-                                    <label for="sale-a-code-select"><i class="fas fa-search"></i> Aktionär</label>
-                                    <input type="text" id="sale-a-code-select" class=autocomplete" name="holder">
-                                </div>
-
-                                <div class="input-field col s3">
-                                    <label for="sale-family-input">Familie</label>
-                                    <input type="text" id="sale-family-input" name="family">
-                                </div>
-
-                                <div class="input-field col s2">
-                                    <label for="sale-n-shares">Anzahl Aktien</label>
-                                    <input type="text" id="sale-n-shares" name="n_shares">
-                                </div>
-
-                                <div class="input-field col s2">
-                                    <label class="active" for="sale-transaction">Buchung</label>
-                                    <input type="text" class="datepicker" id="sale-transaction" name="transaction">
-                                    
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s2">
-                                    <label for="sale-salutation-input">Anrede</label>
-                                    <input type="text" id="sale-salutation-input" name="salutation" class="active">
-                                </div>
-                                <div class="input-field col s4">
-                                    <label for="sale-first-name-input">Vorname</label>
-                                    <input type="text" id="sale-first-name-input" name="first_name">
-                                </div>
-                                <div class="input-field col s4">
-                                    <label for="sale-name-input">Name</label>
-                                    <input type="text" id="sale-name-input" name="name">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <label for="sale-address-input">Adresse</label>
-                                    <input type="text" id="sale-address-input" name="address">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <label for="sale-post-code-input">PLZ</label>
-                                    <input type="text" id="sale-post-code-input" name="post_code">
-                                </div>
-                                <div class="input-field col s6">
-                                    <label for="sale-city-input">Ort</label>
-                                    <input type="text" id="sale-city-input" name="city">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <select id="sale-cert-type" name="cert_type">
-                                        <option value="electronic" selected>Elektronisch</option>
-                                        <option value="paper">Papier</option>
-                                        <option value="reservation">Reservierung</option>
-                                    </select>
-                                    <label>Zertifikat</label>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <label for="sale-comment-input">Kommentar</label>
-                                    <input type="text" id="sale-comment-input" name="comment">
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div id="sale-list" class="col s12 share-dd-container" style="height:150px">
-                            </div>
-                        </div>
-
-
-                        <div class="row hidden">
-                            <div class="col s5 collection">
-                                <div class="collection-item summary">Datum <span class="secondary-content"
-                                                                                 id="sale-date"></span></div>
-                                <div class="collection-item summary">Journal Nr <span class="secondary-content"
-                                                                                      id="sale-journal"></span></div>
-                                <div class="collection-item summary">Anzahl Aktien <span class="secondary-content"
-                                                                                         id="sale-shares"></span></div>
-                                <div class="input-field"><input type="hidden" name="transaction-type" id="sale-transaction-type" value="sale"></div>
-                            </div>
-                            <div class="col s7 right-align" style="height: 100%;">
-
-                            </div>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-            <div class="card-action">
-                <button id="sale-submit" class="btn-large waves-effect disabled" type="submit">
-                    Verkauf
-                </button>
-                <button id="sale-reserved-submit" class="btn-large waves-effect hidden" type="submit">
-                    Zertifikate ausstellen
-                </button>
-            </div>
-
-        </div>
-
-        <div id="content-enter-person" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                <span class="card-title">Person Erfassen</span>
-
-                <div class="form-container">
-
-                    <form name="enterPerson">
-
-                        <div class="row">
-                            <div class="row">
-
-                                <div class="input-field col s3">
-                                    <label for="enter-person-family-input">Familie</label>
-                                    <input type="text" id="enter-person-family-input" name="family">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s2">
-                                    <label for="enter-person-salutation-input">Anrede</label>
-                                    <input type="text" id="enter-person-salutation-input" name="salutation" class="active">
-                                </div>
-                                <div class="input-field col s4">
-                                    <label for="enter-person-first-name-input">Vorname</label>
-                                    <input type="text" id="enter-person-first-name-input" name="first_name">
-                                </div>
-                                <div class="input-field col s4">
-                                    <label for="enter-person-name-input">Name</label>
-                                    <input type="text" id="enter-person-name-input" name="name">
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <label for="enter-person-address-input">Adresse</label>
-                                    <input type="text" id="enter-person-address-input" name="address">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <label for="enter-person-post-code-input">PLZ</label>
-                                    <input type="text" id="enter-person-post-code-input" name="post_code">
-                                </div>
-                                <div class="input-field col s6">
-                                    <label for="enter-person-city-input">Ort</label>
-                                    <input type="text" id="enter-person-city-input" name="city">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s10">
-                                    <label for="enter-person-comment-input">Kommentar</label>
-                                    <input type="text" id="enter-person-comment-input" name="comment">
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-            <div class="card-action">
-                <button id="enter-person-submit" class="btn-large waves-effect" type="submit">
-                    Erfassen
-                </button>
-            </div>
-
-        </div>
-
-        <div id="settings" class="content-element card hidden z-depth-3">
-            <div class="card-content">
-                
-
+        <div id="person-info-modal" class="modal modal-fixed-footer modal-wide">
+            <div class="modal-content" style="overflow: visible !important">
+                <h5></h5>
                 <div class="row">
-                    <div class="col s12">
-                        <ul class="tabs tabs-fixed-width z-depth-1" id="settings-tabs">
-                            <li class="tab col"><a href="#settings-app" class="active">Applikation</a></li>
-                            <li class="tab col"><a href="#settings-db" class="active">Datenbank</a></li>
-                            <li class="tab col"><a href="#settings-agreg">Aktienregister</a></li>
-                        </ul>
+                    <div class="col s6"><p class="address"></p></div>
+                    <div class="col s6">
+                        <p class="correspondence"></p>
+                        <p class="shares"></p>
                     </div>
-
-                    <div id=settings-agreg class="col s12">
-
-                        <table class="no-line">
-                            <tbody>
-                                <tr >
-                                    <th width="250" >A-Code Sequenz</th>
-                                    <td>
-                                        <input id="setting-edit-A_CODE_SEQ" type="text" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>VR 2. Unterschrift</th>
-                                    <td>
-                                        <input id="setting-edit-AG_SIGNATURE2" type="text" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Aktienregisterführer</th>
-                                    <td>
-                                        <input id="setting-edit-AG_REGISTER" type="text" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Aktienregisterführer, Adresse</th>
-                                    <td>
-                                        <input id="setting-edit-AG_REGISTER_ADDRESS" type="text" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Aktienregisterführer, PLZ</th>
-                                    <td>
-                                        <input id="setting-edit-AG_REGISTER_POSTCODE" type="text"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Aktienregisterführer, Ort</th>
-                                    <td>
-                                        <input id="setting-edit-AG_REGISTER_CITY" type="text"/>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-
-                        <div style="margin-top: 100px;">
-                            <button id="settings-submit" class="btn waves-effect" type="submit">
+                </div>
+                <div class="row z-depth-1" style="height: 450px !important">
+                    <div class="col s12">
+                        <ul id="person-info-tabs" class="tabs">
+                            <li class="tab col s3"><a class="active" href="#person-shares">Aktien</a></li>
+                            <li class="tab col s3"><a href="#person-comments">Kommentare</a></li>
+                            <li class="tab col s3"><a href="#add-person-comment">Kommentar erfassen</a></li>
+                            <li class="tab col s3"><a href="#person-trail">Protokoll</a></li>
+                        </ul>
+                        <div class="col s12" id="person-shares">
+                            <table
+                                id="persons-info-shares-table"
+                                class="compact nowrap compact stripe hover row-border order-column"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Aktien Nr</th>
+                                        <th>Aktien Typ</th>
+                                        <th>Wert (CHF)</th>
+                                        <th>Kaufdatum</th>
+                                        <th>Journal Nr</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="col s12" id="person-comments">
+                            <table
+                                id="persons-info-comments-table"
+                                class="compact nowrap compact stripe hover row-border order-column"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Kommentar</th>
+                                        <th>Datum</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="input-field col s12" id="add-person-comment" style="height: 350px">
+                            <textarea id="new-person-comment" class="input-field materialize-textarea"></textarea>
+                            <input type="hidden" id="new-person-comment-id" />
+                            <label for="new-person-comment">Kommentar</label>
+                            <button
+                                id="new-person-comment-save-btn"
+                                class="btn btn-small waves-effect disabled"
+                                type="submit"
+                                style="position: absolute; bottom: 0; left: 0"
+                            >
                                 <i class="fas fa-save"></i> Speichern
                             </button>
                         </div>
-
+                        <div class="col s12" id="person-trail">
+                            <table
+                                id="persons-info-trail-table"
+                                class="compact nowrap compact stripe hover row-border order-column"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Typ</th>
+                                        <th>Wert Neu</th>
+                                        <th>Wert Original</th>
+                                        <th>Feld</th>
+                                        <th>Benutzer</th>
+                                        <th>Datum</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <div id="settings-db" class="col s12">                        
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th width="200"><i class="fas fa-code"></i> Version</th>
-                                    <td width="*"><span class="setting-info" id="admin-info-dbversion"></span></td>
-                                    <td width="150"></td>
-                                </tr> 
-                                <tr id="admin-info-dbpath-row">
-                                    <th ><i class="fas fa-database"></i> Datenbank</th>
-                                    <td><span class="setting-info" id="admin-info-dbpath"></span></td>
-                                    <td>
-                                        <button id="admin-db-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th ><i class="fas fa-folder"></i> Backupordner</th>
-                                    <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
-                                    <td>
-                                        <button id="admin-backup-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-copy"></i> Datenbank Backups</th>
-                                    <td><div class="setting-info" id="admin-info-backup-list"></div></td>
-                                    <td>
-                                        <button id="admin-db-backup-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th ><i class="fas fa-folder"></i> Exportordner</th>
-                                    <td><span class="setting-info" id="admin-info-exportspath"></span></td>
-                                    <td>
-                                        <button id="admin-export-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
-                                    <td><span class="setting-info" id="admin-info-export-list"></span></td>
-                                    <td>
-                                        <button id="admin-db-export-btn" class="btn btn-small waves-effect"><i class="fas fa-save"></i> Erstellen</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <div id="journal-info-modal" class="modal modal-fixed-footer modal-wide">
+            <div class="modal-content" style="overflow: visible !important">
+                <h5></h5>
+                <div class="row">
+                    <div class="col s4">
+                        <p class="journal_date"></p>
+                        <p class="transaction_date"></p>
                     </div>
-
-
-
-                    <div id="settings-app" class="col s12">
-                        
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th width="200"><i class="fas fa-code"></i> Version</th>
-                                    <td width="*"><span class="setting-info" id="admin-info-appversion"></span></td>
-                                    <td width="150"></td>
-                                </tr>
-                                <tr>
-                                    <th width="200"><i class="fas fa-cog"></i> Konfigurationsdatei</th>
-                                    <td width="*"><span class="setting-info" id="admin-info-configfile"></span></td>
-                                    <td width="150"></td>
-                                </tr>
-                                <tr>
-                                    <th width="200"><i class="fas fa-cog"></i> Konfigurationsset</th>
-                                    <td width="*"><span class="setting-info" id="admin-info-configset"></span></td>
-                                    <td width="150"></td>
-                                </tr>
-                                <tr>
-                                    <th ><i class="fas fa-folder"></i> Dokumenteordner</th>
-                                    <td><span class="setting-info" id="admin-info-documentspath"></span></td>
-                                    <td>
-                                        <button id="admin-document-select-btn" class="btn btn-small waves-effect"><i class="fas fa-folder-open"></i> Auswählen</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-
-
+                    <div class="col s4">
+                        <p class="action"></p>
+                        <p class="shares"></p>
                     </div>
-
-                    
-                    <div class="row">
-                        <div class="s12 hidden danger z-depth-1" id="admin-info-error"></div>
+                    <div class="col s4">
+                        <p class="person"></p>
                     </div>
-
-
                 </div>
-                
-
-
-            </div>
-        </div>
-
-
-
-
-    </div>
-
-</div>
-
-
-<!-- Modal Structure -->
-
-<div id="person-info-modal" class="modal modal-fixed-footer modal-wide">
-    <div class="modal-content" style="overflow: visible !important;">
-        <h5></h5>
-        <div class="row">
-            <div class="col s6"><p class="address"></p></div>
-            <div class="col s6">
-                <p class="correspondence"></p>
-                <p class="shares"></p>
-            </div>
-        </div>
-        <div class="row z-depth-1" style="height: 450px !important">
-            <div class="col s12">
-                <ul id="person-info-tabs" class="tabs">
-                    <li class="tab col s3"><a class="active" href="#person-shares">Aktien</a></li>
-                    <li class="tab col s3"><a href="#person-comments">Kommentare</a></li>
-                    <li class="tab col s3"><a href="#add-person-comment">Kommentar erfassen</a></li>
-                    <li class="tab col s3"><a href="#person-trail">Protokoll</a></li>
-                </ul>
-                <div class="col s12" id="person-shares">
-                    <table id="persons-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
-                        <thead>
-                            <tr>
-                                <th>Aktien Nr</th>
-                                <th>Aktien Typ</th>
-                                <th>Wert (CHF)</th>
-                                <th>Kaufdatum</th>
-                                <th>Journal Nr</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="col s12" id="person-comments">
-                    <table id="persons-info-comments-table" class="compact nowrap compact stripe hover row-border order-column">
-                        <thead>
-                            <tr>
-                                <th>Kommentar</th>
-                                <th>Datum</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="input-field col s12" id="add-person-comment" style="height: 350px;">
-                    <textarea id="new-person-comment" class="input-field materialize-textarea"></textarea>
-                    <input type="hidden" id="new-person-comment-id">
-                    <label for="new-person-comment">Kommentar</label>
-                    <button id="new-person-comment-save-btn" class="btn btn-small waves-effect disabled" type="submit" style="position: absolute; bottom: 0; left: 0;">
-                        <i class="fas fa-save"></i> Speichern
-                    </button>
-                </div>
-                <div class="col s12" id="person-trail">
-                    <table id="persons-info-trail-table" class="compact nowrap compact stripe hover row-border order-column">
-                        <thead>
-                            <tr>
-                                <th>Typ</th>
-                                <th>Wert Neu</th>
-                                <th>Wert Original</th>
-                                <th>Feld</th>
-                                <th>Benutzer</th>
-                                <th>Datum</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <div class="row z-depth-1" style="height: 450px !important">
+                    <div class="col s12">
+                        <ul id="journal-info-tabs" class="tabs">
+                            <li class="tab col s4"><a class="active" href="#journal-shares">Aktien</a></li>
+                            <li class="tab col s4"><a href="#journal-comments">Kommentare</a></li>
+                            <li class="tab col s4"><a href="#add-journal-comment">Kommentar erfassen</a></li>
+                        </ul>
+                        <div class="col s12" id="journal-shares">
+                            <table
+                                id="journal-info-shares-table"
+                                class="compact nowrap compact stripe hover row-border order-column"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Aktien Nr</th>
+                                        <th>Aktien Typ</th>
+                                        <th>Wert (CHF)</th>
+                                        <th>Kaufdatum</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="col s12" id="journal-comments">
+                            <table
+                                id="journal-info-comments-table"
+                                class="compact nowrap compact stripe hover row-border order-column"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Kommentar</th>
+                                        <th>Datum</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="input-field col s12" id="add-journal-comment" style="height: 350px">
+                            <textarea id="new-journal-comment" class="input-field materialize-textarea"></textarea>
+                            <input type="hidden" id="new-journal-comment-id" />
+                            <label for="new-journal-comment">Kommentar</label>
+                            <button
+                                id="new-journal-comment-save-btn"
+                                class="btn btn-small waves-effect disabled"
+                                type="submit"
+                                style="position: absolute; bottom: 0; left: 0"
+                            >
+                                <i class="fas fa-save"></i> Speichern
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-
-<div id="journal-info-modal" class="modal modal-fixed-footer modal-wide">
-    <div class="modal-content" style="overflow: visible !important;">
-        <h5></h5>
-        <div class="row">
-            <div class="col s4">
-                <p class="journal_date"></p>
-                <p class="transaction_date"></p>
+        <div id="confirmation-modal-enter-person" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Person Erfassen</h4>
+                <p style="margin: 40px"></p>
             </div>
-            <div class="col s4">
-                <p class="action"></p>
-                <p class="shares"></p>
-            </div>
-            <div class="col s4">
-                <p class="person"></p>
+            <div class="modal-footer">
+                <a
+                    href="#!"
+                    id="confirmation-enter-person-ok"
+                    class="modal-action modal-close waves-effect waves-green btn-flat"
+                    >Erfassen</a
+                >
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Abbrechen</a>
             </div>
         </div>
-        <div class="row z-depth-1" style="height: 450px !important">
-            <div class="col s12">
-                <ul id="journal-info-tabs" class="tabs">
-                    <li class="tab col s4"><a class="active" href="#journal-shares">Aktien</a></li>
-                    <li class="tab col s4"><a href="#journal-comments">Kommentare</a></li>
-                    <li class="tab col s4"><a href="#add-journal-comment">Kommentar erfassen</a></li>
-                </ul>
-                <div class="col s12" id="journal-shares">
-                    <table id="journal-info-shares-table" class="compact nowrap compact stripe hover row-border order-column">
-                        <thead>
-                            <tr>
-                                <th>Aktien Nr</th>
-                                <th>Aktien Typ</th>
-                                <th>Wert (CHF)</th>
-                                <th>Kaufdatum</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="col s12" id="journal-comments">
-                    <table id="journal-info-comments-table" class="compact nowrap compact stripe hover row-border order-column">
-                        <thead>
-                            <tr>
-                                <th>Kommentar</th>
-                                <th>Datum</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="input-field col s12" id="add-journal-comment" style="height: 350px;">
-                    <textarea id="new-journal-comment" class="input-field materialize-textarea"></textarea>
-                    <input type="hidden" id="new-journal-comment-id">
-                    <label for="new-journal-comment">Kommentar</label>
-                    <button id="new-journal-comment-save-btn" class="btn btn-small waves-effect disabled" type="submit" style="position: absolute; bottom: 0; left: 0;">
-                        <i class="fas fa-save"></i> Speichern
-                    </button>
-                </div>
+
+        <div id="confirmation-modal-sale" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Verkauf</h4>
+                <p style="margin: 40px"></p>
+            </div>
+            <div class="modal-footer">
+                <a
+                    href="#!"
+                    id="confirmation-sale-ok"
+                    class="modal-action modal-close waves-effect waves-green btn-flat"
+                    >Verkauf OK</a
+                >
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Abbrechen</a>
             </div>
         </div>
-    </div>
-</div>
 
-<div id="confirmation-modal-enter-person" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4>Person Erfassen</h4>
-        <p style="margin: 40px"></p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" id='confirmation-enter-person-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Erfassen</a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
-    </div>
-</div>
+        <div id="confirmation-modal-reserved" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Reservierte Zertifikate ausstellen</h4>
+                <p style="margin: 40px"></p>
+            </div>
+            <div class="modal-footer">
+                <a
+                    href="#!"
+                    id="confirmation-issuereserved-ok"
+                    class="modal-action modal-close waves-effect waves-green btn-flat"
+                >
+                    OK
+                </a>
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Abbrechen</a>
+            </div>
+        </div>
 
-<div id="confirmation-modal-sale" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4>Verkauf</h4>
-        <p style="margin: 40px"></p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" id='confirmation-sale-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Verkauf
-            OK</a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
-    </div>
-</div>
+        <!-- Modal Structure -->
+        <div id="confirmation-modal-repurchase" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Rückkauf</h4>
+                <p style="margin: 40px"></p>
+            </div>
+            <div class="modal-footer">
+                <a
+                    href="#!"
+                    id="confirmation-repurchase-ok"
+                    class="modal-action modal-close waves-effect waves-green btn-flat"
+                    >Rückkauf OK</a
+                >
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Abbrechen</a>
+            </div>
+        </div>
 
+        <!-- Modal Structure -->
+        <div id="confirmation-modal-transfer" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Übertrag</h4>
+                <p style="margin: 40px"></p>
+            </div>
+            <div class="modal-footer">
+                <a
+                    href="#!"
+                    id="confirmation-transfer-ok"
+                    class="modal-action modal-close waves-effect waves-green btn-flat"
+                    >Übertrag OK</a
+                >
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Abbrechen</a>
+            </div>
+        </div>
 
-<div id="confirmation-modal-reserved" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4>Reservierte Zertifikate ausstellen</h4>
-        <p style="margin: 40px"></p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" id='confirmation-issuereserved-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">
-            OK
-        </a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
-    </div>
-</div>
+        <!-- Modal Structure -->
+        <div id="confirmation-modal-mutation" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Mutation</h4>
+                <p style="margin: 40px"></p>
+            </div>
+            <div class="modal-footer">
+                <a
+                    href="#!"
+                    id="confirmation-mutation-ok"
+                    class="modal-action modal-close waves-effect waves-green btn-flat"
+                    >Mutation OK</a
+                >
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Abbrechen</a>
+            </div>
+        </div>
 
-<!-- Modal Structure -->
-<div id="confirmation-modal-repurchase" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4>Rückkauf</h4>
-        <p style="margin: 40px"></p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" id='confirmation-repurchase-ok'
-           class="modal-action modal-close waves-effect waves-green btn-flat ">Rückkauf OK</a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
-    </div>
-</div>
+        <!-- Modal Structure -->
+        <div id="application-info" class="modal">
+            <div class="modal-content rssm-app-info">
+                <p>Aktienregister der Akiengesellschaft <b>Schulgebäude, Rudolf Steiner Schule Münchenstein</b></p>
+                <p>Version: <span class="rssm-app-info-version"></span></p>
+                <p>Autor: <span class="rssm-app-info-author">Daniel Wahl</span></p>
+            </div>
+        </div>
 
-<!-- Modal Structure -->
-<div id="confirmation-modal-transfer" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4>Übertrag</h4>
-        <p style="margin: 40px"></p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" id='confirmation-transfer-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Übertrag
-            OK</a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
-    </div>
-</div>
-
-<!-- Modal Structure -->
-<div id="confirmation-modal-mutation" class="modal modal-fixed-footer">
-    <div class="modal-content">
-        <h4>Mutation</h4>
-        <p style="margin: 40px"></p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" id='confirmation-mutation-ok' class="modal-action modal-close waves-effect waves-green btn-flat ">Mutation
-            OK</a>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
-    </div>
-</div>
-
-
-<!-- Modal Structure -->
-<div id="application-info" class="modal">
-    <div class="modal-content rssm-app-info">
-        <p>Aktienregister der Akiengesellschaft <b>Schulgebäude, Rudolf Steiner Schule Münchenstein</b></p>
-        <p>Version: <span class="rssm-app-info-version"></span></p>
-        <p>Autor: <span class="rssm-app-info-author">Daniel Wahl</span></p>
-    </div>
-</div>
-
-
-<script type="text/javascript" src="../materialize.js"></script>
-<script type="text/javascript" src="mainWindow.js"></script>
-</body>
+        <script type="text/javascript" src="../materialize.js"></script>
+        <script type="text/javascript" src="mainWindow.js"></script>
+    </body>
 </html>

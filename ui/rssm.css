@@ -1,22 +1,17 @@
-
-
-
-
 /* make sure we use all vertical space and use proper font */
-html, body  {
+html,
+body {
     height: 99%;
     font-family: Helvetica;
-    --content-grey-normal: #E0E0E0;
-    --content-grey-light: #ECECEC;
-    --nav-item-grey-normal : #E0E0E0;
-    --nav-item-grey-highlight : #ECEFF1 ;
-    --nav-item-blue-grey-highlight: #CFD8DC;
-    --action-item-blue-normal : #448AFF;
-    --action-item-blue-dark : #1565C0;
-    --action-item-blue-light : #82B1FF;
-    --action-item-blue-ultra-light : #BBDEFB;
-    
-    
+    --content-grey-normal: #e0e0e0;
+    --content-grey-light: #ececec;
+    --nav-item-grey-normal: #e0e0e0;
+    --nav-item-grey-highlight: #eceff1;
+    --nav-item-blue-grey-highlight: #cfd8dc;
+    --action-item-blue-normal: #448aff;
+    --action-item-blue-dark: #1565c0;
+    --action-item-blue-light: #82b1ff;
+    --action-item-blue-ultra-light: #bbdefb;
 }
 
 a.current {
@@ -43,10 +38,12 @@ body.dialog {
     padding-right: 25px;
     font-weight: normal;
     text-align: right;
-    width : 100px;
+    width: 100px;
 }
 
-#container, #sidenav, #content {
+#container,
+#sidenav,
+#content {
     height: 100%;
     min-height: 100% !important;
 }
@@ -62,23 +59,21 @@ table.no-line tr {
 
 #admin-info-error {
     position: absolute;
-    bottom: 0;  
+    bottom: 0;
     right: 0;
     left: 0;
     margin-left: 20px;
     margin-right: 20px;
     padding: 20px;
-    margin-bottom: 50px; 
+    margin-bottom: 50px;
     background-color: rgba(201, 21, 21, 0.11);
     color: darkred;
     font-size: 14px;
 }
 
-
-
 /* Forms color scheme - materialize overrides */
 
-/* form input fields */ 
+/* form input fields */
 input {
     color: var(--action-item-blue-dark) !important;
 }
@@ -92,7 +87,7 @@ input:focus {
 }
 .row .input-field textarea:focus {
     border-bottom: 1px solid var(--action-item-blue-normal) !important;
-    box-shadow: 0 1px 0 0 #2196f3 !important
+    box-shadow: 0 1px 0 0 #2196f3 !important;
 }
 textarea {
     color: var(--action-item-blue-dark) !important;
@@ -107,32 +102,36 @@ ul.dropdown-content li span.highlight {
 }
 
 /* Datepicker */
-div.datepicker-date-display  {
+div.datepicker-date-display {
     background-color: var(--action-item-blue-normal) !important;
 }
-.datepicker-table td.is-today, .datepicker-cancel, .datepicker-done  {
+.datepicker-table td.is-today,
+.datepicker-cancel,
+.datepicker-done {
     color: var(--action-item-blue-dark) !important;
 }
 .datepicker-table td.is-selected {
     background-color: var(--action-item-blue-light) !important;
 }
 
-/* switch */ 
-.switch label input[type=checkbox]:checked + .lever {
+/* switch */
+.switch label input[type="checkbox"]:checked + .lever {
     background-color: var(--action-item-blue-light) !important;
 }
-.switch label input[type=checkbox]:checked + .lever:after {
+.switch label input[type="checkbox"]:checked + .lever:after {
     background-color: var(--action-item-blue-normal) !important;
 }
-.switch-stayon label input[type=checkbox] + .lever {
+.switch-stayon label input[type="checkbox"] + .lever {
     background-color: var(--action-item-blue-light) !important;
 }
-.switch-stayon label input[type=checkbox] + .lever:after {
+.switch-stayon label input[type="checkbox"] + .lever:after {
     background-color: var(--action-item-blue-normal) !important;
 }
 
-/* buttons */ 
-.btn, .btn-large, .btn-small {
+/* buttons */
+.btn,
+.btn-large,
+.btn-small {
     background-color: var(--action-item-blue-dark) !important;
 }
 .btn-table-icon {
@@ -146,13 +145,13 @@ div.modal-wide {
 }
 
 /* Tabs */
-li.tab { 
+li.tab {
     text-transform: none !important;
 }
 li.indicator {
     background-color: var(--action-item-blue-light) !important;
 }
-li.tab a { 
+li.tab a {
     color: rgba(0, 0, 0, 0.87) !important;
     background-color: var(--nav-item-grey-normal) !important;
     font-weight: bold;
@@ -164,8 +163,6 @@ ul.tabs {
     margin-bottom: 30px;
 }
 
-
-
 .logo-container {
     padding: 10px;
     margin-bottom: 15px;
@@ -175,7 +172,6 @@ ul.tabs {
 }
 
 .menu-category {
-
     font-weight: bold;
     font-size: 16px;
     color: #666666;
@@ -185,7 +181,6 @@ ul.tabs {
     color: #333333;
 }
 
-
 #content {
     position: relative;
 }
@@ -193,12 +188,12 @@ ul.tabs {
 .content-element {
     margin: 30px !important;
     display: block;
-    position:absolute !important;
-    height:auto;
-    bottom:0;
-    top:0;
-    left:0;
-    right:0;
+    position: absolute !important;
+    height: auto;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     background-color: var(--content-grey-normal) !important;
 }
 
@@ -219,18 +214,14 @@ ul.tabs {
     display: none !important;
 }
 
-
 .form-container {
     margin-top: 40px;
 }
-
-
 
 .rssm-owner td {
     color: #000033;
     background-color: rgba(0, 90, 255, 0.1);
 }
-
 
 div.rssm-app-info {
     background-image: url(../assets/linden.png) !important;
@@ -251,17 +242,16 @@ div.rssm-app-info span {
     font-style: italic;
 }
 
-
 .row-type-highlight td {
-    background-color : #f6f6f6;
+    background-color: #f6f6f6;
 }
 
 .row-type-plain td {
-    background-color : #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 .summary span {
-    margin-left : 100px;
+    margin-left: 100px;
     font-weight: bold;
 }
 
@@ -284,7 +274,6 @@ div.rssm-app-info span {
     margin-bottom: 10px !important;
 }
 
-
 /* Aktien Display */
 .share-dd-container {
     min-height: 500px;
@@ -302,10 +291,8 @@ div.rssm-app-info span {
 }
 
 .share-dd-item-selected {
-    box-shadow:
-            0 16px 24px 2px rgba(0,0,0,0.14),
-            0 6px 30px 5px rgba(0,0,0,0.12),
-            0 8px 10px -5px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12),
+        0 8px 10px -5px rgba(0, 0, 0, 0.3) !important;
     background-color: var(--action-item-blue-ultra-light) !important;
 }
 
@@ -323,13 +310,13 @@ share-dd-item p img {
     font-family: sans-serif;
 }
 
-.share-dd-icon  {
+.share-dd-icon {
     font-size: 50px;
     bottom: -10px;
     right: 5px;
     position: absolute;
     z-index: -1 !important;
-    color: rgb(30,30,30,.25) !important;
+    color: rgb(30, 30, 30, 0.25) !important;
 }
 
 .share-dd-item img {
@@ -351,9 +338,6 @@ share-dd-item p img {
     font-size: 24px;
     color: teal;
 }
-
-
-
 
 /** Dashboard **/
 
