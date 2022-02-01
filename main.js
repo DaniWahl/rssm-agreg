@@ -5,7 +5,7 @@ const RSSMShares = require("./lib/RSSMShares").RSSMShares
 const RSSMDocs = require("./lib/RSSMDocs")
 const helpers = require("./lib/app.helpers")
 
-const VERSION = "1.8.1"
+const VERSION = app.getVersion()
 const CONFIGNAME = "config.json"
 const assetPath = __dirname + "/assets"
 
