@@ -1,36 +1,36 @@
 {
-  "name": "aktienregister-rssm",
-  "version": "1.8.2",
-  "description": "Aktienregister der AG Schulgebäude RSSM",
-  "private": true,
-  "author": "Daniel Wahl",
-  "repository": "github:DaniWahl/rssm-agreg",
-  "license": "ISC",
-  "main": "main.js",
-  "scripts": {
-    "start": "set ELECTRON_DEV=1&&electron .",
-    "pdf_test": "node bin/pdfkit_test.js",
-    "test_namingform" : "node bin/pdf_namingform_test.js",
-    "test_letterelectronic" : "node bin/pdf_letterelectronic_test.js",
-    
-    "postinstall": "electron-builder install-app-deps",
-    "package-mac": "electron-packager ./ 'Aktienregister RSSM' --icon ./assets/icons/mac/icon.icns --out ./build/ --overwrite",
-    "package-win": "electron-packager ./ AktienregisterRSSM --icon ./assets/icons/win/icon.icns --out ./build/ --overwrite"
-  },
-  "dependencies": {
-    "chart.js": "^2.9.3",
-    "crypto-js": "^4.0.0",
-    "datatables.net-dt": "^1.10.20",
-    "datatables.net-fixedheader-dt": "^3.1.6",
-    "datatables.net-rowgroup-dt": "^1.1.1",
-    "datatables.net-scroller-dt": "^2.0.1",
-    "exceljs": "^3.9.0",
-    "pdfkit": "^0.11.0",
-    "sqlite3": "^4.1.1"
-  },
-  "devDependencies": {
-    "electron": "^9.4.0",
-    "electron-builder": "^22.5.1",
-    "electron-packager": "^14.2.1"
-  }
+    "name": "aktienregister-rssm",
+    "version": "1.8.2",
+    "description": "Aktienregister der AG Schulgebäude RSSM",
+    "private": true,
+    "author": "Daniel Wahl",
+    "repository": "github:DaniWahl/rssm-agreg",
+    "license": "ISC",
+    "main": "main.js",
+    "scripts": {
+        "start": "set ELECTRON_DEV=1&&electron .",
+        "pdf_test": "node bin/pdfkit_test.js",
+        "test_namingform": "node bin/pdf_namingform_test.js",
+        "test_letterelectronic": "node bin/pdf_letterelectronic_test.js",
+        "postinstall": "electron-builder install-app-deps",
+        "package-mac": "electron-packager ./ 'Aktienregister RSSM' --icon ./assets/icons/mac/icon.icns --out ./build/ --overwrite",
+        "package-win": "electron-packager ./ AktienregisterRSSM --icon ./assets/icons/win/icon.icns --out ./build/ --overwrite"
+    },
+    "dependencies": {
+        "chart.js": "^3.7.0",
+        "crypto-js": "^4.0.0",
+        "datatables.net-dt": "^1.11.4",
+        "datatables.net-fixedheader-dt": "^3.2.1",
+        "datatables.net-rowgroup-dt": "^1.1.4",
+        "datatables.net-scroller-dt": "^2.0.5",
+        "electron-log": "^4.4.5",
+        "electron-updater": "^4.6.1",
+        "exceljs": "^4.3.0",
+        "pdfkit": "^0.13.0",
+        "sqlite3": "^5.0.2"
+    },
+    "devDependencies": {
+        "electron": "^16.0.8",
+        "electron-builder": "^22.5.1"
+    }
 }

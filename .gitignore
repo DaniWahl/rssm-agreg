@@ -3,3 +3,6 @@ exports/*
 node_modules/*
 data/*
 db/complete*
+electron-builder.yml
+dist/
+package-lock.json
