@@ -1,14 +1,11 @@
 const Chart = require("chart.js")
+require("chartjs-adapter-date-fns")
 
 function showDashboard(e, data) {
     showElement("dashboard")
-
-    // setting default chart options
-    Chart.defaults.global.elements.point.radius = 0
-
-    populateShareTable(data.shares, data.rssm)
+    const [available, total] = populateShareTable(data.shares, data.rssm)
     populateHolderTable(data.persons)
-    drawShareChart(data.journal, data.series)
+    drawShareChart(data.journal, data.series, available, total)
 }
 
 function populateShareTable(shares, rssm_a_code) {
@@ -24,6 +21,7 @@ function populateShareTable(shares, rssm_a_code) {
 
     $("#dash-cell-total-shares").text(total)
     $("#dash-cell-avail-shares").text(rssm)
+    return [rssm, total]
 }
 
 function populateHolderTable(people) {
@@ -43,84 +41,125 @@ function populateHolderTable(people) {
     $("#dash-cell-active-holders").text(active)
 }
 
-function drawShareChart(journal, series) {
-    let ctx = "shares-chart"
-    let available = []
-    let total = []
-    let count = 0
+function drawShareChart(journal, series, inStock, total) {
+    const ctx = "shares-chart"
+    const available = []
+    const capital = []
+    const todayDate = new Date()
+    const days = new Map()
+    let yearStartDate = null
+    let count = inStock
 
+    console.log(series)
+
+    // get start date of business year (July 1. - June 31.)
+    if (todayDate.getMonth() >= 5) {
+        // July 1st this year
+        yearStartDate = new Date(`${todayDate.getFullYear()}-07-01`)
+    } else {
+        // July 1st last year
+        yearStartDate = new Date(`${todayDate.getFullYear() - 1}-07-01`)
+    }
+
+    // iterate journal
     for (let i = 0; i < journal.length; i++) {
-        if (journal[i].share_stock) {
-            available.push({
-                y: journal[i].share_stock,
-                x: journal[i].transaction_date,
-            })
+        const j = journal[i]
+
+        // skip all entries with no change of stock
+        if (j.number == 0) {
+            continue
+        }
+
+        // condense all share stock changes per transaction date
+        if (days.has(j.transaction_date)) {
+            days.set(j.transaction_date, days.get(j.transaction_date) + j.number)
+        } else {
+            days.set(j.transaction_date, j.number)
         }
     }
 
-    for (let i = 0; i < series.length; i++) {
-        count += series[i].shares
-
-        total.push({
-            y: count,
-            x: series[i].emission_date,
-        })
-    }
-    total.push({
+    // push first data point for todays values
+    available.push({
         y: count,
-        x: helpers.dateToDbString(),
+        x: todayDate.getTime(),
+    })
+    // create dataset for available shares over time using the condensed dataset
+    days.forEach((value, key) => {
+        if (value != 0) {
+            count += value
+
+            available.push({
+                y: count,
+                x: new Date(key).getTime(),
+            })
+        }
     })
 
-    new Chart(ctx, {
+    // iterate series
+    countCapital = 0
+    for (let i = 0; i < series.length; i++) {
+        const s = series[i]
+        countCapital = countCapital + s.shares
+
+        capital.push({
+            y: countCapital,
+            x: new Date(s.emission_date).getTime(),
+        })
+    }
+    capital.push({
+        y: total,
+        x: todayDate.getTime(),
+    })
+
+    console.log(capital)
+
+    const canvas = document.getElementById(ctx)
+    const myChart = new Chart(canvas, {
         type: "line",
         data: {
             datasets: [
                 {
-                    label: "Aktien Verfügbar",
-                    backgroundColor: "rgba(21, 101, 192, 0.5)",
-                    borderColor: "rgba(21, 101, 192, 0.6)",
-                    borderWidth: 2,
+                    label: "Besitz RSSM",
                     data: available,
-                    steppedLine: true,
+                    backgroundColor: "#448aff",
+                    borderColor: "#1565c0",
+                    tension: 0.1,
+                    radius: 0,
+                    stepped: true,
                 },
                 {
-                    label: "Aktien Total",
-                    backgroundColor: "rgba(130, 177, 255, 0.2)",
-                    borderColor: "rgba(130, 177, 255, 0.4)",
-                    borderWidth: 2,
-                    data: total,
-                    steppedLine: true,
+                    label: "Kapital RSSM",
+                    data: capital,
+                    backgroundColor: "#999999",
+                    borderColor: "#666666",
+                    tension: 0.1,
+                    radius: 0,
+                    stepped: true,
                 },
             ],
         },
         options: {
-            elements: {
-                line: {
-                    tension: 0,
-                },
-            },
             scales: {
-                xAxes: [
-                    {
-                        type: "time",
-                        time: {
-                            parser: "YYYY-MM-DD",
-                            tooltipFormat: "ll",
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Jahr",
-                        },
+                x: {
+                    type: "time",
+                    //min: yearStartDate.getTime(),
+                    time: {
+                        //unit: "month",
+                        unit: "year",
                     },
-                ],
-                yAxes: [
-                    {
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Aktien",
-                        },
+                    title: {
+                        display: true,
+                        text: "Datum",
                     },
-                ],
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "# Aktien",
+                    },
+                    min: 0,
+                    max: total + 100,
+                },
             },
         },
     })

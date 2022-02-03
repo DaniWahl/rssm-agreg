@@ -54,10 +54,14 @@ autoUpdater.on("update-available", (info) => {
     mainWindow.webContents.send("update:show", { message: "starte Download..." })
 })
 autoUpdater.on("download-progress", (progress) => {
-    mainWindow.webContents.send("update:show", { message: "downloading...", progress: Math.round(progress.percent) })
+    mainWindow.webContents.send("update:show", { message: "lade Update...", progress: Math.round(progress.percent) })
 })
 autoUpdater.on("update-downloaded", (info) => {
     mainWindow.webContents.send("update:show", { message: "restart to install version " + info.version })
+    mainWindow.webContents.send(
+        "toast:show",
+        `Version ${info.version} ist bereit zur Installation. Bitte Programm neu starten.`
+    )
 })
 autoUpdater.on("update-not-available", (info) => {
     mainWindow.webContents.send("update:show", {})
