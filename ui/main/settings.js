@@ -241,7 +241,22 @@ function appendBackup(e, backup) {
     backupListEl.insertBefore(newLiEl, backupListEl.firstChild)
 }
 
+function appendExport(e, exportFile) {
+    M.toast({
+        html: "Datenbank wurde exportiert: " + exportFile,
+        displayLength: 5000,
+        classes: `rounded green lighten-1 z-depth-4`,
+    })
+    // new export to export file list
+    const exportListEl = document.getElementById("admin-info-export-list").firstChild
+    const newLiEl = document.createElement("li")
+    newLiEl.innerHTML = exportFile
+    newLiEl.classList.add("new")
+    exportListEl.insertBefore(newLiEl, exportListEl.firstChild)
+}
+
 module.exports = {
     showSettings,
     appendBackup,
+    appendExport,
 }

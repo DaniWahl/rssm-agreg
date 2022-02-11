@@ -17,7 +17,7 @@ const { showTransfer } = require("./transfer")
 const { showSale } = require("./sale")
 const { showShareRegister } = require("./shareRegister")
 const { showDashboard } = require("./dashboard")
-const { showSettings, appendBackup } = require("./settings")
+const { showSettings, appendBackup, appendExport } = require("./settings")
 const { showReport, showReportData } = require("./report")
 const { showEnterPerson } = require("./newPerson")
 
@@ -79,6 +79,7 @@ ipcRenderer.on("toast:show", showToast)
 ipcRenderer.on("admin:settings:show", showSettings)
 ipcRenderer.on("loading:hide", hideLoading)
 ipcRenderer.on("backup::append", appendBackup)
+ipcRenderer.on("export::append", appendExport)
 
 // register event handlers for all elements
 document.querySelectorAll("a").forEach((el) => {

@@ -194,8 +194,7 @@ async function createDbBackup() {
 
 async function createDbExport(e) {
     const exportFile = await rssm.exportToExcel(true)
-    mainWindow.webContents.send("toast:show", "Datenbank exportiert: " + exportFile)
-    restartApp(2000)
+    mainWindow.webContents.send("export::append", exportFile)
 }
 
 function restartApp(time = 1000) {
