@@ -1,5 +1,21 @@
 const Chart = require("chart.js")
+const { startOfDay } = require("date-fns")
+const { dash } = require("pdfkit")
 require("chartjs-adapter-date-fns")
+let dashChart = undefined
+let chartStates = undefined
+
+document.getElementById("chart-container").addEventListener("click", toggleChartScale)
+
+// currently not used
+function toggleChartScale(e) {
+    //const nextState = chartStates.states[dashChart.currentState]["nextState"]
+    //const nextOptions = chartStates.states[nextState]["options"]
+    //dashChart.options.scales.x.min = nextOptions.scales.x.min
+    //dashChart.options.scales.x.time.unit = nextOptions.scales.x.time.unit
+    //dashChart.currentState = nextState
+    //dashChart.update()
+}
 
 function showDashboard(e, data) {
     showElement("dashboard")
@@ -44,13 +60,13 @@ function populateHolderTable(people) {
 function drawShareChart(journal, series, inStock, total) {
     const ctx = "shares-chart"
     const available = []
+    const labels = []
     const capital = []
     const todayDate = new Date()
-    const days = new Map()
-    let yearStartDate = null
+    const tenYearsDate = new Date(`${todayDate.getFullYear() - 10}-01-01`)
+    const dataMap = new Map()
     let count = inStock
-
-    console.log(series)
+    let yearStartDate = null
 
     // get start date of business year (July 1. - June 31.)
     if (todayDate.getMonth() >= 5) {
@@ -64,17 +80,26 @@ function drawShareChart(journal, series, inStock, total) {
     // iterate journal
     for (let i = 0; i < journal.length; i++) {
         const j = journal[i]
+        const transactionDate = new Date(j.transaction_date)
 
         // skip all entries with no change of stock
         if (j.number == 0) {
             continue
         }
 
+        // skip all transactions older than 10 years
+        if (transactionDate <= tenYearsDate) {
+            continue
+        }
+
+        //const monthly = `${transactionDate.getFullYear()} ${months[transactionDate.getMonth()]}`
+        const monthly = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), 1).getTime()
+
         // condense all share stock changes per transaction date
-        if (days.has(j.transaction_date)) {
-            days.set(j.transaction_date, days.get(j.transaction_date) + j.number)
+        if (dataMap.has(monthly)) {
+            dataMap.set(monthly, dataMap.get(monthly) + j.number)
         } else {
-            days.set(j.transaction_date, j.number)
+            dataMap.set(monthly, j.number)
         }
     }
 
@@ -84,72 +109,83 @@ function drawShareChart(journal, series, inStock, total) {
         x: todayDate.getTime(),
     })
     // create dataset for available shares over time using the condensed dataset
-    days.forEach((value, key) => {
+    dataMap.forEach((value, timestamp) => {
         if (value != 0) {
             count += value
-
             available.push({
                 y: count,
-                x: new Date(key).getTime(),
+                x: timestamp,
             })
         }
     })
 
     // iterate series
-    countCapital = 0
-    for (let i = 0; i < series.length; i++) {
-        const s = series[i]
-        countCapital = countCapital + s.shares
+    // countCapital = 0
+    // for (let i = 0; i < series.length; i++) {
+    //     const s = series[i]
+    //     countCapital = countCapital + s.shares
 
-        capital.push({
-            y: countCapital,
-            x: new Date(s.emission_date).getTime(),
-        })
-    }
-    capital.push({
-        y: total,
-        x: todayDate.getTime(),
-    })
-
-    console.log(capital)
+    //     capital.push({
+    //         y: countCapital,
+    //         x: new Date(s.emission_date).getTime(),
+    //     })
+    // }
+    // capital.push({
+    //     y: total,
+    //     x: todayDate.getTime(),
+    // })
 
     const canvas = document.getElementById(ctx)
-    const myChart = new Chart(canvas, {
+    dashChart = new Chart(canvas, {
         type: "line",
         data: {
+            labels: labels,
             datasets: [
                 {
                     label: "Besitz RSSM",
                     data: available,
-                    backgroundColor: "#448aff",
-                    borderColor: "#1565c0",
-                    tension: 0.1,
-                    radius: 0,
-                    stepped: true,
+                    fill: true,
+                    backgroundColor: "rgba(21,101,192,0.5)",
+                    borderColor: "rgba(21,101,192,0.7)",
+                    tension: 0.5,
+                    radius: 3,
                 },
-                {
-                    label: "Kapital RSSM",
-                    data: capital,
-                    backgroundColor: "#999999",
-                    borderColor: "#666666",
-                    tension: 0.1,
-                    radius: 0,
-                    stepped: true,
-                },
+                // {
+                //     label: "Aktienkapital",
+                //     data: capital,
+                //     fill: true,
+                //     backgroundColor: "rgba(100,100,100,0.3)",
+                //     borderColor: "rgba(100,100,100,0.7",
+                //     tension: 0.1,
+                //     radius: 0,
+                //     stepped: true,
+                //     parsing: false,
+                // },
             ],
         },
         options: {
+            plugins: {
+                decimation: {
+                    enabled: false,
+                    algorithm: "lttb",
+                    samples: 10,
+                },
+                title: {
+                    display: true,
+                    align: "start",
+                    text: "Aktien im Besitz der RSSM, Geschäftsjahr",
+                },
+            },
             scales: {
                 x: {
                     type: "time",
-                    //min: yearStartDate.getTime(),
                     time: {
-                        //unit: "month",
-                        unit: "year",
+                        unit: "month",
                     },
+                    min: yearStartDate.getTime(),
                     title: {
                         display: true,
-                        text: "Datum",
+                        text: "Monat",
                     },
                 },
                 y: {
@@ -158,11 +194,57 @@ function drawShareChart(journal, series, inStock, total) {
                         text: "# Aktien",
                     },
                     min: 0,
-                    max: total + 100,
+                    //max: total + 30,
                 },
             },
         },
     })
+
+    // chartStates = {
+    //     1: {
+    //         currentState: 1,
+    //         nextState: 2,
+    //         options: {
+    //             scales: {
+    //                 x: {
+    //                     time: {
+    //                         unit: "year",
+    //                     },
+    //                     min: tenYearsDate.getTime(),
+    //                 },
+    //             },
+    //         },
+    //     },
+    //     2: {
+    //         currentState: 2,
+    //         nextState: 3,
+    //         options: {
+    //             scales: {
+    //                 x: {
+    //                     time: {
+    //                         unit: "month",
+    //                     },
+    //                     min: yearStartDate.getTime(),
+    //                 },
+    //             },
+    //         },
+    //     },
+    //     3: {
+    //         currentState: 3,
+    //         nextState: 1,
+    //         options: {
+    //             scales: {
+    //                 x: {
+    //                     time: {
+    //                         unit: "year",
+    //                     },
+    //                     min: new Date("2000-01-01").getTime(),
+    //                 },
+    //             },
+    //         },
+    //     },
+    // }
+    // dashChart.currentState = 2
 }
 
 module.exports = {
