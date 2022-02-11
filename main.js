@@ -189,8 +189,7 @@ async function saveSettings(e, data) {
 
 async function createDbBackup() {
     const backup = await rssm.backupDatabase(true)
-    mainWindow.webContents.send("toast:show", "Datenbank Backup erstellt: " + backup)
-    restartApp(2000)
+    mainWindow.webContents.send("backup::append", backup)
 }
 
 async function createDbExport(e) {

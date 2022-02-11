@@ -227,6 +227,21 @@ function getValues() {
     return data
 }
 
+function appendBackup(e, backup) {
+    M.toast({
+        html: "Datenbank Backup wurde erstellt: " + backup,
+        displayLength: 5000,
+        classes: `rounded green lighten-1 z-depth-4`,
+    })
+    // new backup to backup file list
+    const backupListEl = document.getElementById("admin-info-backup-list").firstChild
+    const newLiEl = document.createElement("li")
+    newLiEl.innerHTML = backup
+    newLiEl.classList.add("new")
+    backupListEl.insertBefore(newLiEl, backupListEl.firstChild)
+}
+
 module.exports = {
     showSettings,
+    appendBackup,
 }

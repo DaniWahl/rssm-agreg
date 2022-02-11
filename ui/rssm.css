@@ -11,6 +11,7 @@ body {
     --nav-item-blue-grey-highlight: #cfd8dc;
     --action-item-blue-normal: #448aff;
     --action-item-blue-dark: rgb(21, 101, 192);
+    --action-item-blue-ultra-dark: rgb(11, 56, 109);
     --action-item-blue-light: #82b1ff;
     --action-item-blue-ultra-light: #bbdefb;
 }
@@ -72,6 +73,10 @@ table.no-line tr {
 .setting-info {
     color: var(--action-item-blue-dark);
     font-size: 14px;
+}
+li.new {
+    color: var(--action-item-blue-ultra-dark);
+    font-weight: bold;
 }
 
 #admin-info-error {
