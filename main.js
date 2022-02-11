@@ -189,12 +189,12 @@ async function saveSettings(e, data) {
 
 async function createDbBackup() {
     const backup = await rssm.backupDatabase(true)
-    mainWindow.webContents.send("backup::append", backup)
+    mainWindow.webContents.send("backup:append", backup)
 }
 
 async function createDbExport(e) {
     const exportFile = await rssm.exportToExcel(true)
-    mainWindow.webContents.send("export::append", exportFile)
+    mainWindow.webContents.send("export:append", exportFile)
 }
 
 function restartApp(time = 1000) {
@@ -264,10 +264,11 @@ async function setBackupPath(e) {
 
     // updating new path to app config
     rssm.config.save("backuppath", path)
-    mainWindow.webContents.send("toast:show", "Neuer Backup Ordner ausgewählt: " + path)
+    //mainWindow.webContents.send("toast:show", "Neuer Backup Ordner ausgewählt: " + path)
+    mainWindow.webContents.send("backuppath:update", path)
 
     // initialize application
-    restartApp(2000)
+    //restartApp(2000)
 }
 
 /**

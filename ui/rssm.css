@@ -74,7 +74,7 @@ table.no-line tr {
     color: var(--action-item-blue-dark);
     font-size: 14px;
 }
-li.new {
+.new {
     color: var(--action-item-blue-ultra-dark);
     font-weight: bold;
 }

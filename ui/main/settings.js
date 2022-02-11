@@ -255,8 +255,21 @@ function appendExport(e, exportFile) {
     exportListEl.insertBefore(newLiEl, exportListEl.firstChild)
 }
 
+function updateBackupPath(e, backupPath) {
+    M.toast({
+        html: "Neuer Backup Ordner ausgewählt: " + backupPath,
+        displayLength: 5000,
+        classes: `rounded green lighten-1 z-depth-4`,
+    })
+    // update backup path to UI
+    const backupPathEl = document.getElementById("admin-info-dbbackuppath")
+    backupPathEl.innerHTML = backupPath
+    backupPathEl.classList.add("new")
+}
+
 module.exports = {
     showSettings,
     appendBackup,
     appendExport,
+    updateBackupPath,
 }
