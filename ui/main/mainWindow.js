@@ -77,6 +77,7 @@ ipcRenderer.on("sale:show", showSale)
 ipcRenderer.on("enterperson:show", showEnterPerson)
 ipcRenderer.on("toast:show", showToast)
 ipcRenderer.on("admin:settings:show", showSettings)
+ipcRenderer.on("loading:hide", hideLoading)
 
 // register event handlers for all elements
 document.querySelectorAll("a").forEach((el) => {
@@ -84,8 +85,6 @@ document.querySelectorAll("a").forEach((el) => {
         el.addEventListener("click", handleLinkClicks)
     }
 })
-
-console.log("mainWindow: started")
 
 /**
  * handler for the toast:show event.
@@ -100,6 +99,15 @@ function showToast(e, msg, color = "green") {
         displayLength: 5000,
         classes: `rounded ${color} lighten-1 z-depth-4`,
     })
+}
+
+/**
+ * handler for the loading:hide event.
+ * hides the loading container
+ * @param {*} e
+ */
+function hideLoading(e) {
+    document.getElementById("loading").classList.add("hidden")
 }
 
 /**

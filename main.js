@@ -120,6 +120,8 @@ async function app_init() {
 
         // load default panel
         loadContentData(null, loadPanel)
+
+        mainWindow.webContents.send("loading:hide")
     })
     mainWindow.on("ready-to-show", () => {
         mainWindow.show()
