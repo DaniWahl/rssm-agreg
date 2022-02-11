@@ -143,7 +143,7 @@ function showInfo(e, version) {
 function showVersion(e, version) {
     document.querySelector("#version-no").innerHTML = version.version
 
-    if (version.tag !== "default") {
+    if (version.tag && version.tag !== "default") {
         const versionTagSpan = document.querySelector("#version-tag")
         versionTagSpan.innerHTML = version.tag
         versionTagSpan.classList.remove("hidden")

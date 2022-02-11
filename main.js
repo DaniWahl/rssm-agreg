@@ -65,6 +65,7 @@ autoUpdater.on("update-downloaded", (info) => {
 })
 autoUpdater.on("update-not-available", (info) => {
     mainWindow.webContents.send("update:show", {})
+    mainWindow.webContents.send("version:show", { version: `${VERSION} <i class="fas fa-check-circle"></i>` })
 })
 autoUpdater.on("error", (error) => {
     let msg = "Automatisches Update nicht möglich da ein Fehler aufgetreten ist"
@@ -125,7 +126,11 @@ async function app_init() {
     })
     mainWindow.on("ready-to-show", () => {
         mainWindow.show()
-        autoUpdater.checkForUpdates()
+
+        // autoupdate in 5 seconds after start
+        setTimeout(() => {
+            autoUpdater.checkForUpdates()
+        }, 5000)
     })
     mainWindow.once("closed", app_quit)
 
