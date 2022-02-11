@@ -267,9 +267,22 @@ function updateBackupPath(e, backupPath) {
     backupPathEl.classList.add("new")
 }
 
+function updateExportPath(e, exportPath) {
+    M.toast({
+        html: "Neuer Export Ordner ausgewählt: " + exportPath,
+        displayLength: 5000,
+        classes: `rounded green lighten-1 z-depth-4`,
+    })
+    // update export path to UI
+    const exportPathEl = document.getElementById("admin-info-exportspath")
+    exportPathEl.innerHTML = exportPath
+    exportPathEl.classList.add("new")
+}
+
 module.exports = {
     showSettings,
     appendBackup,
     appendExport,
     updateBackupPath,
+    updateExportPath,
 }

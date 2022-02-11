@@ -264,11 +264,7 @@ async function setBackupPath(e) {
 
     // updating new path to app config
     rssm.config.save("backuppath", path)
-    //mainWindow.webContents.send("toast:show", "Neuer Backup Ordner ausgewählt: " + path)
     mainWindow.webContents.send("backuppath:update", path)
-
-    // initialize application
-    //restartApp(2000)
 }
 
 /**
@@ -307,10 +303,7 @@ async function setExportPath(e) {
 
     // updating new path to app config
     rssm.config.save("exportpath", path)
-    mainWindow.webContents.send("toast:show", "Neuer Export Ordner ausgewählt: " + path)
-
-    // initialize application
-    restartApp(2000)
+    mainWindow.webContents.send("exportpath:update", path)
 }
 
 /**
