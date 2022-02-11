@@ -17,7 +17,14 @@ const { showTransfer } = require("./transfer")
 const { showSale } = require("./sale")
 const { showShareRegister } = require("./shareRegister")
 const { showDashboard } = require("./dashboard")
-const { showSettings, appendBackup, appendExport, updateBackupPath, updateExportPath } = require("./settings")
+const {
+    showSettings,
+    appendBackup,
+    appendExport,
+    updateBackupPath,
+    updateExportPath,
+    updateDocumentPath,
+} = require("./settings")
 const { showReport, showReportData } = require("./report")
 const { showEnterPerson } = require("./newPerson")
 
@@ -82,6 +89,7 @@ ipcRenderer.on("backup:append", appendBackup)
 ipcRenderer.on("export:append", appendExport)
 ipcRenderer.on("backuppath:update", updateBackupPath)
 ipcRenderer.on("exportpath:update", updateExportPath)
+ipcRenderer.on("documentpath:update", updateDocumentPath)
 
 // register event handlers for all elements
 document.querySelectorAll("a").forEach((el) => {

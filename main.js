@@ -282,10 +282,7 @@ async function setDocumentPath(e) {
 
     // updating new path to app config
     rssm.config.save("documentpath", path)
-    mainWindow.webContents.send("toast:show", "Neuer Dokumente Ordner ausgewählt: " + path)
-
-    // initialize application
-    restartApp(2000)
+    mainWindow.webContents.send("documentpath:update", path)
 }
 
 /**

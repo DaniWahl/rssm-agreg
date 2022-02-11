@@ -279,10 +279,23 @@ function updateExportPath(e, exportPath) {
     exportPathEl.classList.add("new")
 }
 
+function updateDocumentPath(e, documentPath) {
+    M.toast({
+        html: "Neuer Dokumente Ordner ausgewählt: " + documentPath,
+        displayLength: 5000,
+        classes: `rounded green lighten-1 z-depth-4`,
+    })
+    // update export path to UI
+    const documentPathEl = document.getElementById("admin-info-documentspath")
+    documentPathEl.innerHTML = documentPath
+    documentPathEl.classList.add("new")
+}
+
 module.exports = {
     showSettings,
     appendBackup,
     appendExport,
     updateBackupPath,
     updateExportPath,
+    updateDocumentPath,
 }
