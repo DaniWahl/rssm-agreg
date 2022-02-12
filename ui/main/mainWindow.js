@@ -299,7 +299,7 @@ function showShares(shares, type) {
             setTimeout(
                 () => {
                     shareEl.classList.add("share-dd-item-selected")
-                    updateSelected()
+                    updateSelected(type)
                 },
                 delay,
                 shareEl
