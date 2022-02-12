@@ -236,7 +236,10 @@ function makeShareElement(share, type) {
         ${icon_div}
     </div>`
 
-    return html
+    // convert HTML string to HTML node and return
+    const wrapper = document.createElement("div")
+    wrapper.innerHTML = html
+    return wrapper.firstChild
 }
 
 /**
@@ -245,8 +248,7 @@ function makeShareElement(share, type) {
  * @returns {Array}
  */
 function getSelectedShares(type) {
-    const container_id = `#${type}-list`
-    const selected = $(`${container_id} div.share-dd-item-selected`)
+    const selected = document.getElementById(`${type}-list`).querySelectorAll("div.share-dd-item-selected")
     const share_no = []
     const reg = new RegExp(/\d+$/)
 
@@ -255,7 +257,6 @@ function getSelectedShares(type) {
         const matches = reg.exec(selected[i].id)
         share_no.push(matches[0])
     }
-
     return share_no
 }
 
@@ -266,43 +267,45 @@ function getSelectedShares(type) {
  * @param {String} type   transaction type for shares
  */
 function showShares(shares, type) {
-    const container_id = `#${type}-list`
+    const containerEl = document.getElementById(`${type}-list`)
+    let delay = 100
 
-    // get existing shares in container
-    const old = $(`${container_id} div`)
-
-    if (type === "sale") {
-        for (let i = 0; i < old.length; i++) {
-            // remove only the non-selected
-            if (!$(old[i]).hasClass("share-dd-item-selected")) {
-                $(old[i]).remove()
-            }
-        }
-    } else {
-        // remove all
-        $(old).remove()
-    }
+    // remove existing shares in container
+    containerEl.innerHTML = ""
 
     // create share elements to the container
     shares.forEach((share) => {
-        const div = makeShareElement(share, type)
-        $(`${container_id}`).append(div)
-    })
+        const shareEl = makeShareElement(share, type)
+        containerEl.appendChild(shareEl)
 
-    // create click event handler for all share elements
-    $(`${container_id} div.share-dd-item`).on("click", function (e) {
-        const element = e.currentTarget
-        e.preventDefault()
+        // add click event handler
+        shareEl.addEventListener("click", function (e) {
+            const element = e.currentTarget
+            e.preventDefault()
 
-        // toggle element selection
-        if ($(element).hasClass("share-dd-item-selected")) {
-            $(element).removeClass("share-dd-item-selected")
-        } else {
-            $(element).addClass("share-dd-item-selected")
+            // toggle element selection
+            if (element.classList.contains("share-dd-item-selected")) {
+                element.classList.remove("share-dd-item-selected")
+            } else {
+                element.classList.add("share-dd-item-selected")
+            }
+
+            // update form with selected information
+            updateSelected(type)
+        })
+
+        // autoselect the shares for sale
+        if (type === "sale") {
+            setTimeout(
+                () => {
+                    shareEl.classList.add("share-dd-item-selected")
+                    updateSelected()
+                },
+                delay,
+                shareEl
+            )
+            delay += 100
         }
-
-        // update form with selected information
-        updateSelected(type)
     })
 }
 
@@ -311,25 +314,21 @@ function showShares(shares, type) {
  * @param {String} type
  */
 function updateSelected(type) {
-    const container_id = `#${type}-list`
-    const submit_id = `#${type}-submit`
-    const summary_id = `#${type}-shares`
-
-    const selected = $(`${container_id} div.share-dd-item-selected`)
-    document.querySelector(summary_id).innerHTML = selected.length
+    const selected = document.getElementById(`${type}-list`).querySelectorAll("div.share-dd-item-selected")
+    document.getElementById(`${type}-shares`).innerHTML = selected.length
 
     for (let i = 0; i < selected.length; i++) {
         // stop here if any of the selected shares is a reserved certificate
-        if ($(selected[i]).hasClass("share-status-reserved") && type == "sale") {
+        if (selected[i].classList.contains("share-status-reserved") && type == "sale") {
             return
         }
     }
 
     // if we reach this, en-disable the sale submit button
     if (selected.length) {
-        $(submit_id).removeClass("disabled")
+        document.getElementById(`${type}-submit`).classList.remove("disabled")
     } else {
-        $(submit_id).addClass("disabled")
+        document.getElementById(`${type}-submit`).classList.add("disabled")
     }
 }
 
