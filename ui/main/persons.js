@@ -19,7 +19,10 @@ function showPersons(e, holders) {
             {
                 data: "person_id",
                 render: function (data, type, row) {
-                    return `<a class="btn-table-icon person_info" person_id="${data}"><i class="fa fa-lg fa-info-circle hoverable"></i></a>`
+                    return (
+                        `<a class="btn-table-icon person_info" person_id="${data}"><i class="fa fa-lg fa-info-circle hoverable"></i></a> ` +
+                        `<a class="btn-table-icon person_portfolio" person_id="${data}"><i class="fas fa-lg fa-file-alt hoverable"></i></a>`
+                    )
                 },
             },
             {
@@ -66,14 +69,19 @@ function showPersons(e, holders) {
     table.clear()
     table.rows.add(tableData).draw()
     table.column(6).search("[1-9]", true).draw()
-    console.log("showPersons: loaded table data")
 
     $("#table-persons-all tbody").on("click", ".person_info", loadPersonInfo)
+    $("#table-persons-all tbody").on("click", ".person_portfolio", createPortfolioDoc)
 }
 
 function loadPersonInfo(e) {
     target = e.currentTarget
     ipcRenderer.send("personinfo:load", { person_id: target.getAttribute("person_id") })
+}
+
+function createPortfolioDoc(e) {
+    target = e.currentTarget
+    ipcRenderer.send("personportfolio:load", { person_id: target.getAttribute("person_id") })
 }
 
 function showPersonInfo(e, data) {
