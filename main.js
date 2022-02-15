@@ -160,8 +160,6 @@ async function loadPersonPortfolio(e, data) {
     for (let i = 0; i < person.shares.length; i++) {
         info.shares.push(person.shares[i].share_no)
     }
-    console.log(person)
-    console.log(info)
     const portfolio_path = await RSSMDocs.makeShareholderPortfolio(info, rssm)
     shell.openExternal("file://" + portfolio_path)
 }
