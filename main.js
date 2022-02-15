@@ -39,6 +39,7 @@ ipcMain.on("dbbackup:create", createDbBackup)
 ipcMain.on("dbexport:create", createDbExport)
 ipcMain.on("settings:update", saveSettings)
 ipcMain.on("personinfo:load", loadPersonInfo)
+ipcMain.on("personportfolio:load", loadPersonPortfolio)
 ipcMain.on("journalinfo:load", loadJournalInfo)
 ipcMain.on("journalcomment:set", setJournalComment)
 ipcMain.on("personcomment:set", setPersonComment)
@@ -142,6 +143,27 @@ async function app_init() {
 async function loadPersonInfo(e, data) {
     const person_info = await rssm.getPersonDetail(data["person_id"])
     mainWindow.webContents.send("personsinfo:show", person_info)
+}
+
+async function loadPersonPortfolio(e, data) {
+    const person = await rssm.getPersonDetail(data["person_id"])
+    const info = {
+        salutation: person.person_info.salutation,
+        name: person.person_info.name,
+        first_name: person.person_info.first_name,
+        address: person.person_info.address,
+        post_code: person.person_info.post_code,
+        city: person.person_info.city,
+        a_code: person.person_info.a_code,
+        shares: [],
+    }
+    for (let i = 0; i < person.shares.length; i++) {
+        info.shares.push(person.shares[i].share_no)
+    }
+    console.log(person)
+    console.log(info)
+    const portfolio_path = await RSSMDocs.makeShareholderPortfolio(info, rssm)
+    shell.openExternal("file://" + portfolio_path)
 }
 
 async function loadJournalInfo(e, data) {
@@ -498,11 +520,17 @@ async function executeSale(e, data) {
 
                 case "electronic":
                     const letter2_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm)
+                    const portfolio_path = await RSSMDocs.makeShareholderPortfolio(info, rssm)
                     rssm.registerDocument({
                         journal_id: info.journal_id,
                         path: letter2_path,
                     })
+                    rssm.registerDocument({
+                        journal_id: info.journal_id,
+                        path: portfolio_path,
+                    })
                     shell.openExternal("file://" + letter2_path)
+                    shell.openExternal("file://" + portfolio_path)
                     shell.openExternal("file://" + repurchase_info_path)
                     break
 
