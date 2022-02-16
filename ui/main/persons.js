@@ -19,10 +19,7 @@ function showPersons(e, holders) {
             {
                 data: "person_id",
                 render: function (data, type, row) {
-                    return (
-                        `<a class="btn-table-icon person_info" person_id="${data}"><i class="fa fa-lg fa-info-circle hoverable"></i></a> ` +
-                        `<a class="btn-table-icon person_portfolio" person_id="${data}"><i class="fas fa-lg fa-file-alt hoverable"></i></a>`
-                    )
+                    return `<a class="btn-table-icon person_info" person_id="${data}"><i class="fa fa-lg fa-info-circle hoverable"></i></a>`
                 },
             },
             {
@@ -71,7 +68,6 @@ function showPersons(e, holders) {
     table.column(6).search("[1-9]", true).draw()
 
     $("#table-persons-all tbody").on("click", ".person_info", loadPersonInfo)
-    $("#table-persons-all tbody").on("click", ".person_portfolio", createPortfolioDoc)
 }
 
 function loadPersonInfo(e) {
@@ -114,6 +110,18 @@ function showPersonInfo(e, data) {
         "div > div.modal-content > div.row > div.col > p.shares"
     ).innerHTML = `<b>Anzahl Aktien:</b> ${data.shares.length}`
     document.querySelector("#new-person-comment-id").value = data.person_info.person_id
+
+    // setup portfolio button
+    const portolioEl = dialogEl.querySelector("div > div.modal-content > div.row > div.col > a.person-portfolio")
+    portolioEl.setAttribute("person_id", data.person_info.person_id)
+
+    console.log(data)
+
+    if (data.shares.length > 0) {
+        portolioEl.addEventListener("click", createPortfolioDoc)
+    } else {
+        portolioEl.classList.add("disabled")
+    }
 
     const tableSharesEl = $("#persons-info-shares-table")
     const tableCommentsEl = $("#persons-info-comments-table")
