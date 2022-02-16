@@ -2,7 +2,5 @@ exports/*
 node_modules/*
 data/*
 db/complete*
-electron-builder.yml
-dev-app-update.yml
 dist/
 package-lock.json
