@@ -310,8 +310,6 @@ function doIssueReserved(e) {
  * @param {Object} data
  */
 function showSale(e, data) {
-    console.log(data)
-
     // show target element
     showElement("content-sale")
 
