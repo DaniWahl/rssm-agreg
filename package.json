@@ -8,7 +8,7 @@
     "license": "ISC",
     "main": "main.js",
     "scripts": {
-        "start": "set ELECTRON_DEV=1&&electron .",
+        "start": "electron .",
         "pdf_test": "node bin/pdfkit_test.js",
         "test_namingform": "node bin/pdf_namingform_test.js",
         "test_letterelectronic": "node bin/pdf_letterelectronic_test.js",

@@ -79,7 +79,7 @@ autoUpdater.on("error", (error) => {
  */
 async function app_init() {
     const PATHSEP = getPathSeparator()
-    const configSet = process.env.ELECTRON_DEV ? "dev" : "default"
+    const configSet = app.isPackaged ? "default" : "dev"
     const configFile = app.getPath("userData") + PATHSEP + CONFIGNAME
 
     // initialize main RSSMShares object
@@ -128,10 +128,10 @@ async function app_init() {
     mainWindow.on("ready-to-show", () => {
         mainWindow.show()
 
-        // autoupdate in 5 seconds after start
-        setTimeout(() => {
-            autoUpdater.checkForUpdates()
-        }, 5000)
+        if(app.isPackaged) {
+            // autoupdate in 5 seconds after start
+            setTimeout(() => { autoUpdater.checkForUpdates()}, 5000)
+        }
     })
     mainWindow.once("closed", app_quit)
 
