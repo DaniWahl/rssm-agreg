@@ -128,9 +128,11 @@ async function app_init() {
     mainWindow.on("ready-to-show", () => {
         mainWindow.show()
 
-        if(app.isPackaged) {
+        if (app.isPackaged) {
             // autoupdate in 5 seconds after start
-            setTimeout(() => { autoUpdater.checkForUpdates()}, 5000)
+            setTimeout(() => {
+                autoUpdater.checkForUpdates()
+            }, 5000)
         }
     })
     mainWindow.once("closed", app_quit)
@@ -170,45 +172,20 @@ async function loadJournalInfo(e, data) {
 }
 
 async function saveSettings(e, data) {
-    if (data.A_CODE_SEQ) {
-        rssm.setConfig("A_CODE_SEQ", data.A_CODE_SEQ)
-        mainWindow.webContents.send("toast:show", "A-Code Sequenz gespeichert : " + data.A_CODE_SEQ)
-    }
-
-    if (data.AG_SIGNATURE2) {
-        rssm.setConfig("AG_SIGNATURE2", data.AG_SIGNATURE2)
-        mainWindow.webContents.send("toast:show", "AG VR 2. Unterschrift gespeichert : " + data.AG_SIGNATURE2)
-    }
-
-    if (data.AG_REGISTER) {
-        await rssm.setConfig("AG_REGISTER", data.AG_REGISTER)
-        mainWindow.webContents.send("toast:show", "AG Aktienregisterführer gespeichert : " + data.AG_REGISTER)
-    }
-
-    if (data.AG_REGISTER_ADDRESS) {
-        rssm.setConfig("AG_REGISTER_ADDRESS", data.AG_REGISTER_ADDRESS)
+    const regex = /.+ \((.+)\)$/g
+    if (data.AG_REGISTER_PERSON_1) {
+        rssm.setConfig("AG_REGISTER_PERSON_1", data.AG_REGISTER_PERSON_1)
         mainWindow.webContents.send(
             "toast:show",
-            "AG Aktienregisterführer, Adresse gespeichert : " + data.AG_REGISTER_ADDRESS
+            "Aktienregisterführer für 1. Unterschrift gepseichert (" + data.AG_REGISTER_PERSON_1 + ")"
         )
     }
-
-    if (data.AG_REGISTER_POSTCODE) {
-        rssm.setConfig("AG_REGISTER_POSTCODE", data.AG_REGISTER_POSTCODE)
+    if (data.AG_REGISTER_PERSON_2) {
+        rssm.setConfig("AG_REGISTER_PERSON_2", data.AG_REGISTER_PERSON_2)
         mainWindow.webContents.send(
             "toast:show",
-            "AG Aktienregisterführer, PLZ gespeichert : " + data.AG_REGISTER_POSTCODE
+            "Aktienregisterführer für 2. Unterschrift gepseichert (" + data.AG_REGISTER_PERSON_2 + ")"
         )
-    }
-
-    if (data.AG_REGISTER_CITY) {
-        rssm.setConfig("AG_REGISTER_CITY", data.AG_REGISTER_CITY)
-        mainWindow.webContents.send("toast:show", "AG Aktienregisterführer, Ort gespeichert : " + data.AG_REGISTER_CITY)
-    }
-
-    if (data.EXPORT_PATH) {
-        rssm.setConfig("EXPORT_PATH", data.EXPORT_PATH)
-        mainWindow.webContents.send("toast:show", "Export Pfad für Dokumente gespeichert : " + data.EXPORT_PATH)
     }
 }
 
@@ -750,6 +727,7 @@ async function loadContentData(e, element_id) {
                 app_version: VERSION,
                 user_config_file: rssm.config.file,
                 user_config_set: rssm.config.set,
+                persons: rssm.data.persons,
                 dbpath: rssm.config.get("dbpath"),
                 backuppath: rssm.config.get("backuppath"),
                 exportpath: rssm.config.get("exportpath"),
@@ -757,12 +735,8 @@ async function loadContentData(e, element_id) {
                 db_backup_list: rssm.config.get("backups"),
                 db_export_list: rssm.config.get("exports"),
                 db_version: await rssm.getConfig("VERSION"),
-                A_CODE_SEQ: await rssm.getConfig("A_CODE_SEQ"),
-                AG_SIGNATURE2: await rssm.getConfig("AG_SIGNATURE2"),
-                AG_REGISTER: await rssm.getConfig("AG_REGISTER"),
-                AG_REGISTER_ADDRESS: await rssm.getConfig("AG_REGISTER_ADDRESS"),
-                AG_REGISTER_POSTCODE: await rssm.getConfig("AG_REGISTER_POSTCODE"),
-                AG_REGISTER_CITY: await rssm.getConfig("AG_REGISTER_CITY"),
+                AG_REGISTER_PERSON_1: await rssm.getConfig("AG_REGISTER_PERSON_1"),
+                AG_REGISTER_PERSON_2: await rssm.getConfig("AG_REGISTER_PERSON_2"),
             })
             break
     }
@@ -1026,7 +1000,7 @@ function getMainMenuTemplate() {
     ]
 
     // remove developer tools if in production
-    if (!process.env.ELECTRON_DEV) {
+    if (app.isPackaged) {
         mainMenuTemplate[4].submenu.pop()
     }
 

@@ -486,11 +486,15 @@
                                 <div class="row">
                                     <div class="row">
                                         <div class="input-field col s3">
-                                            <label for="sale-a-code-select"
-                                                ><i class="fas fa-search"></i> Aktionär</label
-                                            >
-                                            <input type="text" id="sale-a-code-select" class=autocomplete"
-                                            name="holder">
+                                            <!-- <label for="sale-a-code-select">
+                                                <i class="fas fa-search"></i> Aktionär
+                                            <label>
+                                            <input
+                                                type="text"
+                                                id="sale-a-code-select"
+                                                class="autocomplete"
+                                                name="holder"
+                                            /> -->
                                         </div>
 
                                         <div class="input-field col s3">
@@ -686,39 +690,33 @@
                                 <table class="no-line">
                                     <tbody>
                                         <tr>
-                                            <th width="250">A-Code Sequenz</th>
-                                            <td>
-                                                <input id="setting-edit-A_CODE_SEQ" type="text" />
+                                            <th width="200">
+                                                Aktienregisterführer,<br />
+                                                1. Unterschrift
+                                            </th>
+                                            <td width="*">
+                                                <div class="input-field">
+                                                    <input
+                                                        type="text"
+                                                        id="setting-edit-AG_REGISTER_PERSON_1"
+                                                        class="autocomplete"
+                                                    />
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>VR 2. Unterschrift</th>
+                                            <th>
+                                                Aktienregisterführer,<br />
+                                                2. Unterschrift
+                                            </th>
                                             <td>
-                                                <input id="setting-edit-AG_SIGNATURE2" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer, Adresse</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER_ADDRESS" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer, PLZ</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER_POSTCODE" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer, Ort</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER_CITY" type="text" />
+                                                <div class="input-field">
+                                                    <input
+                                                        type="text"
+                                                        id="setting-edit-AG_REGISTER_PERSON_2"
+                                                        class="autocomplete"
+                                                    />
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -746,24 +744,6 @@
                                             <td><span class="setting-info" id="admin-info-dbpath"></span></td>
                                             <td>
                                                 <button id="admin-db-select-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-folder-open"></i> Auswählen
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><i class="fas fa-folder"></i> Backupordner</th>
-                                            <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
-                                            <td>
-                                                <button id="admin-backup-select-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-folder-open"></i> Auswählen
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><i class="fas fa-folder"></i> Exportordner</th>
-                                            <td><span class="setting-info" id="admin-info-exportspath"></span></td>
-                                            <td>
-                                                <button id="admin-export-select-btn" class="btn btn-small waves-effect">
                                                     <i class="fas fa-folder-open"></i> Auswählen
                                                 </button>
                                             </td>
@@ -822,6 +802,24 @@
                                                     id="admin-document-select-btn"
                                                     class="btn btn-small waves-effect"
                                                 >
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-folder"></i> Backupordner</th>
+                                            <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
+                                            <td>
+                                                <button id="admin-backup-select-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-folder"></i> Exportordner</th>
+                                            <td><span class="setting-info" id="admin-info-exportspath"></span></td>
+                                            <td>
+                                                <button id="admin-export-select-btn" class="btn btn-small waves-effect">
                                                     <i class="fas fa-folder-open"></i> Auswählen
                                                 </button>
                                             </td>

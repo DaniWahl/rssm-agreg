@@ -36,59 +36,65 @@ function showSettings(e, data) {
     showElement("settings")
 
     const tabsEl = document.querySelectorAll("#settings-tabs")
-    M.Tabs.init(tabsEl, { onShow: onTabSelect })
+    M.Tabs.init(tabsEl, { onShow: () => {} })
+
+    // prepare the a_codes suggestion list
+    const a_codes_persons = {}
+    data.persons.forEach((person) => {
+        const suggest = `${person.name} ${person.first_name}  (${person.a_code})`
+        a_codes_persons[suggest] = null
+
+        // reformat
+        if (person.a_code === data.AG_REGISTER_PERSON_1) {
+            data.AG_REGISTER_PERSON_1 = suggest
+        }
+        if (person.a_code === data.AG_REGISTER_PERSON_2) {
+            data.AG_REGISTER_PERSON_2 = suggest
+        }
+    })
 
     originalSettings = data
     setValues(data)
-}
 
-function onTabSelect(el) {
-    //console.log('onTabSelect()')
+    // initialize the a_code autocomplete field with suggestion list event handler
+    const selectField1 = document.querySelectorAll("#setting-edit-AG_REGISTER_PERSON_1")
+    M.Autocomplete.init(selectField1, {
+        data: a_codes_persons,
+        limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+        onAutocomplete: function (val) {
+            console.log(val)
+        },
+    })
+
+    // initialize the a_code autocomplete field with suggestion list event handler
+    const selectField2 = document.querySelectorAll("#setting-edit-AG_REGISTER_PERSON_2")
+    M.Autocomplete.init(selectField2, {
+        data: a_codes_persons,
+        limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+        onAutocomplete: function (val) {
+            console.log(val)
+        },
+    })
 }
 
 function saveSettings() {
-    const settings = getValues()
+    const values = getValues()
+    const settings = {}
 
-    if (settings.A_CODE_SEQ == originalSettings.A_CODE_SEQ) {
-        delete settings.A_CODE_SEQ
-    } else {
-        originalSettings.A_CODE_SEQ = settings.A_CODE_SEQ
+    if (values.AG_REGISTER_PERSON_1 && values.AG_REGISTER_PERSON_1 != originalSettings.AG_REGISTER_PERSON_1) {
+        // parse a-code
+        const regex1 = /.+ \((.+)\)$/g
+        const matches1 = regex1.exec(values.AG_REGISTER_PERSON_1)
+        settings["AG_REGISTER_PERSON_1"] = matches1[1]
+        originalSettings.AG_REGISTER_PERSON_1 = values.AG_REGISTER_PERSON_1
     }
 
-    if (settings.AG_SIGNTATURE2 == originalSettings.AG_SIGNTATURE2) {
-        delete settings.AG_SIGNTATURE2
-    } else {
-        originalSettings.AG_SIGNTATURE2 = settings.AG_SIGNTATURE2
-    }
-
-    if (settings.AG_REGISTER == originalSettings.AG_REGISTER) {
-        delete settings.AG_REGISTER
-    } else {
-        originalSettings.AG_REGISTER = settings.AG_REGISTER
-    }
-
-    if (settings.AG_REGISTER_ADDRESS == originalSettings.AG_REGISTER_ADDRESS) {
-        delete settings.AG_REGISTER_ADDRESS
-    } else {
-        originalSettings.AG_REGISTER_ADDRESS = settings.AG_REGISTER_ADDRESS
-    }
-
-    if (settings.AG_REGISTER_POSTCODE == originalSettings.AG_REGISTER_POSTCODE) {
-        delete settings.AG_REGISTER_POSTCODE
-    } else {
-        originalSettings.AG_REGISTER_POSTCODE = settings.AG_REGISTER_POSTCODE
-    }
-
-    if (settings.AG_REGISTER_CITY == originalSettings.AG_REGISTER_CITY) {
-        delete settings.AG_REGISTER_CITY
-    } else {
-        originalSettings.AG_REGISTER_CITY = settings.AG_REGISTER_CITY
-    }
-
-    if (settings.EXPORT_PATH == originalSettings.EXPORT_PATH) {
-        delete settings.EXPORT_PATH
-    } else {
-        originalSettings.EXPORT_PATH = settings.EXPORT_PATH
+    if (values.AG_REGISTER_PERSON_2 && values.AG_REGISTER_PERSON_2 != originalSettings.AG_REGISTER_PERSON_2) {
+        // parse a-code
+        const regex2 = /.+ \((.+)\)$/g
+        const matches2 = regex2.exec(values.AG_REGISTER_PERSON_2)
+        settings["AG_REGISTER_PERSON_2"] = matches2[1]
+        originalSettings.AG_REGISTER_PERSON_2 = values.AG_REGISTER_PERSON_2
     }
 
     // is there something to save?
@@ -100,40 +106,16 @@ function saveSettings() {
 function setValues(data) {
     issues = []
 
-    if (data.A_CODE_SEQ) {
-        document.querySelector("#setting-edit-A_CODE_SEQ").value = data.A_CODE_SEQ
+    if (data.AG_REGISTER_PERSON_1) {
+        document.querySelector("#setting-edit-AG_REGISTER_PERSON_1").value = data.AG_REGISTER_PERSON_1
     } else {
-        issues.push("Bitte Nummer für A-Code Sequenz definieren.")
+        issues.push("Bitte Aktienregisterführer für 1. Unterschrift definieren.")
     }
 
-    if (data.AG_SIGNATURE2) {
-        document.querySelector("#setting-edit-AG_SIGNATURE2").value = data.AG_SIGNATURE2
+    if (data.AG_REGISTER_PERSON_2) {
+        document.querySelector("#setting-edit-AG_REGISTER_PERSON_2").value = data.AG_REGISTER_PERSON_2
     } else {
-        issues.push("Bitte VR Mitglied für 2. Unterschrift definieren.")
-    }
-
-    if (data.AG_REGISTER) {
-        document.querySelector("#setting-edit-AG_REGISTER").value = data.AG_REGISTER
-    } else {
-        issues.push("Bitte Vorname & Name für Aktienregisterführer definieren.")
-    }
-
-    if (data.AG_REGISTER_ADDRESS) {
-        document.querySelector("#setting-edit-AG_REGISTER_ADDRESS").value = data.AG_REGISTER_ADDRESS
-    } else {
-        issues.push("Bitte Adresse für Aktienregisterführer definieren.")
-    }
-
-    if (data.AG_REGISTER_POSTCODE) {
-        document.querySelector("#setting-edit-AG_REGISTER_POSTCODE").value = data.AG_REGISTER_POSTCODE
-    } else {
-        issues.push("Bitte Postleitzahl für Aktienregisterführer definieren.")
-    }
-
-    if (data.AG_REGISTER_CITY) {
-        document.querySelector("#setting-edit-AG_REGISTER_CITY").value = data.AG_REGISTER_CITY
-    } else {
-        issues.push("Bitte Ort für Aktienregisterführer definieren.")
+        issues.push("Bitte Aktienregisterführer für 2. Unterschrift definieren.")
     }
 
     document.querySelector("#admin-info-appversion").textContent = data.app_version
@@ -215,15 +197,8 @@ function showIssues(issues) {
 
 function getValues() {
     const data = {}
-
-    data.A_CODE_SEQ = parseInt($("#setting-edit-A_CODE_SEQ").val())
-    data.AG_SIGNATURE2 = $("#setting-edit-AG_SIGNATURE2").val()
-    data.AG_REGISTER = $("#setting-edit-AG_REGISTER").val()
-    data.AG_REGISTER_ADDRESS = $("#setting-edit-AG_REGISTER_ADDRESS").val()
-    data.AG_REGISTER_POSTCODE = $("#setting-edit-AG_REGISTER_POSTCODE").val()
-    data.AG_REGISTER_CITY = $("#setting-edit-AG_REGISTER_CITY").val()
-    data.EXPORT_PATH = $("#setting-edit-EXPORT_PATH").val()
-
+    data.AG_REGISTER_PERSON_1 = $("#setting-edit-AG_REGISTER_PERSON_1").val()
+    data.AG_REGISTER_PERSON_2 = $("#setting-edit-AG_REGISTER_PERSON_2").val()
     return data
 }
 
