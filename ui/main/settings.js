@@ -1,4 +1,3 @@
-document.querySelector("#settings-submit").addEventListener("click", saveSettings)
 document.querySelector("#admin-db-select-btn").addEventListener("click", selectDb)
 document.querySelector("#admin-backup-select-btn").addEventListener("click", selectBackup)
 document.querySelector("#admin-document-select-btn").addEventListener("click", selectDocuments)
@@ -62,7 +61,7 @@ function showSettings(e, data) {
         data: a_codes_persons,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
-            console.log(val)
+            saveSettings()
         },
     })
 
@@ -72,7 +71,7 @@ function showSettings(e, data) {
         data: a_codes_persons,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
-            console.log(val)
+            saveSettings()
         },
     })
 }

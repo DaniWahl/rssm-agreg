@@ -681,51 +681,7 @@
                                 <ul class="tabs tabs-fixed-width z-depth-1" id="settings-tabs">
                                     <li class="tab col"><a href="#settings-app" class="active">Applikation</a></li>
                                     <li class="tab col"><a href="#settings-db" class="active">Datenbank</a></li>
-                                    <li class="tab col"><a href="#settings-agreg">Aktienregister</a></li>
                                 </ul>
-                            </div>
-
-                            <div id="settings-agreg" class="col s12">
-                                <table class="no-line">
-                                    <tbody>
-                                        <tr>
-                                            <th width="200">
-                                                Aktienregisterführer,<br />
-                                                1. Unterschrift
-                                            </th>
-                                            <td width="*">
-                                                <div class="input-field">
-                                                    <input
-                                                        type="text"
-                                                        id="setting-edit-AG_REGISTER_PERSON_1"
-                                                        class="autocomplete"
-                                                    />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                Aktienregisterführer,<br />
-                                                2. Unterschrift
-                                            </th>
-                                            <td>
-                                                <div class="input-field">
-                                                    <input
-                                                        type="text"
-                                                        id="setting-edit-AG_REGISTER_PERSON_2"
-                                                        class="autocomplete"
-                                                    />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <div style="margin-top: 100px">
-                                    <button id="settings-submit" class="btn waves-effect" type="submit">
-                                        <i class="fas fa-save"></i> Speichern
-                                    </button>
-                                </div>
                             </div>
 
                             <div id="settings-db" class="col s12">
@@ -821,6 +777,35 @@
                                                 <button id="admin-export-select-btn" class="btn btn-small waves-effect">
                                                     <i class="fas fa-folder-open"></i> Auswählen
                                                 </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width="200">
+                                                <i class="fa fa-user" aria-hidden="true"></i> 1. Unterschrift
+                                            </th>
+                                            <td width="*">
+                                                <div class="input-field">
+                                                    <input
+                                                        type="text"
+                                                        id="setting-edit-AG_REGISTER_PERSON_1"
+                                                        class="autocomplete"
+                                                        style="border-bottom: 0 !important"
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fa fa-user" aria-hidden="true"></i> 2. Unterschrift</th>
+                                            <td>
+                                                <div class="input-field">
+                                                    <input
+                                                        type="text"
+                                                        id="setting-edit-AG_REGISTER_PERSON_2"
+                                                        class="autocomplete"
+                                                        style="border-bottom: 0 !important"
+                                                    />
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
