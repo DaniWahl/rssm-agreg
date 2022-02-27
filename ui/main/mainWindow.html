@@ -486,11 +486,15 @@
                                 <div class="row">
                                     <div class="row">
                                         <div class="input-field col s3">
-                                            <label for="sale-a-code-select"
-                                                ><i class="fas fa-search"></i> Aktionär</label
-                                            >
-                                            <input type="text" id="sale-a-code-select" class=autocomplete"
-                                            name="holder">
+                                            <label for="sale-a-code-select">
+                                                <i class="fas fa-search"></i> Aktionär
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="sale-a-code-select"
+                                                class="autocomplete"
+                                                name="holder"
+                                            />
                                         </div>
 
                                         <div class="input-field col s3">
@@ -555,7 +559,6 @@
                                             <select id="sale-cert-type" name="cert_type">
                                                 <option value="electronic" selected>Elektronisch</option>
                                                 <option value="paper">Papier</option>
-                                                <option value="reservation">Reservierung</option>
                                             </select>
                                             <label>Zertifikat</label>
                                         </div>
@@ -678,57 +681,7 @@
                                 <ul class="tabs tabs-fixed-width z-depth-1" id="settings-tabs">
                                     <li class="tab col"><a href="#settings-app" class="active">Applikation</a></li>
                                     <li class="tab col"><a href="#settings-db" class="active">Datenbank</a></li>
-                                    <li class="tab col"><a href="#settings-agreg">Aktienregister</a></li>
                                 </ul>
-                            </div>
-
-                            <div id="settings-agreg" class="col s12">
-                                <table class="no-line">
-                                    <tbody>
-                                        <tr>
-                                            <th width="250">A-Code Sequenz</th>
-                                            <td>
-                                                <input id="setting-edit-A_CODE_SEQ" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>VR 2. Unterschrift</th>
-                                            <td>
-                                                <input id="setting-edit-AG_SIGNATURE2" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer, Adresse</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER_ADDRESS" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer, PLZ</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER_POSTCODE" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>Aktienregisterführer, Ort</th>
-                                            <td>
-                                                <input id="setting-edit-AG_REGISTER_CITY" type="text" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <div style="margin-top: 100px">
-                                    <button id="settings-submit" class="btn waves-effect" type="submit">
-                                        <i class="fas fa-save"></i> Speichern
-                                    </button>
-                                </div>
                             </div>
 
                             <div id="settings-db" class="col s12">
@@ -746,24 +699,6 @@
                                             <td><span class="setting-info" id="admin-info-dbpath"></span></td>
                                             <td>
                                                 <button id="admin-db-select-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-folder-open"></i> Auswählen
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><i class="fas fa-folder"></i> Backupordner</th>
-                                            <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
-                                            <td>
-                                                <button id="admin-backup-select-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-folder-open"></i> Auswählen
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><i class="fas fa-folder"></i> Exportordner</th>
-                                            <td><span class="setting-info" id="admin-info-exportspath"></span></td>
-                                            <td>
-                                                <button id="admin-export-select-btn" class="btn btn-small waves-effect">
                                                     <i class="fas fa-folder-open"></i> Auswählen
                                                 </button>
                                             </td>
@@ -824,6 +759,53 @@
                                                 >
                                                     <i class="fas fa-folder-open"></i> Auswählen
                                                 </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-folder"></i> Backupordner</th>
+                                            <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
+                                            <td>
+                                                <button id="admin-backup-select-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fas fa-folder"></i> Exportordner</th>
+                                            <td><span class="setting-info" id="admin-info-exportspath"></span></td>
+                                            <td>
+                                                <button id="admin-export-select-btn" class="btn btn-small waves-effect">
+                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th width="200">
+                                                <i class="fa fa-user" aria-hidden="true"></i> 1. Unterschrift
+                                            </th>
+                                            <td width="*">
+                                                <div class="input-field">
+                                                    <input
+                                                        type="text"
+                                                        id="setting-edit-AG_REGISTER_PERSON_1"
+                                                        class="autocomplete"
+                                                        style="border-bottom: 0 !important"
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><i class="fa fa-user" aria-hidden="true"></i> 2. Unterschrift</th>
+                                            <td>
+                                                <div class="input-field">
+                                                    <input
+                                                        type="text"
+                                                        id="setting-edit-AG_REGISTER_PERSON_2"
+                                                        class="autocomplete"
+                                                        style="border-bottom: 0 !important"
+                                                    />
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
