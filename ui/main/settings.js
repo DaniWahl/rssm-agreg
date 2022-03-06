@@ -120,8 +120,13 @@ function setValues(data) {
     document.querySelector("#admin-info-appversion").textContent = data.app_version
     document.querySelector("#admin-info-dbversion").textContent = data.db_version
 
-    document.querySelector("#admin-info-configfile").textContent = data.user_config_file
-    document.querySelector("#admin-info-configset").textContent = data.user_config_set
+    document.querySelector(
+        "#admin-info-configfile"
+    ).innerHTML = `<a href="${data.user_config_file}" target="_blank">${data.user_config_file}</a> {${data.user_config_set}}`
+
+    document.querySelector(
+        "#admin-info-log"
+    ).innerHTML = `<a href="${data.log_file}" target="_blank">${data.log_file}</a> {${data.log_level}}`
 
     if (data.dbpath) {
         document.querySelector("#admin-info-dbpath").textContent = data.dbpath

@@ -185,6 +185,7 @@ async function saveSettings(e, data) {
             "toast:show",
             "Aktienregisterführer für 1. Unterschrift gepseichert (" + data.AG_REGISTER_PERSON_1 + ")"
         )
+        log.info("saved new person for first signature: " + data.AG_REGISTER_PERSON_1)
     }
     if (data.AG_REGISTER_PERSON_2) {
         rssm.setConfig("AG_REGISTER_PERSON_2", data.AG_REGISTER_PERSON_2)
@@ -192,6 +193,7 @@ async function saveSettings(e, data) {
             "toast:show",
             "Aktienregisterführer für 2. Unterschrift gepseichert (" + data.AG_REGISTER_PERSON_2 + ")"
         )
+        log.info("saved new person for second signature: " + data.AG_REGISTER_PERSON_2)
     }
 }
 
@@ -754,6 +756,8 @@ async function loadContentData(e, element_id) {
                 documentpath: rssm.config.get("documentpath"),
                 db_backup_list: rssm.config.get("backups"),
                 db_export_list: rssm.config.get("exports"),
+                log_file: log.transports.file.getFile().path,
+                log_level: log.transports.file.level,
                 db_version: await rssm.getConfig("VERSION"),
                 AG_REGISTER_PERSON_1: await rssm.getConfig("AG_REGISTER_PERSON_1"),
                 AG_REGISTER_PERSON_2: await rssm.getConfig("AG_REGISTER_PERSON_2"),
