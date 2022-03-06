@@ -3,6 +3,7 @@ const { autoUpdater } = require("electron-updater")
 const log = require("electron-log")
 const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = electron
 const fs = require("fs")
+const path = require("path")
 const RSSMShares = require("./lib/RSSMShares").RSSMShares
 const RSSMDocs = require("./lib/RSSMDocs")
 const helpers = require("./lib/app.helpers")
@@ -10,8 +11,7 @@ const Config = require("./lib/Config").Config
 
 const CONFIGNAME = "config.json"
 const VERSION = app.getVersion()
-const PATHSEP = getPathSeparator()
-const ASSETPATH = __dirname + PATHSEP + "assets" + PATHSEP
+const ASSETPATH = path.join(__dirname, "assets")
 
 let rssm = null
 let mainWindow = null
@@ -76,17 +76,16 @@ autoUpdater.on("error", (error) => {
  */
 async function app_init() {
     const configSet = app.isPackaged ? "default" : "dev"
-    const configFile = `${app.getPath("userData")}${PATHSEP}${CONFIGNAME}`
+    const configFile = path.join(app.getPath("userData"), CONFIGNAME)
     const config = new Config(configFile, configSet)
-    let logFile = `${app.getPath("userData")}${PATHSEP}logs${PATHSEP}${configSet}.log`
 
     // setup logging
-    log.transports.file.level = "info"
-    log.transports.file.resolvePath = () => logFile
+    log.transports.file.level = app.isPackaged ? "info" : "debug"
+    log.transports.file.resolvePath = () => path.join(app.getPath("userData"), "logs", `${configSet}.log`)
     log.info("AktienregisterRSSM initializing ...")
 
     // initialize main RSSMShares object
-    rssm = new RSSMShares(config)
+    rssm = new RSSMShares(config, log)
     await rssm.init()
 
     // create UI window
@@ -852,10 +851,6 @@ function errorHandler(e) {
 
 function showDialog(e, message) {
     dialog.showMessageBox(message)
-}
-
-function getPathSeparator() {
-    return process.platform == "win32" ? "\\" : "//"
 }
 
 function getMainMenuTemplate() {
