@@ -76,11 +76,13 @@ autoUpdater.on("error", (error) => {
  */
 async function app_init() {
     const configSet = app.isPackaged ? "default" : "dev"
-    const configFile = app.getPath("userData") + PATHSEP + CONFIGNAME
+    const configFile = `${app.getPath("userData")}${PATHSEP}${CONFIGNAME}`
     const config = new Config(configFile, configSet)
+    let logFile = `${app.getPath("userData")}${PATHSEP}logs${PATHSEP}${configSet}.log`
 
     // setup logging
     log.transports.file.level = "info"
+    log.transports.file.resolvePath = () => logFile
     log.info("AktienregisterRSSM initializing ...")
 
     // initialize main RSSMShares object
