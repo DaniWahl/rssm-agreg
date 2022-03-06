@@ -6,15 +6,12 @@ const fs = require("fs")
 const RSSMShares = require("./lib/RSSMShares").RSSMShares
 const RSSMDocs = require("./lib/RSSMDocs")
 const helpers = require("./lib/app.helpers")
+const Config = require("./lib/Config").Config
 
-const VERSION = app.getVersion()
 const CONFIGNAME = "config.json"
-const assetPath = __dirname + "/assets"
-
-// setup logging
-autoUpdater.logger = log
-autoUpdater.logger.transports.file.level = "info"
-log.info("AktienregisterRSSM starting...")
+const VERSION = app.getVersion()
+const PATHSEP = getPathSeparator()
+const ASSETPATH = __dirname + PATHSEP + "assets" + PATHSEP
 
 let rssm = null
 let mainWindow = null
@@ -78,12 +75,16 @@ autoUpdater.on("error", (error) => {
  * application startup handler
  */
 async function app_init() {
-    const PATHSEP = getPathSeparator()
     const configSet = app.isPackaged ? "default" : "dev"
     const configFile = app.getPath("userData") + PATHSEP + CONFIGNAME
+    const config = new Config(configFile, configSet)
+
+    // setup logging
+    log.transports.file.level = "info"
+    log.info("AktienregisterRSSM initializing ...")
 
     // initialize main RSSMShares object
-    rssm = new RSSMShares(configFile, configSet)
+    rssm = new RSSMShares(config)
     await rssm.init()
 
     // create UI window
@@ -131,6 +132,7 @@ async function app_init() {
         if (app.isPackaged) {
             // autoupdate in 5 seconds after start
             setTimeout(() => {
+                autoUpdater.logger = log
                 autoUpdater.checkForUpdates()
             }, 5000)
         }
@@ -335,7 +337,7 @@ async function executeRepurchase(e, data) {
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
-            console.error(err)
+            log.error(err)
 
             dialog.showMessageBox(mainWindow, {
                 type: "error",
@@ -368,7 +370,7 @@ async function executeTransfer(e, data) {
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
-            console.error(err)
+            log.error(err)
 
             dialog.showMessageBox(mainWindow, {
                 type: "error",
@@ -385,7 +387,7 @@ async function executeTransfer(e, data) {
  * @param data
  */
 async function executeIssueReserved(e, data) {
-    const repurchase_info_path = assetPath + "/repurchase_info2013.pdf"
+    const repurchase_info_path = ASSETPATH + "repurchase_info2013.pdf"
 
     // convert booking date to correctly formatted db date string
     if (data.transaction.booking_date) {
@@ -459,7 +461,7 @@ async function executeSale(e, data) {
 
     rssm.sale(data.transaction, data.buyer)
         .then(async function (info) {
-            const repurchase_info_path = assetPath + "/repurchase_info2013.pdf"
+            const repurchase_info_path = ASSETPATH + "repurchase_info2013.pdf"
 
             mainWindow.webContents.send("journal:show", rssm.data.journal)
             mainWindow.webContents.send("toast:show", "Verkauf erfolgreich durchgeführt")
@@ -510,7 +512,7 @@ async function executeSale(e, data) {
                     break
 
                 default:
-                    console.error("invalid transaction type ", data.transaction.cert_type)
+                    log.error("invalid transaction type ", data.transaction.cert_type)
             }
 
             const journal_path = await RSSMDocs.makeJournalSale(info, rssm)
@@ -521,7 +523,7 @@ async function executeSale(e, data) {
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
-            console.error(err)
+            log.error(err)
 
             dialog.showMessageBox(mainWindow, {
                 type: "error",
@@ -565,7 +567,7 @@ async function executeMutation(e, person) {
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
-            console.error(err)
+            log.error(err)
 
             dialog.showMessageBox(mainWindow, {
                 type: "error",
@@ -787,11 +789,11 @@ function readAppConfig() {
         const settingsContent = fs.readFileSync(settingsFile)
         config = JSON.parse(settingsContent)
     } else {
-        console.log(`settings file ${settingsFile} not found. Starting with no database`)
+        log.warn(`settings file ${settingsFile} not found. Starting with no database`)
     }
 
     if (isDev()) {
-        console.log("Application is running in development mode - using dev database")
+        log.info("Application is running in development mode - using dev database")
         config.dbpath = "./db/RSSM_DB_DEV.db"
         config.isDev = true
     }
@@ -822,7 +824,7 @@ function writeAppConfig(newConfig) {
 
     // writing default settings to file
     fs.writeFileSync(settingsFile, JSON.stringify(config))
-    console.log("app configuration file updated: " + settingsFile)
+    log.info("app configuration file updated: " + settingsFile)
 
     return config
 }
@@ -835,7 +837,7 @@ function app_quit() {
 }
 
 function errorHandler(e) {
-    console.log(e)
+    log.error(e)
     //SETTINGS.error = e.name;
 
     dialog.showMessageBox({
