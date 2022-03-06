@@ -12,6 +12,7 @@ const Config = require("./lib/Config").Config
 const CONFIGNAME = "config.json"
 const VERSION = app.getVersion()
 const ASSETPATH = path.join(__dirname, "assets")
+const REPURCHASE_INFO_DOC = path.join(ASSETPATH, "repurchase_info2013.pdf")
 
 let rssm = null
 let mainWindow = null
@@ -75,6 +76,7 @@ autoUpdater.on("error", (error) => {
  * application startup handler
  */
 async function app_init() {
+    // get configuration
     const configSet = app.isPackaged ? "default" : "dev"
     const configFile = path.join(app.getPath("userData"), CONFIGNAME)
     const config = new Config(configFile, configSet)
@@ -166,6 +168,7 @@ async function loadPersonPortfolio(e, data) {
         info.shares.push(person.shares[i].share_no)
     }
     const portfolio_path = await RSSMDocs.makeShareholderPortfolio(info, rssm)
+    log.info("opening document " + portfolio_path)
     shell.openExternal("file://" + portfolio_path)
 }
 
@@ -335,6 +338,7 @@ async function executeRepurchase(e, data) {
             })
 
             // open document
+            log.info("opening document " + journal_path)
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
@@ -368,6 +372,7 @@ async function executeTransfer(e, data) {
             })
 
             // open document
+            log.info("opening document " + journal_path)
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
@@ -388,8 +393,6 @@ async function executeTransfer(e, data) {
  * @param data
  */
 async function executeIssueReserved(e, data) {
-    const repurchase_info_path = ASSETPATH + "repurchase_info2013.pdf"
-
     // convert booking date to correctly formatted db date string
     if (data.transaction.booking_date) {
         data.transaction.booking_date = helpers.dateToDbString(helpers.dmyToDate(data.transaction.booking_date))
@@ -414,9 +417,12 @@ async function executeIssueReserved(e, data) {
                 journal_id: info.journal_id,
                 path: letter1_path,
             })
+            log.info("opening document " + letter1_path)
             shell.openExternal("file://" + letter1_path)
+            log.info("opening document " + cert_path)
             shell.openExternal("file://" + cert_path)
-            shell.openExternal("file://" + repurchase_info_path)
+            log.info("opening document " + REPURCHASE_INFO_DOC)
+            shell.openExternal("file://" + REPURCHASE_INFO_DOC)
             break
 
         case "electronic":
@@ -425,8 +431,10 @@ async function executeIssueReserved(e, data) {
                 journal_id: info.journal_id,
                 path: letter2_path,
             })
+            log.info("opening document " + letter2_path)
             shell.openExternal("file://" + letter2_path)
-            shell.openExternal("file://" + repurchase_info_path)
+            log.info("opening document " + REPURCHASE_INFO_DOC)
+            shell.openExternal("file://" + REPURCHASE_INFO_DOC)
             break
     }
 
@@ -436,6 +444,7 @@ async function executeIssueReserved(e, data) {
             journal_id: info.transfer.journal_id,
             path: transfer_journal_path,
         })
+        log.info("opening document " + transfer_journal_path)
         shell.openExternal("file://" + transfer_journal_path)
     }
 
@@ -444,6 +453,7 @@ async function executeIssueReserved(e, data) {
         journal_id: info.journal_id,
         path: journal_path,
     })
+    log.info("opening document " + journal_path)
     shell.openExternal("file://" + journal_path)
 }
 
@@ -462,8 +472,6 @@ async function executeSale(e, data) {
 
     rssm.sale(data.transaction, data.buyer)
         .then(async function (info) {
-            const repurchase_info_path = ASSETPATH + "repurchase_info2013.pdf"
-
             mainWindow.webContents.send("journal:show", rssm.data.journal)
             mainWindow.webContents.send("toast:show", "Verkauf erfolgreich durchgeführt")
 
@@ -475,6 +483,7 @@ async function executeSale(e, data) {
                         journal_id: info.journal_id,
                         path: naming_form_path,
                     })
+                    log.info("opening document " + naming_form_path)
                     shell.openExternal("file://" + naming_form_path)
                     break
 
@@ -490,10 +499,12 @@ async function executeSale(e, data) {
                         journal_id: info.journal_id,
                         path: letter1_path,
                     })
-
+                    log.info("opening document " + cert_path)
                     shell.openExternal("file://" + cert_path)
+                    log.info("opening document " + letter1_path)
                     shell.openExternal("file://" + letter1_path)
-                    shell.openExternal("file://" + repurchase_info_path)
+                    log.info("opening document " + REPURCHASE_INFO_DOC)
+                    shell.openExternal("file://" + REPURCHASE_INFO_DOC)
                     break
 
                 case "electronic":
@@ -507,9 +518,12 @@ async function executeSale(e, data) {
                         journal_id: info.journal_id,
                         path: portfolio_path,
                     })
+                    log.info("opening document " + letter2_path)
                     shell.openExternal("file://" + letter2_path)
+                    log.info("opening document " + portfolio_path)
                     shell.openExternal("file://" + portfolio_path)
-                    shell.openExternal("file://" + repurchase_info_path)
+                    log.info("opening document " + REPURCHASE_INFO_DOC)
+                    shell.openExternal("file://" + REPURCHASE_INFO_DOC)
                     break
 
                 default:
@@ -521,6 +535,7 @@ async function executeSale(e, data) {
                 journal_id: info.journal_id,
                 path: journal_path,
             })
+            log.info("opening document " + journal_path)
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
@@ -565,6 +580,7 @@ async function executeMutation(e, person) {
             })
 
             // open document
+            log.info("opening document " + journal_path)
             shell.openExternal("file://" + journal_path)
         })
         .catch((err) => {
@@ -651,6 +667,7 @@ async function executeReport(e, range) {
  */
 async function exportReport(e, reportData) {
     const report_path = await RSSMDocs.makeAnnualReport(reportData, rssm)
+    log.info("opening document " + report_path)
     shell.openExternal("file://" + report_path)
 }
 
