@@ -70,10 +70,6 @@ table.no-line tr {
     border-bottom: 0 !important;
 }
 
-.setting-info {
-    color: var(--action-item-blue-dark);
-    font-size: 14px;
-}
 .new {
     color: var(--action-item-blue-ultra-dark);
     font-weight: bold;
@@ -284,7 +280,7 @@ div.rssm-app-info span {
 .version {
     font-size: 10px;
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     left: 10px;
     color: #666666;
 }
@@ -393,4 +389,51 @@ share-dd-item p img {
 .dash-chart canvas {
     height: 600px;
     width: 600px;
+}
+
+/** Settings table **/
+
+table.settings tr {
+    border: none;
+    line-height: normal;
+}
+table.settings tr > * {
+    padding: 5px;
+    height: 35px;
+}
+tr.setting-title {
+    border-top: rgba(0, 0, 0, 0.12) solid 1px !important;
+}
+table.settings th {
+    text-align: right;
+    font-weight: 500;
+    width: 20%;
+}
+tr.setting-title th {
+    text-align: left;
+    font-weight: 700;
+}
+
+table.settings td {
+    text-align: left;
+    width: 100%;
+    font-size: 1rem;
+}
+table.settings td:last-of-type {
+    width: 20%;
+}
+
+.setting-value {
+    text-align: right;
+    color: var(--action-item-blue-dark);
+    font-size: 14px;
+}
+
+.setting-value div.input-field {
+    margin-bottom: 0;
+}
+.setting-value div.input-field input {
+    border: none;
+    height: 1.5rem;
+    width: 50%;
 }

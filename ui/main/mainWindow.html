@@ -4,10 +4,10 @@
         <meta charset="UTF-8" />
         <title>Aktienregister AG Schulgebäude RSSM</title>
 
-        <link rel="stylesheet" href="../rssm.css" />
         <link rel="stylesheet" href="../materialize.css" />
         <link rel="stylesheet" href="../fontawesome-all.css" />
         <link rel="stylesheet" href="../dataTable.css" />
+        <link rel="stylesheet" href="../rssm.css" />
 
         <script type="text/javascript" src="../materialize.js" defer></script>
         <script type="text/javascript" src="mainWindow.js" defer></script>
@@ -689,23 +689,25 @@
                                     <tbody>
                                         <tr>
                                             <th width="200"><i class="fas fa-code"></i> Version</th>
-                                            <td width="*">
-                                                <span class="setting-info" id="admin-info-dbversion"></span>
+                                            <td class="setting-value" width="*">
+                                                <span id="admin-info-dbversion"></span>
                                             </td>
                                             <td width="150"></td>
                                         </tr>
                                         <tr id="admin-info-dbpath-row">
                                             <th><i class="fas fa-database"></i> Datenbank</th>
-                                            <td><span class="setting-info" id="admin-info-dbpath"></span></td>
+                                            <td class="setting-value"><span id="admin-info-dbpath"></span></td>
                                             <td>
                                                 <button id="admin-db-select-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-folder-open"></i> Auswählen
+                                                    <span style="white-space: nowrap">
+                                                        <i class="fas fa-folder-open"></i> Auswählen
+                                                    </span>
                                                 </button>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th><i class="fas fa-copy"></i> Datenbank Backups</th>
-                                            <td><div class="setting-info" id="admin-info-backup-list"></div></td>
+                                            <td class="setting-value"><div id="admin-info-backup-list"></div></td>
                                             <td>
                                                 <button id="admin-db-backup-btn" class="btn btn-small waves-effect">
                                                     <i class="fas fa-save"></i> Erstellen
@@ -714,7 +716,7 @@
                                         </tr>
                                         <tr>
                                             <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
-                                            <td><span class="setting-info" id="admin-info-export-list"></span></td>
+                                            <td class="setting-value"><span id="admin-info-export-list"></span></td>
                                             <td>
                                                 <button id="admin-db-export-btn" class="btn btn-small waves-effect">
                                                     <i class="fas fa-save"></i> Erstellen
@@ -726,99 +728,158 @@
                             </div>
 
                             <div id="settings-app" class="col s12">
-                                <table>
+                                <table class="settings">
                                     <tbody>
                                         <tr>
-                                            <th width="200"><i class="fas fa-code"></i> Version</th>
-                                            <td width="*">
-                                                <span class="setting-info" id="admin-info-appversion"></span>
+                                            <th><i class="fas fa-code"></i> Version</th>
+                                            <td class="setting-value">
+                                                <span id="admin-info-appversion"></span>
                                             </td>
-                                            <td width="150"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr class="setting-title">
+                                            <th><i class="fas fa-file-alt"></i> Dateien</th>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
-                                            <th width="200"><i class="fas fa-cog"></i> Konfiguration</th>
-                                            <td width="*">
-                                                <span class="setting-info" id="admin-info-configfile"></span>
+                                            <th>Konfiguration</th>
+                                            <td class="setting-value">
+                                                <span id="admin-info-configfile"></span>
                                             </td>
-                                            <td width="150"></td>
+                                            <td><span id="admin-btn-configfile"></span></td>
                                         </tr>
                                         <tr>
-                                            <th width="200"><i class="fas fa-file-alt"></i> Log</th>
-                                            <td width="*">
-                                                <span class="setting-info" id="admin-info-log"></span>
+                                            <th>Log</th>
+                                            <td class="setting-value">
+                                                <span id="admin-info-log"></span>
                                             </td>
-                                            <td width="150"></td>
-                                        </tr>
-                                        <tr>
-                                            <th><i class="fas fa-folder"></i> Dokumenteordner</th>
-                                            <td><span class="setting-info" id="admin-info-documentspath"></span></td>
                                             <td>
-                                                <button
-                                                    id="admin-document-select-btn"
-                                                    class="btn btn-small waves-effect"
-                                                >
-                                                    <i class="fas fa-folder-open"></i> Auswählen
-                                                </button>
+                                                <span id="admin-btn-log"></span>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <th><i class="fas fa-folder"></i> Backupordner</th>
-                                            <td><span class="setting-info" id="admin-info-dbbackuppath"></span></td>
-                                            <td>
-                                                <button id="admin-backup-select-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-folder-open"></i> Auswählen
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th><i class="fas fa-folder"></i> Exportordner</th>
-                                            <td><span class="setting-info" id="admin-info-exportspath"></span></td>
-                                            <td>
-                                                <button id="admin-export-select-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-folder-open"></i> Auswählen
-                                                </button>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th width="200">
-                                                <i class="fa fa-user" aria-hidden="true"></i> 1. Unterschrift
+                                        <tr class="setting-title">
+                                            <th
+                                                class="tooltipped"
+                                                data-position="top"
+                                                data-tooltip="Ordner in welche Dokumente, Datenbank Backups und Exporte erstellt werden."
+                                            >
+                                                <i class="fas fa-folder"></i> Ordner
                                             </th>
-                                            <td width="*">
-                                                <div class="input-field" style="margin-bottom: 0 !important">
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Dokumente</th>
+                                            <td class="setting-value"><span id="admin-info-documentspath"></span></td>
+                                            <td>
+                                                <a
+                                                    id="admin-document-select-btn"
+                                                    class="tooltipped btn btn-small btn-floating waves-effect hoverable"
+                                                    data-position="left"
+                                                    data-tooltip="Dokumente Ordner festlegen"
+                                                >
+                                                    <i class="fas fa-folder-open"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Backup</th>
+                                            <td class="setting-value"><span id="admin-info-dbbackuppath"></span></td>
+                                            <td>
+                                                <a
+                                                    id="admin-backup-select-btn"
+                                                    class="tooltipped btn btn-floating btn-small waves-effect hoverable"
+                                                    data-position="left"
+                                                    data-tooltip="Datenbank Backup Ordner festlegen"
+                                                >
+                                                    <i class="fas fa-folder-open"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Exporte</th>
+                                            <td class="setting-value"><span id="admin-info-exportspath"></span></td>
+                                            <td>
+                                                <a
+                                                    id="admin-export-select-btn"
+                                                    class="tooltipped btn btn-floating btn-small waves-effect hoverable"
+                                                    data-position="left"
+                                                    data-tooltip="Datenbank Export Ordner festlegen"
+                                                >
+                                                    <i class="fas fa-folder-open"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr class="setting-title">
+                                            <th
+                                                class="tooltipped"
+                                                data-position="top"
+                                                data-tooltip="Personen welche im Namen vom Verwaltungsrat die erstellten Dokumente unterschreiben."
+                                            >
+                                                <i class="fas fa-file-signature"></i> Unterschriften
+                                            </th>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th>1. Unterschrift</th>
+                                            <td class="setting-value">
+                                                <div class="input-field">
                                                     <input
                                                         type="text"
                                                         id="setting-edit-AG_REGISTER_PERSON_1"
                                                         class="autocomplete"
-                                                        style="
-                                                            border-bottom: 0 !important;
-                                                            height: auto !important;
-                                                            margin: 0 !important;
-                                                            font-size: 14px !important;
-                                                            font-weight: 400 !important;
-                                                            cursor: pointer;
-                                                        "
                                                     />
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><i class="fa fa-user" aria-hidden="true"></i> 2. Unterschrift</th>
-                                            <td>
-                                                <div class="input-field" style="margin-bottom: 0 !important">
+                                            <th>2. Unterschrift</th>
+                                            <td class="setting-value">
+                                                <div class="input-field">
                                                     <input
                                                         type="text"
                                                         id="setting-edit-AG_REGISTER_PERSON_2"
                                                         class="autocomplete"
-                                                        style="
-                                                            border-bottom: 0 !important;
-                                                            height: auto !important;
-                                                            margin: 0 !important;
-                                                            font-size: 14px !important;
-                                                            font-weight: 400 !important;
-                                                            cursor: pointer;
-                                                        "
                                                     />
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="setting-title">
+                                            <th
+                                                class="tooltipped"
+                                                data-position="top"
+                                                data-tooltip="Position des Adressfeldes auf gedruckten Dokumenten. Kann für Couverts mit Fenster angepasst werden."
+                                            >
+                                                <i class="fas fa-envelope"></i> Position Addressfeld
+                                            </th>
+                                            <td></td>
+                                            <td>
+                                                <a
+                                                    id="admin-test-addresspos-btn"
+                                                    class="tooltipped btn btn-floating btn-small waves-effect hoverable"
+                                                    data-position="left"
+                                                    data-tooltip="Testseite drucken"
+                                                >
+                                                    <i class="fas fa-print"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: none">
+                                            <th style="text-align: right"><i class="fas fa-arrows-alt-h"></i> Links</th>
+                                            <td class="setting-value">
+                                                <div class="input-field">
+                                                    <input id="setting-edit-ADDRESS_POS_LEFT" type="number" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th style="text-align: right"><i class="fas fa-arrows-alt-v"></i> Oben</th>
+                                            <td class="setting-value">
+                                                <div class="input-field">
+                                                    <input id="setting-edit-ADDRESS_POS_TOP" type="number" />
                                                 </div>
                                             </td>
                                         </tr>

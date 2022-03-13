@@ -74,6 +74,9 @@ function showSettings(e, data) {
             saveSettings()
         },
     })
+
+    const elems = document.querySelectorAll(".tooltipped")
+    M.Tooltip.init(elems, {})
 }
 
 function saveSettings() {
@@ -120,13 +123,29 @@ function setValues(data) {
     document.querySelector("#admin-info-appversion").textContent = data.app_version
     document.querySelector("#admin-info-dbversion").textContent = data.db_version
 
-    document.querySelector(
-        "#admin-info-configfile"
-    ).innerHTML = `<a href="${data.user_config_file}" target="_blank">${data.user_config_file}</a> {${data.user_config_set}}`
+    document.querySelector("#admin-info-configfile").textContent = data.user_config_file
+    document.querySelector("#admin-btn-configfile").innerHTML = `<a
+        href="${data.user_config_file}"
+        target="_blank"
+        id="admin-logfile-open-btn"
+        class="tooltipped btn btn-small btn-floating waves-effect hoverable"
+        data-position="left"
+        data-tooltip="Konfigurations File öffnen"
+    >
+        <i class="fas fa-file-code"></i>
+    </a>`
 
-    document.querySelector(
-        "#admin-info-log"
-    ).innerHTML = `<a href="${data.log_file}" target="_blank">${data.log_file}</a> {${data.log_level}}`
+    document.querySelector("#admin-info-log").textContent = data.log_file
+    document.querySelector("#admin-btn-log").innerHTML = `<a
+        href="${data.log_file}"
+        target="_blank"
+        id="admin-logfile-open-btn"
+        class="tooltipped btn btn-small btn-floating waves-effect hoverable"
+        data-position="left"
+        data-tooltip="Logfile öffnen"
+    >
+        <i class="fas fa-file-alt"></i>
+    </a>`
 
     if (data.dbpath) {
         document.querySelector("#admin-info-dbpath").textContent = data.dbpath
