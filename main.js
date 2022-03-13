@@ -12,7 +12,7 @@ const Config = require("./lib/Config").Config
 const CONFIGNAME = "config.json"
 const VERSION = app.getVersion()
 const ASSETPATH = path.join(__dirname, "assets")
-const REPURCHASE_INFO_DOC = path.join(ASSETPATH, "repurchase_info2013.pdf")
+const REPURCHASE_INFO_DOC = path.join(ASSETPATH, "documents", "repurchase_info2013.pdf")
 
 let rssm = null
 let mainWindow = null

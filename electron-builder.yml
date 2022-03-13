@@ -1,6 +1,6 @@
 appId: com.wahlit.rssm-agreg
 extraFiles:
-    - "assets/repurchase_info2013.pdf"
+    - "assets/documents/repurchase_info2013.pdf"
 
 win:
     target: nsis
@@ -14,12 +14,11 @@ nsis:
     uninstallerIcon: ./assets/icons/win/icon.ico
     shortcutName: "Aktienregister RSSM"
 
-mac: 
+mac:
     target: dmg
     icon: ./assets/icons/mac/icon.icns
 dmg:
     icon: ./assets/icons/mac/icon.icns
-    
 
 publish:
     provider: github
