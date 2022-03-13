@@ -685,42 +685,81 @@
                             </div>
 
                             <div id="settings-db" class="col s12">
-                                <table>
+                                <table class="settings">
                                     <tbody>
-                                        <tr>
-                                            <th width="200"><i class="fas fa-code"></i> Version</th>
-                                            <td class="setting-value" width="*">
+                                        <tr class="setting-title">
+                                            <th><i class="fas fa-code"></i> Version</th>
+                                            <td class="setting-value">
                                                 <span id="admin-info-dbversion"></span>
                                             </td>
-                                            <td width="150"></td>
+                                            <td></td>
                                         </tr>
-                                        <tr id="admin-info-dbpath-row">
-                                            <th><i class="fas fa-database"></i> Datenbank</th>
-                                            <td class="setting-value"><span id="admin-info-dbpath"></span></td>
+                                        <tr class="setting-title" id="admin-info-dbpath-row">
+                                            <th class="tooltipped" data-position="top" data-tooltip="Datenbank Datei">
+                                                <i class="fas fa-database"></i> Datenbank
+                                            </th>
+                                            <td class="setting-value">
+                                                <span class="setting-hightlight" id="admin-info-dbpath"></span>
+                                            </td>
                                             <td>
-                                                <button id="admin-db-select-btn" class="btn btn-small waves-effect">
-                                                    <span style="white-space: nowrap">
-                                                        <i class="fas fa-folder-open"></i> Auswählen
-                                                    </span>
-                                                </button>
+                                                <a
+                                                    id="admin-db-select-btn"
+                                                    class="tooltipped btn btn-floating btn-small waves-effect hoverable"
+                                                    data-position="left"
+                                                    data-tooltip="Datenbank Datei auswählen"
+                                                >
+                                                    <i class="fas fa-folder-open"></i>
+                                                </a>
                                             </td>
                                         </tr>
+                                        <tr class="setting-title">
+                                            <th
+                                                class="tooltipped"
+                                                data-position="top"
+                                                data-tooltip="Liste der letzten Datenbank Backups"
+                                            >
+                                                <i class="fas fa-copy"></i> Datenbank Backups
+                                            </th>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                         <tr>
-                                            <th><i class="fas fa-copy"></i> Datenbank Backups</th>
+                                            <th></th>
                                             <td class="setting-value"><div id="admin-info-backup-list"></div></td>
                                             <td>
-                                                <button id="admin-db-backup-btn" class="btn btn-small waves-effect">
-                                                    <i class="fas fa-save"></i> Erstellen
-                                                </button>
+                                                <a
+                                                    id="admin-db-backup-btn"
+                                                    class="tooltipped btn btn-floating btn-small waves-effect hoverable"
+                                                    data-position="left"
+                                                    data-tooltip="Datenbank Backup jetzt erstellen"
+                                                >
+                                                    <i class="fas fa-save"></i>
+                                                </a>
                                             </td>
                                         </tr>
+                                        <tr class="setting-title">
+                                            <th
+                                                class="tooltipped"
+                                                data-position="top"
+                                                data-tooltip="Liste der letzten Datenbank Exports"
+                                            >
+                                                <i class="fas fa-file-excel"></i> Datenbank Exporte
+                                            </th>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                         <tr>
-                                            <th><i class="fas fa-file-excel"></i> Datenbank Exporte</th>
+                                            <th></th>
                                             <td class="setting-value"><span id="admin-info-export-list"></span></td>
                                             <td>
-                                                <button id="admin-db-export-btn" class="btn btn-small waves-effect">
+                                                <a
+                                                    id="admin-db-export-btn"
+                                                    class="tooltipped btn btn-floating btn-small waves-effect hoverable"
+                                                    data-position="left"
+                                                    data-tooltip="Datenbank Export jetzt erstellen"
+                                                >
                                                     <i class="fas fa-save"></i> Erstellen
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -730,7 +769,7 @@
                             <div id="settings-app" class="col s12">
                                 <table class="settings">
                                     <tbody>
-                                        <tr>
+                                        <tr class="setting-title">
                                             <th><i class="fas fa-code"></i> Version</th>
                                             <td class="setting-value">
                                                 <span id="admin-info-appversion"></span>
@@ -764,7 +803,7 @@
                                                 data-position="top"
                                                 data-tooltip="Ordner in welche Dokumente, Datenbank Backups und Exporte erstellt werden."
                                             >
-                                                <i class="fas fa-folder"></i> Ordner
+                                                <i class="fa-solid fa-folder-open"></i> Ordner
                                             </th>
                                             <td></td>
                                             <td></td>
@@ -853,7 +892,7 @@
                                                 data-position="top"
                                                 data-tooltip="Position des Adressfeldes auf gedruckten Dokumenten. Kann für Couverts mit Fenster angepasst werden."
                                             >
-                                                <i class="fas fa-envelope"></i> Position Addressfeld
+                                                <i class="fa-solid fa-address-card"></i> Position Addressfeld
                                             </th>
                                             <td></td>
                                             <td>
@@ -868,7 +907,9 @@
                                             </td>
                                         </tr>
                                         <tr style="border-bottom: none">
-                                            <th style="text-align: right"><i class="fas fa-arrows-alt-h"></i> Links</th>
+                                            <th style="text-align: right">
+                                                <i class="fas fa-arrows-alt-h"></i> Links (mm)
+                                            </th>
                                             <td class="setting-value">
                                                 <div class="input-field">
                                                     <input id="setting-edit-ADDRESS_POS_LEFT" type="number" />
@@ -876,7 +917,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th style="text-align: right"><i class="fas fa-arrows-alt-v"></i> Oben</th>
+                                            <th style="text-align: right">
+                                                <i class="fas fa-arrows-alt-v"></i> Oben (mm)
+                                            </th>
                                             <td class="setting-value">
                                                 <div class="input-field">
                                                     <input id="setting-edit-ADDRESS_POS_TOP" type="number" />

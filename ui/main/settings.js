@@ -235,7 +235,7 @@ function appendBackup(e, backup) {
     const backupListEl = document.getElementById("admin-info-backup-list").firstChild
     const newLiEl = document.createElement("li")
     newLiEl.innerHTML = backup
-    newLiEl.classList.add("new")
+    newLiEl.classList.add("setting-highlight")
     backupListEl.insertBefore(newLiEl, backupListEl.firstChild)
 }
 
@@ -249,7 +249,7 @@ function appendExport(e, exportFile) {
     const exportListEl = document.getElementById("admin-info-export-list").firstChild
     const newLiEl = document.createElement("li")
     newLiEl.innerHTML = exportFile
-    newLiEl.classList.add("new")
+    newLiEl.classList.add("setting-highlight")
     exportListEl.insertBefore(newLiEl, exportListEl.firstChild)
 }
 
@@ -262,7 +262,7 @@ function updateBackupPath(e, backupPath) {
     // update backup path to UI
     const backupPathEl = document.getElementById("admin-info-dbbackuppath")
     backupPathEl.innerHTML = backupPath
-    backupPathEl.classList.add("new")
+    backupPathEl.classList.add("setting-highlight")
 }
 
 function updateExportPath(e, exportPath) {
@@ -274,7 +274,7 @@ function updateExportPath(e, exportPath) {
     // update export path to UI
     const exportPathEl = document.getElementById("admin-info-exportspath")
     exportPathEl.innerHTML = exportPath
-    exportPathEl.classList.add("new")
+    exportPathEl.classList.add("setting-highlight")
 }
 
 function updateDocumentPath(e, documentPath) {
@@ -286,7 +286,7 @@ function updateDocumentPath(e, documentPath) {
     // update export path to UI
     const documentPathEl = document.getElementById("admin-info-documentspath")
     documentPathEl.innerHTML = documentPath
-    documentPathEl.classList.add("new")
+    documentPathEl.classList.add("setting-highlight")
 }
 
 module.exports = {
