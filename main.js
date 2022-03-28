@@ -36,6 +36,7 @@ ipcMain.on("exportpath:set", setExportPath)
 ipcMain.on("dbbackup:create", createDbBackup)
 ipcMain.on("dbexport:create", createDbExport)
 ipcMain.on("settings:update", saveSettings)
+ipcMain.on("addresspositiontest:print", addressPagePrint)
 ipcMain.on("personinfo:load", loadPersonInfo)
 ipcMain.on("personportfolio:load", loadPersonPortfolio)
 ipcMain.on("journalinfo:load", loadJournalInfo)
@@ -194,6 +195,19 @@ async function saveSettings(e, data) {
             "Aktienregisterführer für 2. Unterschrift gepseichert (" + data.AG_REGISTER_PERSON_2 + ")"
         )
         log.info("saved new person for second signature: " + data.AG_REGISTER_PERSON_2)
+    }
+    if (data.ADDRESS_POS_LEFT) {
+        rssm.setConfig("ADDRESS_POS_LEFT", data.ADDRESS_POS_LEFT)
+        mainWindow.webContents.send(
+            "toast:show",
+            "linke Adressfeldposition gespeichert (" + data.ADDRESS_POS_LEFT + ")"
+        )
+        log.info("saved new left position for address field: " + data.ADDRESS_POS_LEFT)
+    }
+    if (data.ADDRESS_POS_TOP) {
+        rssm.setConfig("ADDRESS_POS_TOP", data.ADDRESS_POS_TOP)
+        mainWindow.webContents.send("toast:show", "obere Adressfeldposition gespeichert (" + data.ADDRESS_POS_TOP + ")")
+        log.info("saved new top position for address field: " + data.ADDRESS_POS_TOP)
     }
 }
 
@@ -597,6 +611,12 @@ async function executeMutation(e, person) {
         })
 }
 
+async function addressPagePrint(e) {
+    const testPrint = await RSSMDocs.makeAddressTestPrint(rssm)
+    log.info("opening document " + testPrint)
+    shell.openExternal("file://" + testPrint)
+}
+
 async function setJournalComment(e, data) {
     await rssm.logComment(data.remark, { journal: data.journal_id })
     mainWindow.webContents.send("toast:show", "Kommentar gespeichert")
@@ -761,6 +781,8 @@ async function loadContentData(e, element_id) {
                 db_version: await rssm.getConfig("VERSION"),
                 AG_REGISTER_PERSON_1: await rssm.getConfig("AG_REGISTER_PERSON_1"),
                 AG_REGISTER_PERSON_2: await rssm.getConfig("AG_REGISTER_PERSON_2"),
+                ADDRESS_POS_LEFT: await rssm.getConfig("ADDRESS_POS_LEFT"),
+                ADDRESS_POS_TOP: await rssm.getConfig("ADDRESS_POS_TOP"),
             })
             break
     }

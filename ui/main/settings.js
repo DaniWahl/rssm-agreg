@@ -4,6 +4,9 @@ document.querySelector("#admin-document-select-btn").addEventListener("click", s
 document.querySelector("#admin-export-select-btn").addEventListener("click", selectExport)
 document.querySelector("#admin-db-backup-btn").addEventListener("click", backupDb)
 document.querySelector("#admin-db-export-btn").addEventListener("click", exportDb)
+document.querySelector("#admin-test-addresspos-btn").addEventListener("click", printAddressPosTest)
+document.querySelector("#setting-edit-ADDRESS_POS_LEFT").addEventListener("click", saveSettings)
+document.querySelector("#setting-edit-ADDRESS_POS_TOP").addEventListener("click", saveSettings)
 
 let originalSettings
 
@@ -99,6 +102,16 @@ function saveSettings() {
         originalSettings.AG_REGISTER_PERSON_2 = values.AG_REGISTER_PERSON_2
     }
 
+    if (values.ADDRESS_POS_LEFT && values.ADDRESS_POS_LEFT != originalSettings.ADDRESS_POS_LEFT) {
+        settings["ADDRESS_POS_LEFT"] = values.ADDRESS_POS_LEFT
+        originalSettings.ADDRESS_POS_LEFT = values.ADDRESS_POS_LEFT
+    }
+
+    if (values.ADDRESS_POS_TOP && values.ADDRESS_POS_TOP != originalSettings.ADDRESS_POS_TOP) {
+        settings["ADDRESS_POS_TOP"] = values.ADDRESS_POS_TOP
+        originalSettings.ADDRESS_POS_TOP = values.ADDRESS_POS_TOP
+    }
+
     // is there something to save?
     if (Object.keys(settings).length) {
         ipcRenderer.send("settings:update", settings)
@@ -118,6 +131,20 @@ function setValues(data) {
         document.querySelector("#setting-edit-AG_REGISTER_PERSON_2").value = data.AG_REGISTER_PERSON_2
     } else {
         issues.push("Bitte Aktienregisterführer für 2. Unterschrift definieren.")
+    }
+
+    if (data.ADDRESS_POS_LEFT) {
+        document.querySelector("#setting-edit-ADDRESS_POS_LEFT").value = data.ADDRESS_POS_LEFT
+    } else {
+        issues.push("Bitte linke Position für das Adressfeld definieren.")
+        document.querySelector("#admin-test-addresspos-btn").classList.add("disabled")
+    }
+
+    if (data.ADDRESS_POS_TOP) {
+        document.querySelector("#setting-edit-ADDRESS_POS_TOP").value = data.ADDRESS_POS_TOP
+    } else {
+        issues.push("Bitte obere Position für das Adressfeld definieren.")
+        document.querySelector("#admin-test-addresspos-btn").classList.add("disabled")
     }
 
     document.querySelector("#admin-info-appversion").textContent = data.app_version
@@ -220,9 +247,15 @@ function showIssues(issues) {
 
 function getValues() {
     const data = {}
-    data.AG_REGISTER_PERSON_1 = $("#setting-edit-AG_REGISTER_PERSON_1").val()
-    data.AG_REGISTER_PERSON_2 = $("#setting-edit-AG_REGISTER_PERSON_2").val()
+    data.AG_REGISTER_PERSON_1 = document.getElementById("setting-edit-AG_REGISTER_PERSON_1").value
+    data.AG_REGISTER_PERSON_2 = document.getElementById("setting-edit-AG_REGISTER_PERSON_2").value
+    data.ADDRESS_POS_LEFT = document.getElementById("setting-edit-ADDRESS_POS_LEFT").valueAsNumber
+    data.ADDRESS_POS_TOP = document.getElementById("setting-edit-ADDRESS_POS_TOP").valueAsNumber
     return data
+}
+
+function printAddressPosTest(e) {
+    ipcRenderer.send("addresspositiontest:print")
 }
 
 function appendBackup(e, backup) {

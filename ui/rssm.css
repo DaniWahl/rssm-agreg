@@ -317,6 +317,23 @@ div.rssm-app-info span {
     box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12),
         0 8px 10px -5px rgba(0, 0, 0, 0.3) !important;
     background-color: var(--action-item-blue-ultra-light) !important;
+    animation: share-selection-animation;
+    animation-duration: 300ms;
+}
+
+@keyframes share-selection-animation {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 share-dd-item p img {
@@ -432,6 +449,9 @@ table.settings td:last-of-type {
     height: 1.5rem;
     width: 50%;
 }
+.setting-value div.input-field input[type="number"] {
+    width: 50px;
+}
 
 .setting-highlight {
     color: var(--action-item-blue-ultra-dark);
@@ -443,12 +463,12 @@ table.settings td:last-of-type {
 
 @keyframes settings-hightlight-flash {
     0% {
-        text-shadow: 0px 0px 0px rgb(255, 255, 0);
+        text-shadow: 0px 0px 0px orange;
     }
     50% {
-        text-shadow: 2px 2px 5px rgb(255, 255, 0);
+        text-shadow: 2px 2px 5px orange;
     }
     100% {
-        text-shadow: 0px 0px 0px rgb(255, 255, 0);
+        text-shadow: 0px 0px 0px orange;
     }
 }
