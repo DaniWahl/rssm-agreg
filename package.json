@@ -1,6 +1,6 @@
 {
     "name": "aktienregister-rssm",
-    "version": "1.9.9",
+    "version": "1.9.10",
     "description": "Aktienregister der AG Schulgebäude RSSM",
     "private": true,
     "author": "Daniel Wahl",
