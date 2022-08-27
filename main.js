@@ -1030,6 +1030,12 @@ function getMainMenuTemplate() {
                     },
                 },
                 {
+                    label: "Anleitung (github.com)",
+                    click(item, window, e) {
+                        shell.openExternal("https://github.com/DaniWahl/rssm-agreg/wiki/1.-Home")
+                    },
+                },
+                {
                     label: "Entwickler Tools",
                     accelerator: process.platform === "darwin" ? "Command+I" : "Control+I",
                     click(item, focusedWindiow) {
