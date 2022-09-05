@@ -1,13 +1,10 @@
 #Aktienregister Schulgebäude RSSM
-
 Datenbank und Applikation zur Verwaltung des Aktienregisters der AG Schulgebäude RSSM.
 
-##Prerequisite for building**
-
+##Prerequisite for building
 requires NodeJS version 16
 
 ##Installation
-
 1. clone this repo from Github
 2. to install & build dependencies run the follwing commands:
 ```
