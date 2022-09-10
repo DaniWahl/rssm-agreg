@@ -11,7 +11,6 @@ const Config = require("./lib/Config").Config
 
 const CONFIGNAME = "config.json"
 const VERSION = app.getVersion()
-const REPURCHASE_INFO_DOC = path.join(app.getAppPath(), "assets", "documents", "repurchase_info2013.pdf")
 
 let rssm = null
 let mainWindow = null
@@ -403,11 +402,32 @@ async function executeTransfer(e, data) {
 }
 
 /**
+ * produces the correct path for the repurchance info document, depending on the application
+ * packaging status.
+ * @returns document path as string
+ */
+function getRepurchaseDocPath() {
+    const documentName = "repurchase_info2013.pdf"
+    let installDir
+
+    // evaluate install directory
+    if (app.isPackaged) {
+        installDir = path.dirname(app.getPath("exe"))
+    } else {
+        installDir = app.getAppPath()
+    }
+
+    return path.join(installDir, "assets", "documents", documentName)
+}
+
+/**
  * initiates the process to issue reserved shares and displays success or error on UI
  * @param e
  * @param data
  */
 async function executeIssueReserved(e, data) {
+    const repurchase_path = getRepurchaseDocPath()
+
     // convert booking date to correctly formatted db date string
     if (data.transaction.booking_date) {
         data.transaction.booking_date = helpers.dateToDbString(helpers.dmyToDate(data.transaction.booking_date))
@@ -436,8 +456,8 @@ async function executeIssueReserved(e, data) {
             shell.openExternal("file://" + letter1_path)
             log.info("opening document " + cert_path)
             shell.openExternal("file://" + cert_path)
-            log.info("opening document " + REPURCHASE_INFO_DOC)
-            shell.openExternal("file://" + REPURCHASE_INFO_DOC)
+            log.info("opening document " + repurchase_path)
+            shell.openExternal("file://" + repurchase_path)
             break
 
         case "electronic":
@@ -448,8 +468,8 @@ async function executeIssueReserved(e, data) {
             })
             log.info("opening document " + letter2_path)
             shell.openExternal("file://" + letter2_path)
-            log.info("opening document " + REPURCHASE_INFO_DOC)
-            shell.openExternal("file://" + REPURCHASE_INFO_DOC)
+            log.info("opening document " + repurchase_path)
+            shell.openExternal("file://" + repurchase_path)
             break
     }
 
@@ -478,6 +498,8 @@ async function executeIssueReserved(e, data) {
  * @param data
  */
 async function executeSale(e, data) {
+    const repurchase_path = getRepurchaseDocPath()
+
     // convert booking date to correctly formatted db date string
     if (data.transaction.booking_date) {
         data.transaction.booking_date = helpers.dateToDbString(helpers.dmyToDate(data.transaction.booking_date))
@@ -518,8 +540,8 @@ async function executeSale(e, data) {
                     shell.openExternal("file://" + cert_path)
                     log.info("opening document " + letter1_path)
                     shell.openExternal("file://" + letter1_path)
-                    log.info("opening document " + REPURCHASE_INFO_DOC)
-                    shell.openExternal("file://" + REPURCHASE_INFO_DOC)
+                    log.info("opening document " + repurchase_path)
+                    shell.openExternal("file://" + repurchase_path)
                     break
 
                 case "electronic":
@@ -537,8 +559,8 @@ async function executeSale(e, data) {
                     shell.openExternal("file://" + letter2_path)
                     log.info("opening document " + portfolio_path)
                     shell.openExternal("file://" + portfolio_path)
-                    log.info("opening document " + REPURCHASE_INFO_DOC)
-                    shell.openExternal("file://" + REPURCHASE_INFO_DOC)
+                    log.info("opening document " + repurchase_path)
+                    shell.openExternal("file://" + repurchase_path)
                     break
 
                 default:
