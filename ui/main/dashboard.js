@@ -19,7 +19,7 @@ function toggleChartScale(e) {
 
 function showDashboard(e, data) {
     showElement("dashboard")
-    const [available, total] = populateShareTable(data.shares, data.rssm)
+    const [available, total] = populateShareTable(data.shares, data.rssm_a_code)
     populateHolderTable(data.persons)
     drawShareChart(data.journal, data.series, available, total)
 }
@@ -63,10 +63,13 @@ function drawShareChart(journal, series, inStock, total) {
     const labels = []
     const capital = []
     const todayDate = new Date()
+    const currentMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1).getTime()
     const tenYearsDate = new Date(`${todayDate.getFullYear() - 10}-01-01`)
     const dataMap = new Map()
     let count = inStock
     let yearStartDate = null
+
+    console.log(journal)
 
     // get start date of business year (July 1. - June 31.)
     if (todayDate.getMonth() >= 5) {
@@ -80,7 +83,13 @@ function drawShareChart(journal, series, inStock, total) {
     // iterate journal
     for (let i = 0; i < journal.length; i++) {
         const j = journal[i]
-        const transactionDate = new Date(j.transaction_date)
+
+        // get journal transation date
+        let transaction_date_db = j.booking_date
+        if (transaction_date_db == null) {
+            transaction_date_db = j.transaction_date
+        }
+        const transactionDate = new Date(transaction_date_db)
 
         // skip all entries with no change of stock
         if (j.number == 0) {
@@ -95,6 +104,11 @@ function drawShareChart(journal, series, inStock, total) {
         //const monthly = `${transactionDate.getFullYear()} ${months[transactionDate.getMonth()]}`
         const monthly = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), 1).getTime()
 
+        if (monthly == currentMonth) {
+            // skip this since we add this later
+            continue
+        }
+
         // condense all share stock changes per transaction date
         if (dataMap.has(monthly)) {
             dataMap.set(monthly, dataMap.get(monthly) + j.number)
@@ -108,6 +122,7 @@ function drawShareChart(journal, series, inStock, total) {
         y: count,
         x: todayDate.getTime(),
     })
+
     // create dataset for available shares over time using the condensed dataset
     dataMap.forEach((value, timestamp) => {
         if (value != 0) {
@@ -118,6 +133,8 @@ function drawShareChart(journal, series, inStock, total) {
             })
         }
     })
+
+    console.log(available)
 
     // iterate series
     // countCapital = 0

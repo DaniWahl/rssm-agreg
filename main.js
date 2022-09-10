@@ -655,7 +655,7 @@ async function loadContentData(e, element_id) {
                 series: rssm.data.series,
                 journal: rssm.data.journal,
                 persons: rssm.data.persons,
-                rssm: await rssm.getConfig("RSSM_A_CODE"),
+                rssm_a_code: await rssm.getConfig("RSSM_A_CODE"),
             })
             break
 
