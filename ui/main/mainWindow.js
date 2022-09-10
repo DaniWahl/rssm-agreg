@@ -215,9 +215,6 @@ function makeShareElement(share, type) {
     let icon_div = ""
     let hash_div = ""
 
-    if (share.status == "reserved") {
-        icon_div = '<div class="share-dd-icon"><i class="far fa-registered"></i></a>'
-    }
     if (share.status == "invalidated") {
         icon_div = '<div class="share-dd-icon"><i class="fas fa-ban"></i></a>'
     }
@@ -317,14 +314,7 @@ function updateSelected(type) {
     const selected = document.getElementById(`${type}-list`).querySelectorAll("div.share-dd-item-selected")
     document.getElementById(`${type}-shares`).innerHTML = selected.length
 
-    for (let i = 0; i < selected.length; i++) {
-        // stop here if any of the selected shares is a reserved certificate
-        if (selected[i].classList.contains("share-status-reserved") && type == "sale") {
-            return
-        }
-    }
-
-    // if we reach this, en-disable the sale submit button
+    // en-disable the sale submit button
     if (selected.length) {
         document.getElementById(`${type}-submit`).classList.remove("disabled")
     } else {

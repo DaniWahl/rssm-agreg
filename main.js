@@ -23,7 +23,6 @@ ipcMain.on("repurchase:execute", executeRepurchase)
 ipcMain.on("transfer:execute", executeTransfer)
 ipcMain.on("mutation:execute", executeMutation)
 ipcMain.on("sale:execute", executeSale)
-ipcMain.on("issuereserved:execute", executeIssueReserved)
 ipcMain.on("enterperson:execute", executeEnterPerson)
 ipcMain.on("report:execute", executeReport)
 ipcMain.on("report:export", exportReport)
@@ -418,78 +417,6 @@ function getRepurchaseDocPath() {
     }
 
     return path.join(installDir, "assets", "documents", documentName)
-}
-
-/**
- * initiates the process to issue reserved shares and displays success or error on UI
- * @param e
- * @param data
- */
-async function executeIssueReserved(e, data) {
-    const repurchase_path = getRepurchaseDocPath()
-
-    // convert booking date to correctly formatted db date string
-    if (data.transaction.booking_date) {
-        data.transaction.booking_date = helpers.dateToDbString(helpers.dmyToDate(data.transaction.booking_date))
-    } else {
-        data.transaction.booking_date = helpers.dateToDbString()
-    }
-
-    info = await rssm.saleReserved(data.transaction, data.buyer)
-    mainWindow.webContents.send("journal:show", rssm.data.journal)
-    mainWindow.webContents.send("toast:show", "Ausstellung reservierter Zertifikate erfolgreich durchgeführt")
-
-    // generate documents
-    switch (data.transaction.cert_type) {
-        case "paper":
-            const cert_path = await RSSMDocs.makeCertificates(info, rssm)
-            rssm.registerDocument({
-                journal_id: info.journal_id,
-                path: cert_path,
-            })
-            const letter1_path = await RSSMDocs.makeSharesLetter(info, rssm)
-            rssm.registerDocument({
-                journal_id: info.journal_id,
-                path: letter1_path,
-            })
-            log.info("opening document " + letter1_path)
-            shell.openExternal("file://" + letter1_path)
-            log.info("opening document " + cert_path)
-            shell.openExternal("file://" + cert_path)
-            log.info("opening document " + repurchase_path)
-            shell.openExternal("file://" + repurchase_path)
-            break
-
-        case "electronic":
-            const letter2_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm)
-            rssm.registerDocument({
-                journal_id: info.journal_id,
-                path: letter2_path,
-            })
-            log.info("opening document " + letter2_path)
-            shell.openExternal("file://" + letter2_path)
-            log.info("opening document " + repurchase_path)
-            shell.openExternal("file://" + repurchase_path)
-            break
-    }
-
-    if (info.transfer != null) {
-        const transfer_journal_path = await RSSMDocs.makeJournalTransfer(info.transfer, rssm)
-        rssm.registerDocument({
-            journal_id: info.transfer.journal_id,
-            path: transfer_journal_path,
-        })
-        log.info("opening document " + transfer_journal_path)
-        shell.openExternal("file://" + transfer_journal_path)
-    }
-
-    const journal_path = await RSSMDocs.makeJournalIssueReserved(info, rssm)
-    rssm.registerDocument({
-        journal_id: info.journal_id,
-        path: journal_path,
-    })
-    log.info("opening document " + journal_path)
-    shell.openExternal("file://" + journal_path)
 }
 
 /**

@@ -2,9 +2,7 @@ const SALE_TYPE = "sale"
 
 // setup repurchase ui specific event handlers
 document.querySelector("#sale-submit").addEventListener("click", submitSale)
-document.querySelector("#sale-reserved-submit").addEventListener("click", submitIssueReserved)
 document.querySelector("#confirmation-sale-ok").addEventListener("click", doSale)
-document.querySelector("#confirmation-issuereserved-ok").addEventListener("click", doIssueReserved)
 document.querySelector("#sale-n-shares").addEventListener("input", updateShareList)
 
 //let rssmSharesNo;
@@ -22,9 +20,6 @@ function updateShareList(e) {
     if (isNaN(value)) {
         return
     }
-
-    // override any reserved shares being displayed
-    document.querySelector("#sale-reserved-submit").classList.add("hidden")
 
     // pull list of available shares
     const list = getShareList(value)
@@ -162,65 +157,6 @@ function submitSale(e) {
 }
 
 /**
- * event handler for the Transfer Submit button.
- * displays a confirmation dialog
- * @param e
- */
-function submitIssueReserved(e) {
-    e.preventDefault()
-
-    // get form data
-    const formData = new FormData(document.querySelector("form[name=sale]"))
-
-    const holder = formData.get("holder")
-    const buyer = {
-        a_code: formData.get("a_code"),
-        salutation: formData.get("salutation"),
-        family: formData.get("family"),
-        first_name: formData.get("first_name"),
-        name: formData.get("name"),
-        address: formData.get("address"),
-        post_code: formData.get("post_code"),
-        city: formData.get("city"),
-        comment: formData.get("comment"),
-    }
-
-    // get selected shares
-    const shares = getSelectedShares(SALE_TYPE)
-    const cert_type = formData.get("cert_type")
-
-    let buyer_status = "new"
-    if (holder !== "") {
-        buyer_status = "exists"
-    }
-
-    // form dialog message
-    let msg = `Die folgenden <b>${shares.length}</b> reservierten Aktien werden`
-    msg += ` nun definitiv auf den Aktionär <b>${buyer.name}</b> ausgestellt:<br>`
-
-    if (cert_type == "paper") {
-        msg += `Die Zertifikate werden ausgestellt und gedruckt.`
-    } else if (cert_type == "electronic") {
-        msg += `Die Zertifikate werden mit dem Vermerk 'elektronisch' ausgestellt aber nicht gedruckt.`
-    }
-
-    msg += `<ul style="list-style-type:disc"><b>`
-    shares.forEach((share_no) => {
-        msg += `<li>${helpers.pad0(share_no, 3)}</li>`
-    })
-    msg += "</b></ul>"
-
-    if (buyer_status === "new") {
-        msg += "<p>Für den Aktionär werden neue Stammdaten erstellt.</p>"
-    }
-
-    // initialize and show dialog
-    const dialogEl = document.querySelector("#confirmation-modal-reserved")
-    dialogEl.querySelector("div > div.modal-content > p").innerHTML = msg
-    M.Modal.getInstance(dialogEl).open()
-}
-
-/**
  * event handler for the modal dialog ok button click.
  * passes the data back to main for being processed
  * @param e
@@ -259,48 +195,6 @@ function doSale(e) {
     }
 
     ipcRenderer.send("sale:execute", sale)
-}
-
-/**
- * event handler for the modal dialog ok button click.
- * passes the data back to main for being processed
- * @param e
- */
-function doIssueReserved(e) {
-    // get form data
-    const formData = new FormData(document.querySelector("form[name=sale]"))
-    const sale = {}
-
-    const holder = formData.get("holder")
-    sale.buyer = {
-        a_code: formData.get("a_code"),
-        salutation: formData.get("salutation"),
-        family: formData.get("family"),
-        first_name: formData.get("first_name"),
-        name: formData.get("name"),
-        address: formData.get("address"),
-        post_code: formData.get("post_code"),
-        city: formData.get("city"),
-    }
-    sale.transaction = {
-        comment: formData.get("comment"),
-        booking_date: formData.get("transaction"),
-        cert_type: formData.get("cert_type"),
-        transaction_type: formData.get("transaction-type"),
-        shares: getSelectedShares(SALE_TYPE),
-    }
-
-    // extract a_code
-    let reg = /.+ \((.+)\)$/
-    let matches = reg.exec(holder)
-    if (matches) {
-        sale.buyer.a_code = matches[1]
-    } else {
-        sale.buyer.a_code = null
-    }
-
-    document.querySelector("#sale-reserved-submit").classList.add("hidden")
-    ipcRenderer.send("issuereserved:execute", sale)
 }
 
 /**
@@ -343,32 +237,13 @@ function showSale(e, data) {
 
             // get share holder with a_code
             const holder = data.a_codes[a_code]
-            const reserved = []
-            for (i in holder.shares) {
-                if (data.shares[holder.shares[i]]["status"] == "reserved") {
-                    reserved.push(data.shares[holder.shares[i]])
-                }
-            }
 
             // save data global
             holder_orig = Object.assign({}, holder)
 
             // load person data to form
             initSaleForm(holder)
-
-            if (reserved.length) {
-                showShares(reserved, SALE_TYPE)
-                document.querySelector("#sale-reserved-submit").classList.remove("hidden")
-                document.querySelector("#sale-submit").classList.add("disabled")
-                ipcRenderer.send("dialog:show", {
-                    type: "info",
-                    message: "Diese Person hat reservierte Aktien.",
-                    title: "Reservierte Aktien",
-                    detail: "Sie können die Zertifikate jetzt ausstellen. Dadurch werden die Zertifikate in elektronische oder ausgedruckte Aktienzertifikate umgewandelt.",
-                })
-            } else {
-                document.querySelector("#sale-submit").classList.remove("disabled")
-            }
+            document.querySelector("#sale-submit").classList.remove("disabled")
         },
     })
 }
