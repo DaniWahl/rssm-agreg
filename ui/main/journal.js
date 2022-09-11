@@ -38,7 +38,6 @@ function showJournal(e, journal) {
             { data: "transaction_type" },
             { data: "action" },
             { data: "number" },
-            { data: "share_stock" },
         ]
         config.order = [[1, "desc"]] // order first col descending
 
