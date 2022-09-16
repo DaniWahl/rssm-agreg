@@ -15,7 +15,7 @@ nsis:
     shortcutName: "Aktienregister RSSM"
 
 mac:
-    target: dmg
+    target: default
     icon: ./assets/icons/mac/icon.icns
 dmg:
     icon: ./assets/icons/mac/icon.icns
