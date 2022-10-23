@@ -312,7 +312,6 @@ function showShares(shares, type) {
  */
 function updateSelected(type) {
     const selected = document.getElementById(`${type}-list`).querySelectorAll("div.share-dd-item-selected")
-    document.getElementById(`${type}-shares`).innerHTML = selected.length
 
     // en-disable the sale submit button
     if (selected.length) {

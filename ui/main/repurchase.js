@@ -64,8 +64,6 @@ function doRepurchase(e) {
 function showRepurchase(e, data) {
     // show target element
     showElement("content-repurchase")
-
-    initRepurchaseSummary(data)
     initRepurchaseForm()
 
     // empty the share container
@@ -89,8 +87,6 @@ function showRepurchase(e, data) {
         data: a_codes,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
-            initRepurchaseSummary(data)
-
             // extract a_code part from selection
             const regex = /.+ \((.+)\)$/g
             const matches = regex.exec(val)
@@ -109,16 +105,6 @@ function showRepurchase(e, data) {
             showShares(shares, REPURCHASE_TYPE)
         },
     })
-}
-
-/**
- * initialize the Repurchase summary table
- */
-function initRepurchaseSummary(data) {
-    // initialize the summary table
-    document.querySelector("#repurchase-date").innerHTML = helpers.dateToString()
-    document.querySelector("#repurchase-journal").innerHTML = data.nextJournal
-    document.querySelector("#repurchase-shares").innerHTML = "0"
 }
 
 function initRepurchaseForm() {

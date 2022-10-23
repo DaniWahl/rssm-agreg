@@ -71,8 +71,6 @@ function doTransfer(e) {
 function showTransfer(e, data) {
     // show target element
     showElement("content-transfer")
-
-    initTransferSummary(data)
     initTransferForm()
 
     // empty the share container
@@ -95,8 +93,6 @@ function showTransfer(e, data) {
         data: a_codes_holders,
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function (val) {
-            initTransferSummary(data)
-
             // extract a_code part from selection
             const regex = /.+ \((.+)\)$/g
             const matches = regex.exec(val)
@@ -133,16 +129,6 @@ function showTransfer(e, data) {
         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
         minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
     })
-}
-
-/**
- * initialize the Transfer summary table
- */
-function initTransferSummary(data) {
-    // initialize the summary table
-    document.querySelector("#transfer-date").innerHTML = helpers.dateToString()
-    document.querySelector("#transfer-journal").innerHTML = data.nextJournal
-    document.querySelector("#transfer-shares").innerHTML = "0"
 }
 
 function initTransferForm() {

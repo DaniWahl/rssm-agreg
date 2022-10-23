@@ -206,8 +206,6 @@ function doSale(e) {
 function showSale(e, data) {
     // show target element
     showElement("content-sale")
-
-    initSaleSummary(data)
     initSaleForm()
 
     allShares = data.shares
@@ -246,16 +244,6 @@ function showSale(e, data) {
             document.querySelector("#sale-submit").classList.remove("disabled")
         },
     })
-}
-
-/**
- * initialize the Purchase summary table
- */
-function initSaleSummary(data) {
-    // initialize the summary table
-    document.querySelector("#sale-date").innerHTML = helpers.dateToString()
-    document.querySelector("#sale-journal").innerHTML = data.nextJournal
-    document.querySelector("#sale-shares").innerHTML = "0"
 }
 
 /**

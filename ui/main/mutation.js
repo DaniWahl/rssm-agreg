@@ -99,8 +99,6 @@ function doMutation(e) {
 function showMutation(e, data) {
     // show target element
     showElement("content-mutation")
-
-    initMutationSummary(data)
     initMutationForm()
 
     // prepare the a_codes suggestion list
@@ -137,15 +135,6 @@ function showMutation(e, data) {
             document.querySelector("#mutation-submit").classList.remove("disabled")
         },
     })
-}
-
-/**
- * initialize the Transfer summary table
- */
-function initMutationSummary(data) {
-    // initialize the summary table
-    document.querySelector("#mutation-date").innerHTML = helpers.dateToString()
-    document.querySelector("#mutation-journal").innerHTML = data.nextJournal
 }
 
 /**

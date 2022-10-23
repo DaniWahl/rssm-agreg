@@ -681,7 +681,6 @@ async function loadContentData(e, element_id) {
 
         case "content-sale":
             mainWindow.webContents.send("sale:show", {
-                nextJournal: rssm.getNextJounalNo(),
                 a_codes: rssm.data.a_codes,
                 shares: rssm.data.shares,
                 rssm_shares: rssm.data.rssmShares,
@@ -690,7 +689,6 @@ async function loadContentData(e, element_id) {
 
         case "content-repurchase":
             mainWindow.webContents.send("repurchase:show", {
-                nextJournal: rssm.getNextJounalNo(),
                 a_codes: rssm.data.a_codes,
                 shares: rssm.data.shares,
             })
@@ -698,7 +696,6 @@ async function loadContentData(e, element_id) {
 
         case "content-transfer":
             mainWindow.webContents.send("transfer:show", {
-                nextJournal: rssm.getNextJounalNo(),
                 a_codes: rssm.data.a_codes,
                 shares: rssm.data.shares,
                 persons: rssm.data.persons,
@@ -707,7 +704,6 @@ async function loadContentData(e, element_id) {
 
         case "content-mutation":
             mainWindow.webContents.send("mutation:show", {
-                nextJournal: rssm.getNextJounalNo(),
                 a_codes: rssm.data.a_codes,
             })
             break
