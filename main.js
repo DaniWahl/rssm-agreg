@@ -602,7 +602,7 @@ async function executeReport(e, range) {
 
         if (transactionDate > endDate) {
             // transaction is after report range, correct rssmStock towards report endDate
-            rssmStock = rssmStock + t["stock_change"]
+            rssmStock = rssmStock - t["stock_change"]
         } else {
             // transaction is in report range, add to list if there is stock change
             if (t["stock_change"] != 0) {
