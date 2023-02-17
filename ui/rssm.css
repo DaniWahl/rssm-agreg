@@ -200,7 +200,7 @@ ul.tabs {
 }
 
 .content-element {
-    margin: 30px !important;
+    margin: 1rem !important;
     display: block;
     position: absolute !important;
     height: auto;
@@ -219,6 +219,10 @@ ul.tabs {
 
 .card-content {
     min-height: 90%;
+    padding: 1rem !important;
+}
+.card-title {
+    font-size: 1.7rem;
 }
 .card-action {
     min-height: 10%;
@@ -383,16 +387,16 @@ share-dd-item p img {
 /** Dashboard **/
 
 .dash-title {
-    font-size: 20px;
+    font-size: 1.5rem;
 }
 
 .dash-row {
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 2rem;
 }
 
 .dash-text {
-    font-size: 18px !important;
+    font-size: 1rem !important;
+    padding: 1rem;
 }
 
 .dash-chart {
@@ -400,8 +404,7 @@ share-dd-item p img {
 }
 
 .dash-chart canvas {
-    height: 600px;
-    width: 600px;
+    width: 100%;
 }
 
 /** Settings table **/
