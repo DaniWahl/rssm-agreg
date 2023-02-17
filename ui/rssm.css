@@ -3,6 +3,7 @@ html,
 body {
     height: 99%;
     font-family: Helvetica;
+    font-size: 12px;
     --content-grey-normal: #e0e0e0;
     --content-grey-light: #ececec;
     --content-grey-dark: #bebebe;
@@ -178,19 +179,19 @@ ul.tabs {
 
 .logo-container {
     padding: 10px;
-    margin-bottom: 15px;
 }
 .logo-container img {
-    width: 150px;
+    width: 10rem;
 }
 
 .menu-category {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.2rem;
     color: #666666;
+    padding: 0.5rem 1rem !important;
 }
 #nav-menu a {
-    padding-left: 40px;
+    padding: 0.25rem 2rem;
     color: #333333;
 }
 
