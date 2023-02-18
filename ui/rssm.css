@@ -212,14 +212,14 @@ ul.tabs {
 }
 
 .content-element table td {
-    font-size: 12px;
+    font-size: 1rem;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
 .card-content {
     min-height: 90%;
-    padding: 1rem !important;
+    padding: 1.5rem !important;
 }
 .card-title {
     font-size: 2rem !important;
@@ -233,7 +233,7 @@ ul.tabs {
 }
 
 .form-container {
-    margin-top: 40px;
+    margin-top: 1rem;
 }
 
 .rssm-owner td {
@@ -298,23 +298,36 @@ div.rssm-app-info span {
 .input-field {
     margin-top: 0px !important;
 }
+
+.input-field input {
+    font-size: 1.3rem !important;
+}
+.dropdown-content li > span {
+    font-size: 1.2rem !important;
+    line-height: 1.2rem !important;
+    padding: 0.5rem 1rem !important;
+}
+.dropdown-content li {
+    line-height: 3rem;
+    height: 3rem !important;
+    min-height: 1rem !important;
+}
+
 .row {
-    margin-bottom: 10px !important;
+    margin-bottom: 0.5rem !important;
 }
 
 /* Aktien Display */
 .share-dd-container {
-    min-height: 500px;
-    height: 500px;
     display: flex;
     flex-wrap: wrap;
 }
 
 .share-dd-item {
-    width: 120px;
-    height: 180px;
-    margin-left: 10px !important;
-    padding: 10px !important;
+    width: 8rem;
+    height: 12rem;
+    margin-left: 0.5rem !important;
+    padding: 0.5rem !important;
     background-color: var(--nav-item-blue-grey-highlight) !important;
 }
 
@@ -323,18 +336,15 @@ div.rssm-app-info span {
         0 8px 10px -5px rgba(0, 0, 0, 0.3) !important;
     background-color: var(--action-item-blue-ultra-light) !important;
     animation: share-selection-animation;
-    animation-duration: 300ms;
+    animation-duration: 250ms;
 }
 
 @keyframes share-selection-animation {
     0% {
         transform: translateY(0);
     }
-    30% {
-        transform: translateY(-10px);
-    }
-    60% {
-        transform: translateY(5px);
+    40% {
+        transform: translateY(-0.5rem);
     }
     100% {
         transform: translateY(0);
@@ -355,13 +365,14 @@ share-dd-item p img {
     font-family: sans-serif;
 }
 
+/* icons not shown due to low res usage*/
 .share-dd-icon {
-    font-size: 50px;
-    bottom: -10px;
+    font-size: 3rem;
+    bottom: -1rem;
     right: 5px;
     position: absolute;
     z-index: -1 !important;
-    color: rgb(30, 30, 30, 0.25) !important;
+    color: rgb(30, 30, 30, 0) !important;
 }
 
 .share-dd-item img {
@@ -371,7 +382,7 @@ share-dd-item p img {
     text-align: center;
     width: 100%;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 1.1rem;
 }
 .share-dd-item p.name {
     text-align: center;
@@ -442,7 +453,7 @@ table.settings td:last-of-type {
 .setting-value {
     text-align: right;
     color: var(--action-item-blue-dark);
-    font-size: 14px;
+    font-size: 1rem;
 }
 
 .setting-value div.input-field {
