@@ -188,10 +188,10 @@ ul.tabs {
     font-weight: bold;
     font-size: 1.2rem;
     color: #666666;
-    padding: 0.5rem 1rem !important;
+    padding: 0.75rem 1rem !important;
 }
 #nav-menu a {
-    padding: 0.25rem 2rem;
+    padding: 0.5rem 2rem;
     color: #333333;
 }
 
@@ -448,6 +448,9 @@ table.settings td {
 }
 table.settings td:last-of-type {
     width: 20%;
+}
+table.dataTable.compact tbody td {
+    padding: 1px;
 }
 
 .setting-value {
