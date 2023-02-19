@@ -876,7 +876,7 @@
         <!-- Modal Structure -->
 
         <div id="person-info-modal" class="modal modal-fixed-footer modal-wide">
-            <div class="modal-content" style="overflow: visible !important">
+            <div class="modal-content" style="overflow: visible !important; height: 40rem">
                 <h5></h5>
                 <div class="row">
                     <div class="col s5"><p class="address"></p></div>
@@ -885,13 +885,13 @@
                         <p class="shares"></p>
                     </div>
                     <div class="col s1">
-                        <a class="btn-floating btn-large waves-effect hoverable person-portfolio" person_id="">
+                        <a class="btn-floating btn waves-effect hoverable person-portfolio" person_id="">
                             <i class="fas fa-lg fa-file-alt"></i>
                         </a>
                     </div>
                 </div>
-                <div class="row z-depth-1" style="height: 450px !important">
-                    <div class="col s12">
+                <div class="row z-depth-1" style="height: 70%">
+                    <div class="col s12" style="height: 70%">
                         <ul id="person-info-tabs" class="tabs">
                             <li class="tab col s3"><a class="active" href="#person-shares">Aktien</a></li>
                             <li class="tab col s3"><a href="#person-comments">Kommentare</a></li>
@@ -929,7 +929,7 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div class="input-field col s12" id="add-person-comment" style="height: 350px">
+                        <div class="input-field col s12" id="add-person-comment" style="height: 90%">
                             <textarea id="new-person-comment" class="input-field materialize-textarea"></textarea>
                             <input type="hidden" id="new-person-comment-id" />
                             <label for="new-person-comment">Kommentar</label>
