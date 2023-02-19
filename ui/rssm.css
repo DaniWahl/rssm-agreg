@@ -30,7 +30,7 @@ body {
 #loading p {
     margin: 0;
     color: var(--action-item-blue-dark);
-    font-size: 1.5em;
+    font-size: 4rem;
 }
 
 a.current {
