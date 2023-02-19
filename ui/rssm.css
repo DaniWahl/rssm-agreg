@@ -174,7 +174,7 @@ li.tab a.active {
     background-color: var(--nav-item-grey-highlight) !important;
 }
 ul.tabs {
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
 }
 
 .logo-container {
@@ -425,7 +425,7 @@ table.settings tr {
     line-height: normal;
 }
 table.settings tr > * {
-    padding: 5px;
+    padding: 3px;
     height: 35px;
 }
 tr.setting-title {
