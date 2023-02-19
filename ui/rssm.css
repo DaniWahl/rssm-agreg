@@ -426,7 +426,7 @@ table.settings tr {
 }
 table.settings tr > * {
     padding: 3px;
-    height: 35px;
+    height: 1.5rem;
 }
 tr.setting-title {
     border-top: rgba(0, 0, 0, 0.12) solid 1px !important;
