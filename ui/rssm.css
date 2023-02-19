@@ -360,7 +360,7 @@ share-dd-item p img {
     bottom: 5px;
     text-align: center;
     width: 80%;
-    font-size: 10px;
+    font-size: 0.7rem;
     color: grey;
     font-family: sans-serif;
 }
