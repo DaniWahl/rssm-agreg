@@ -19,6 +19,7 @@ function submitEnterPerson(e) {
         first_name: formData.get("first_name"),
         name: formData.get("name"),
         address: formData.get("address"),
+        email: formData.get("email"),
         post_code: formData.get("post_code"),
         city: formData.get("city"),
         comment: formData.get("comment"),
@@ -32,6 +33,7 @@ function submitEnterPerson(e) {
     msg += `<b>Adresse:</b> ${person.address}<br>`
     msg += `<b>PLZ:</b> ${person.post_code}<br>`
     msg += `<b>Ort:</b> ${person.city}<br>`
+    msg += `<b>Email:</b> ${person.email}<br>`
     msg += `<b>Kommentar:</b> ${person.comment}<br>`
 
     // initialize and show dialog
@@ -55,6 +57,7 @@ function doEnterPerson(e) {
         family: formData.get("family"),
         first_name: formData.get("first_name"),
         name: formData.get("name"),
+        email: formData.get("email"),
         address: formData.get("address"),
         post_code: formData.get("post_code"),
         city: formData.get("city"),
@@ -83,6 +86,7 @@ function initEnterPersonForm() {
     document.querySelector("#enter-person-first-name-input").value = ""
     document.querySelector("#enter-person-name-input").value = ""
     document.querySelector("#enter-person-address-input").value = ""
+    document.querySelector("#enter-person-email-input").value = ""
     document.querySelector("#enter-person-post-code-input").value = ""
     document.querySelector("#enter-person-city-input").value = ""
     document.querySelector("#enter-person-comment-input").value = ""
