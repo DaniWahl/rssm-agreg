@@ -25,13 +25,24 @@ function submitMutation(e) {
     mutated.city = formData.get("city")
     mutated.comment = formData.get("comment")
     mutated.family = formData.get("family")
+    mutated.email = formData.get("email")
     mutated.correspondence = $("form[name=mutation] input[name=correspondence]")[0].checked ? 1 : 0
 
     // form dialog message
     let msg = `Vom Aktionär <b>${holder}</b> werden die folgenden Informationen mutiert:<br> `
 
     let field_counter = 0
-    for (let field of ["a_code", "salutation", "first_name", "name", "address", "post_code", "city", "family"]) {
+    for (let field of [
+        "a_code",
+        "salutation",
+        "first_name",
+        "name",
+        "address",
+        "post_code",
+        "city",
+        "family",
+        "email",
+    ]) {
         if (mutated[field] !== holder_orig[field]) {
             msg += `${holder_orig[field]} <i class="fas fa-caret-right"></i> ${mutated[field]} <br>`
             field_counter++
@@ -85,6 +96,7 @@ function doMutation(e) {
     mutated.city = formData.get("city")
     mutated.comment = formData.get("comment")
     mutated.family = formData.get("family")
+    mutated.email = formData.get("email")
     mutated.correspondence = $("form[name=mutation] input[name=correspondence]")[0].checked ? 1 : 0
 
     ipcRenderer.send("mutation:execute", mutated)
@@ -155,6 +167,7 @@ function initMutationForm(holder = {}) {
     document.querySelector("#mutation-city-input").value = holder.city || ""
     document.querySelector("#mutation-comment-input").value = holder.comment || ""
     document.querySelector("#mutation-family-input").value = holder.family || ""
+    document.querySelector("#mutation-email-input").value = holder.email || ""
     document.querySelector("#mutation-correspondence-input").checked = holder.correspondence || 0
 
     M.updateTextFields()
