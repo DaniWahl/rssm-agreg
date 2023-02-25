@@ -32,6 +32,16 @@ function showPersons(e, holders) {
             { data: "first_name" },
             { data: "address" },
             { data: "city" },
+            {
+                data: "email",
+                render: function (data, type, row) {
+                    if (data) {
+                        return `<a href="mailto:${data}">${data}</a>`
+                    } else {
+                        return ""
+                    }
+                },
+            },
             { data: "shares" },
             { data: "correspondence" },
         ]
@@ -58,6 +68,7 @@ function showPersons(e, holders) {
             first_name: person.first_name,
             address: person.address,
             city: person.post_code + " " + person.city,
+            email: person.email,
             shares: person.shares,
             correspondence: correspondence_flag,
         })
@@ -65,7 +76,8 @@ function showPersons(e, holders) {
 
     table.clear()
     table.rows.add(tableData).draw()
-    table.column(6).search("[1-9]", true).draw()
+    // filter column 7 (shares) for a numeric value
+    table.column(7).search("[1-9]", true).draw()
 
     $("#table-persons-all tbody").on("click", ".person_info", loadPersonInfo)
 }
@@ -100,9 +112,11 @@ function showPersonInfo(e, data) {
     dialogEl.querySelector(
         "div > div.modal-content > h5"
     ).innerHTML = `${data.person_info.first_name} ${data.person_info.name} (${data.person_info.a_code})`
-    dialogEl.querySelector(
-        "div > div.modal-content > div.row > div.col > p.address"
-    ).innerHTML = `${data.person_info.address}<br>${data.person_info.post_code} ${data.person_info.city}`
+    dialogEl.querySelector("div > div.modal-content > div.row > div.col > p.address").innerHTML = `${
+        data.person_info.address
+    }<br>${data.person_info.post_code} ${data.person_info.city}<br>${
+        data.person_info.email ? data.person_info.email : ""
+    }`
     dialogEl.querySelector(
         "div > div.modal-content > div.row > div.col > p.correspondence"
     ).innerHTML = `<b>Korrespondenz:</b> ${correspondence}`
@@ -234,9 +248,9 @@ function switchFilter(e) {
     e.preventDefault()
 
     if (e.target.checked) {
-        $("#table-persons-all").DataTable().column(6).search("^0$", true, false).draw()
+        $("#table-persons-all").DataTable().column(7).search("^0$", true, false).draw()
     } else {
-        $("#table-persons-all").DataTable().column(6).search("[1-9]", true, false).draw()
+        $("#table-persons-all").DataTable().column(7).search("[1-9]", true, false).draw()
     }
 }
 
