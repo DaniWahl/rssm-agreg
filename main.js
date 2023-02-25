@@ -90,9 +90,11 @@ async function app_init() {
 
     // create UI window
     if (mainWindow === null) {
+        const windowSize = config.get("windowsize")
+
         mainWindow = new BrowserWindow({
-            width: 900,
-            height: 650,
+            width: windowSize[0] || 900,
+            height: windowSize[1] || 700,
             show: false,
             backgroundColor: "#ffffff",
 
@@ -137,6 +139,10 @@ async function app_init() {
                 autoUpdater.checkForUpdates()
             }, 5000)
         }
+    })
+    mainWindow.on("resized", () => {
+        // store new window size in configuration file for next start
+        rssm.config.save("windowsize", mainWindow.getSize())
     })
     mainWindow.once("closed", app_quit)
 
