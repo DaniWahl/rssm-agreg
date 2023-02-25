@@ -110,6 +110,7 @@ function submitSale(e) {
         first_name: formData.get("first_name"),
         name: formData.get("name"),
         address: formData.get("address"),
+        email: formData.get("email"),
         post_code: formData.get("post_code"),
         city: formData.get("city"),
         comment: formData.get("comment"),
@@ -174,6 +175,7 @@ function doSale(e) {
         first_name: formData.get("first_name"),
         name: formData.get("name"),
         address: formData.get("address"),
+        email: formData.get("email"),
         post_code: formData.get("post_code"),
         city: formData.get("city"),
     }
@@ -260,6 +262,7 @@ function initSaleForm(holder = {}) {
     document.querySelector("#sale-first-name-input").value = holder.first_name || ""
     document.querySelector("#sale-name-input").value = holder.name || ""
     document.querySelector("#sale-address-input").value = holder.address || ""
+    document.querySelector("#sale-email-input").value = holder.email || ""
     document.querySelector("#sale-post-code-input").value = holder.post_code || ""
     document.querySelector("#sale-city-input").value = holder.city || ""
     document.querySelector("#sale-comment-input").value = holder.comment || ""
