@@ -1,13 +1,13 @@
 const RSSMDocs = require("../lib/RSSMDocs")
 const RSSMShares = require("../lib/RSSMShares").RSSMShares
 const helpers = require("../lib/app.helpers")
+const log = require("electron-log")
+const Config = require("../lib/Config").Config
+const path = require("path")
 
 makeLetter()
 
 async function makeLetter() {
-    const configSet = "dev"
-    const configFile = "C:\\Users\\Dani\\AppData\\Roaming\\aktienregister-rssm\\config.json"
-
     const info = {
         salutation: "Herr",
         first_name: "Max",
@@ -24,9 +24,19 @@ async function makeLetter() {
         shares: ["104", "105", "106"],
     }
 
+    // get configuration
+    const configSet = "dev"
+    const configFile = "C:Users/Dani/AppData/Roaming/aktienregister-rssm/config.json"
+    const config = new Config(configFile, configSet)
+
+    // setup logging
+    log.transports.file.level = "debug"
+    log.transports.file.resolvePath = () => "C:Users/Dani/AppData/Roaming/aktienregister-rssm/logs/dev.log"
+    log.info("AktienregisterRSSM initializing ...")
+
     // initialize main RSSMShares object
-    rssm = new RSSMShares(configFile, configSet)
+    rssm = new RSSMShares(config, log)
     await rssm.init()
 
-    const naming_form_path = await RSSMDocs.makeSharesLetterElectronic(info, rssm)
+    const path = await RSSMDocs.makeSharesLetterElectronic(info, rssm)
 }
