@@ -1,3 +1,5 @@
+const { ipcRenderer } = require("electron")
+
 document.querySelector("#admin-db-select-btn").addEventListener("click", selectDb)
 document.querySelector("#admin-backup-select-btn").addEventListener("click", selectBackup)
 document.querySelector("#admin-document-select-btn").addEventListener("click", selectDocuments)
@@ -7,6 +9,8 @@ document.querySelector("#admin-db-export-btn").addEventListener("click", exportD
 document.querySelector("#admin-test-addresspos-btn").addEventListener("click", printAddressPosTest)
 document.querySelector("#setting-edit-ADDRESS_POS_LEFT").addEventListener("click", saveSettings)
 document.querySelector("#setting-edit-ADDRESS_POS_TOP").addEventListener("click", saveSettings)
+document.querySelector("#setting-btn-AG_REGISTER_SIGNATURE_1").addEventListener("click", selectSignature)
+document.querySelector("#setting-btn-AG_REGISTER_SIGNATURE_2").addEventListener("click", selectSignature)
 
 let originalSettings
 
@@ -28,6 +32,13 @@ function selectBackup() {
 
 function selectDocuments() {
     ipcRenderer.send("documentpath:set")
+}
+
+function selectSignature(e) {
+    // splitting on the elements id to extract config id
+    // setting-btn-AG_REGISTER_SIGNATURE_1 => AG_REGISTER_SIGNATURE_1
+    const id = e.path[1].id.split("-")[2]
+    ipcRenderer.send("signature:set", id)
 }
 
 function selectExport() {
@@ -131,6 +142,17 @@ function setValues(data) {
         document.querySelector("#setting-edit-AG_REGISTER_PERSON_2").value = data.AG_REGISTER_PERSON_2
     } else {
         issues.push("Bitte Aktienregisterführer für 2. Unterschrift definieren.")
+    }
+
+    if (data.AG_REGISTER_SIGNATURE_1) {
+        const sig1img = document.getElementById("setting-img-AG_REGISTER_SIGNATURE_1")
+        sig1img.src = data.AG_REGISTER_SIGNATURE_1
+        sig1img.classList.remove("hidden")
+    }
+    if (data.AG_REGISTER_SIGNATURE_2) {
+        const sig2img = document.getElementById("setting-img-AG_REGISTER_SIGNATURE_2")
+        sig2img.src = data.AG_REGISTER_SIGNATURE_2
+        sig2img.classList.remove("hidden")
     }
 
     if (data.ADDRESS_POS_LEFT) {
@@ -322,6 +344,20 @@ function updateDocumentPath(e, documentPath) {
     documentPathEl.classList.add("setting-highlight")
 }
 
+function updateSignature(e, data) {
+    M.toast({
+        html: "Neues Signaturbild gespeichert",
+        displayLength: 5000,
+        classes: `rounded green lighten-1 z-depth-4`,
+    })
+
+    // show new selected image on UI
+    const imgEl = document.getElementById("setting-img-" + data.id)
+    imgEl.src = data.path
+    imgEl.classList.remove("hidden")
+    imgEl.classList.add("setting-highlight")
+}
+
 module.exports = {
     showSettings,
     appendBackup,
@@ -329,4 +365,5 @@ module.exports = {
     updateBackupPath,
     updateExportPath,
     updateDocumentPath,
+    updateSignature,
 }
