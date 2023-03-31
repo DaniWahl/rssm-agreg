@@ -38,5 +38,6 @@ async function makeLetter() {
     rssm = new RSSMShares(config, log)
     await rssm.init()
 
-    const path = await RSSMDocs.makeSharesLetterElectronic(info, rssm)
+    //const path = await RSSMDocs.makeSharesLetterElectronic(info, rssm)
+    const path = await RSSMDocs.makeSharesLetter(info, rssm)
 }
