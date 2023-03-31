@@ -12,6 +12,7 @@
         "pdf_test": "node bin/pdfkit_test.js",
         "test_namingform": "node bin/pdf_namingform_test.js",
         "test_letterelectronic": "node bin/pdf_letterelectronic_test.js",
+        "test_certificate": "node bin/pdf_certificate_test.js",
         "postinstall": "electron-builder install-app-deps",
         "build-win": "electron-builder build --win --publish never",
         "build-mac": "electron-builder build --mac --publish never",
