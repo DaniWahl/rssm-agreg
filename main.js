@@ -29,6 +29,7 @@ ipcMain.on("report:export", exportReport)
 ipcMain.on("dbpath:set", setDbPath)
 ipcMain.on("backuppath:set", setBackupPath)
 ipcMain.on("documentpath:set", setDocumentPath)
+ipcMain.on("signature:set", setSignatureImg)
 ipcMain.on("exportpath:set", setExportPath)
 ipcMain.on("dbbackup:create", createDbBackup)
 ipcMain.on("dbexport:create", createDbExport)
@@ -310,6 +311,31 @@ async function setDocumentPath(e) {
     // updating new path to app config
     rssm.config.save("documentpath", path)
     mainWindow.webContents.send("documentpath:update", path)
+}
+
+async function setSignatureImg(e, id) {
+    // prompt for new signature file
+    const paths = dialog.showOpenDialogSync(mainWindow, {
+        title: "Signatur Bild auswählen",
+        message: "Signatur Bild auswählen",
+        filters: [{ name: "Bild", extensions: ["png", "jpg"] }],
+        properties: ["openFile"],
+    })
+
+    if (!paths) {
+        mainWindow.webContents.send("toast:show", "Keine Signatur ausgewählt!", "red")
+        return
+    }
+
+    const selectedPath = paths[0]
+    const ext = path.extname(selectedPath)
+    const storedImgPath = path.join(app.getPath("userData"), id + ext)
+
+    // save image to application data and config
+    fs.copyFileSync(selectedPath, storedImgPath)
+    await rssm.setConfig(id, storedImgPath)
+
+    mainWindow.webContents.send("signature:update", { id: id, path: storedImgPath })
 }
 
 /**
@@ -731,6 +757,8 @@ async function loadContentData(e, element_id) {
                 db_version: await rssm.getConfig("VERSION"),
                 AG_REGISTER_PERSON_1: await rssm.getConfig("AG_REGISTER_PERSON_1"),
                 AG_REGISTER_PERSON_2: await rssm.getConfig("AG_REGISTER_PERSON_2"),
+                AG_REGISTER_SIGNATURE_1: await rssm.getConfig("AG_REGISTER_SIGNATURE_1"),
+                AG_REGISTER_SIGNATURE_2: await rssm.getConfig("AG_REGISTER_SIGNATURE_2"),
                 ADDRESS_POS_LEFT: await rssm.getConfig("ADDRESS_POS_LEFT"),
                 ADDRESS_POS_TOP: await rssm.getConfig("ADDRESS_POS_TOP"),
             })

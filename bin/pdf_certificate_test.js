@@ -21,7 +21,7 @@ async function makeLetter() {
         comment: "",
         journal_no: "21-000" + new Date().getTime(),
         journal_id: 900,
-        shares: ["104", "105", "106"],
+        shares: ["104"],
     }
 
     // get configuration
@@ -38,6 +38,5 @@ async function makeLetter() {
     rssm = new RSSMShares(config, log)
     await rssm.init()
 
-    //const path = await RSSMDocs.makeSharesLetterElectronic(info, rssm)
-    const path = await RSSMDocs.makeSharesLetter(info, rssm)
+    const path = await RSSMDocs.makeCertificates(info, rssm)
 }

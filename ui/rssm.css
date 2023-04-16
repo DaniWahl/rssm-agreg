@@ -490,3 +490,9 @@ table.dataTable.compact tbody td {
         text-shadow: 0px 0px 0px orange;
     }
 }
+
+.settings-signature {
+    width: 12rem;
+    height: 3rem;
+    border: 1px solid var(--action-item-blue-dark);
+}

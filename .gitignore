@@ -4,3 +4,4 @@ data/*
 db/complete*
 dist/
 package-lock.json
+worktime.txt

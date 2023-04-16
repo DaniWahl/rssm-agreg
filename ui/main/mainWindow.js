@@ -24,6 +24,7 @@ const {
     updateBackupPath,
     updateExportPath,
     updateDocumentPath,
+    updateSignature,
 } = require("./settings")
 const { showReport, showReportData } = require("./report")
 const { showEnterPerson } = require("./newPerson")
@@ -90,6 +91,7 @@ ipcRenderer.on("export:append", appendExport)
 ipcRenderer.on("backuppath:update", updateBackupPath)
 ipcRenderer.on("exportpath:update", updateExportPath)
 ipcRenderer.on("documentpath:update", updateDocumentPath)
+ipcRenderer.on("signature:update", updateSignature)
 
 // register event handlers for all elements
 document.querySelectorAll("a").forEach((el) => {
