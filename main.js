@@ -7,7 +7,7 @@ const path = require("path")
 const RSSMShares = require("./lib/RSSMShares").RSSMShares
 const RSSMDocs = require("./lib/RSSMDocs")
 const helpers = require("./lib/app.helpers")
-const Config = require("./lib/Config").Config
+const ConfigFile = require("./lib/ConfigFile").ConfigFile
 
 const CONFIGNAME = "config.json"
 const VERSION = app.getVersion()
@@ -77,8 +77,8 @@ autoUpdater.on("error", (error) => {
 async function app_init() {
     // get configuration
     const configSet = app.isPackaged ? "default" : "dev"
-    const configFile = path.join(app.getPath("userData"), CONFIGNAME)
-    const config = new Config(configFile, configSet)
+    const configFileName = path.join(app.getPath("userData"), CONFIGNAME)
+    const config = new ConfigFile(configFileName, configSet)
 
     // setup logging
     log.transports.file.level = app.isPackaged ? "info" : "debug"
