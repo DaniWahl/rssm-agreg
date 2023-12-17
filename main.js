@@ -7,7 +7,7 @@ const path = require("path")
 const RSSMShares = require("./lib/RSSMShares").RSSMShares
 const RSSMDocs = require("./lib/RSSMDocs")
 const helpers = require("./lib/app.helpers")
-const Config = require("./lib/Config").Config
+const ConfigFile = require("./lib/ConfigFile").ConfigFile
 
 const CONFIGNAME = "config.json"
 const VERSION = app.getVersion()
@@ -77,8 +77,8 @@ autoUpdater.on("error", (error) => {
 async function app_init() {
     // get configuration
     const configSet = app.isPackaged ? "default" : "dev"
-    const configFile = path.join(app.getPath("userData"), CONFIGNAME)
-    const config = new Config(configFile, configSet)
+    const configFileName = path.join(app.getPath("userData"), CONFIGNAME)
+    const configFile = new ConfigFile(configFileName, configSet)
 
     // setup logging
     log.transports.file.level = app.isPackaged ? "info" : "debug"
@@ -86,12 +86,12 @@ async function app_init() {
     log.info("AktienregisterRSSM initializing ...")
 
     // initialize main RSSMShares object
-    rssm = new RSSMShares(config, log)
+    rssm = new RSSMShares(configFile, log)
     await rssm.init()
 
     // create UI window
     if (mainWindow === null) {
-        const windowSize = config.get("windowsize")
+        const windowSize = configFile.get("windowsize")
 
         mainWindow = new BrowserWindow({
             width: windowSize[0] || 900,
@@ -112,16 +112,16 @@ async function app_init() {
 
         let loadPanel = "dashboard"
 
-        if (rssm.config.get("dbpath") === null) {
+        if (rssm.configFile.get("dbpath") === null) {
             loadPanel = "settings"
         }
-        if (rssm.config.get("backuppath") === null) {
+        if (rssm.configFile.get("backuppath") === null) {
             loadPanel = "settings"
         }
-        if (rssm.config.get("exportpath") === null) {
+        if (rssm.configFile.get("exportpath") === null) {
             loadPanel = "settings"
         }
-        if (rssm.config.get("documentpath") === null) {
+        if (rssm.configFile.get("documentpath") === null) {
             loadPanel = "settings"
         }
 
@@ -143,7 +143,7 @@ async function app_init() {
     })
     mainWindow.on("resized", () => {
         // store new window size in configuration file for next start
-        rssm.config.save("windowsize", mainWindow.getSize())
+        rssm.configFile.save("windowsize", mainWindow.getSize())
     })
     mainWindow.once("closed", app_quit)
 
@@ -201,7 +201,7 @@ async function saveSettings(e, data) {
         log.info("saved new person for second signature: " + data.AG_REGISTER_PERSON_2)
     }
     if (data.ADDRESS_POS_LEFT) {
-        rssm.setConfig("ADDRESS_POS_LEFT", data.ADDRESS_POS_LEFT)
+        rssm.configFile.save("addresspos_left", data.ADDRESS_POS_LEFT)
         mainWindow.webContents.send(
             "toast:show",
             "linke Adressfeldposition gespeichert (" + data.ADDRESS_POS_LEFT + ")"
@@ -209,7 +209,7 @@ async function saveSettings(e, data) {
         log.info("saved new left position for address field: " + data.ADDRESS_POS_LEFT)
     }
     if (data.ADDRESS_POS_TOP) {
-        rssm.setConfig("ADDRESS_POS_TOP", data.ADDRESS_POS_TOP)
+        rssm.configFile.save("addresspos_top", data.ADDRESS_POS_TOP)
         mainWindow.webContents.send("toast:show", "obere Adressfeldposition gespeichert (" + data.ADDRESS_POS_TOP + ")")
         log.info("saved new top position for address field: " + data.ADDRESS_POS_TOP)
     }
@@ -269,8 +269,8 @@ function setDbPath(e) {
         return
     }
 
-    // updating new path to app config
-    rssm.config.save("dbpath", paths[0])
+    // updating new path to app configFile
+    rssm.configFile.save("dbpath", paths[0])
     mainWindow.webContents.send("toast:show", "Neue Datenbank ausgewählt: " + paths[0])
 
     // initialize application
@@ -278,7 +278,7 @@ function setDbPath(e) {
 }
 
 /**
- * prompts user to select backup directory, saves selected directory to config
+ * prompts user to select backup directory, saves selected directory to configFile
  * @param e
  */
 async function setBackupPath(e) {
@@ -290,13 +290,13 @@ async function setBackupPath(e) {
         return
     }
 
-    // updating new path to app config
-    rssm.config.save("backuppath", path)
+    // updating new path to app configFile
+    rssm.configFile.save("backuppath", path)
     mainWindow.webContents.send("backuppath:update", path)
 }
 
 /**
- * prompts user to select document directory, saves selected directory to config
+ * prompts user to select document directory, saves selected directory to configFile
  * @param e
  */
 async function setDocumentPath(e) {
@@ -308,12 +308,23 @@ async function setDocumentPath(e) {
         return
     }
 
-    // updating new path to app config
-    rssm.config.save("documentpath", path)
+    // updating new path to app configFile
+    rssm.configFile.save("documentpath", path)
     mainWindow.webContents.send("documentpath:update", path)
 }
 
+/**
+ * prompts user to select signature image file, copies file to userData and stores path in configFile
+ * @param {} e
+ * @param {*} id
+ * @returns
+ */
 async function setSignatureImg(e, id) {
+    const param2config = {
+        AG_REGISTER_SIGNATURE_2: "signaturefile_2",
+        AG_REGISTER_SIGNATURE_1: "signaturefile_1",
+    }
+
     // prompt for new signature file
     const paths = dialog.showOpenDialogSync(mainWindow, {
         title: "Signatur Bild auswählen",
@@ -331,15 +342,15 @@ async function setSignatureImg(e, id) {
     const ext = path.extname(selectedPath)
     const storedImgPath = path.join(app.getPath("userData"), id + ext)
 
-    // save image to application data and config
+    // save image to application data and configFile
     fs.copyFileSync(selectedPath, storedImgPath)
-    await rssm.setConfig(id, storedImgPath)
+    rssm.configFile.save(param2config[id], storedImgPath)
 
     mainWindow.webContents.send("signature:update", { id: id, path: storedImgPath })
 }
 
 /**
- * prompts user to select export directory, saves selected directory to config
+ * prompts user to select export directory, saves selected directory to configFile
  * @param e
  */
 async function setExportPath(e) {
@@ -351,8 +362,8 @@ async function setExportPath(e) {
         return
     }
 
-    // updating new path to app config
-    rssm.config.save("exportpath", path)
+    // updating new path to app configFile
+    rssm.configFile.save("exportpath", path)
     mainWindow.webContents.send("exportpath:update", path)
 }
 
@@ -743,24 +754,24 @@ async function loadContentData(e, element_id) {
         case "settings":
             mainWindow.webContents.send("admin:settings:show", {
                 app_version: VERSION,
-                user_config_file: rssm.config.file,
-                user_config_set: rssm.config.set,
+                user_config_file: rssm.configFile.file,
+                user_config_set: rssm.configFile.set,
                 persons: rssm.data.persons,
-                dbpath: rssm.config.get("dbpath"),
-                backuppath: rssm.config.get("backuppath"),
-                exportpath: rssm.config.get("exportpath"),
-                documentpath: rssm.config.get("documentpath"),
-                db_backup_list: rssm.config.get("backups"),
-                db_export_list: rssm.config.get("exports"),
+                dbpath: rssm.configFile.get("dbpath"),
+                backuppath: rssm.configFile.get("backuppath"),
+                exportpath: rssm.configFile.get("exportpath"),
+                documentpath: rssm.configFile.get("documentpath"),
+                db_backup_list: rssm.configFile.get("backups"),
+                db_export_list: rssm.configFile.get("exports"),
                 log_file: log.transports.file.getFile().path,
                 log_level: log.transports.file.level,
                 db_version: await rssm.getConfig("VERSION"),
                 AG_REGISTER_PERSON_1: await rssm.getConfig("AG_REGISTER_PERSON_1"),
                 AG_REGISTER_PERSON_2: await rssm.getConfig("AG_REGISTER_PERSON_2"),
-                AG_REGISTER_SIGNATURE_1: await rssm.getConfig("AG_REGISTER_SIGNATURE_1"),
-                AG_REGISTER_SIGNATURE_2: await rssm.getConfig("AG_REGISTER_SIGNATURE_2"),
-                ADDRESS_POS_LEFT: await rssm.getConfig("ADDRESS_POS_LEFT"),
-                ADDRESS_POS_TOP: await rssm.getConfig("ADDRESS_POS_TOP"),
+                AG_REGISTER_SIGNATURE_1: rssm.configFile.get("signaturefile_1"),
+                AG_REGISTER_SIGNATURE_2: rssm.configFile.get("signaturefile_2"),
+                ADDRESS_POS_LEFT: rssm.configFile.get("addresspos_left"),
+                ADDRESS_POS_TOP: rssm.configFile.get("addresspos_top"),
             })
             break
     }
