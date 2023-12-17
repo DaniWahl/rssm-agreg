@@ -320,6 +320,11 @@ async function setDocumentPath(e) {
  * @returns
  */
 async function setSignatureImg(e, id) {
+    const param2config = {
+        AG_REGISTER_SIGNATURE_2: "signaturefile_2",
+        AG_REGISTER_SIGNATURE_1: "signaturefile_1",
+    }
+
     // prompt for new signature file
     const paths = dialog.showOpenDialogSync(mainWindow, {
         title: "Signatur Bild auswählen",
@@ -339,7 +344,7 @@ async function setSignatureImg(e, id) {
 
     // save image to application data and configFile
     fs.copyFileSync(selectedPath, storedImgPath)
-    rssm.configFile.save(id, storedImgPath)
+    rssm.configFile.save(param2config[id], storedImgPath)
 
     mainWindow.webContents.send("signature:update", { id: id, path: storedImgPath })
 }
@@ -763,9 +768,8 @@ async function loadContentData(e, element_id) {
                 db_version: await rssm.getConfig("VERSION"),
                 AG_REGISTER_PERSON_1: await rssm.getConfig("AG_REGISTER_PERSON_1"),
                 AG_REGISTER_PERSON_2: await rssm.getConfig("AG_REGISTER_PERSON_2"),
-                // TODO: signature files should go to local configFile
-                AG_REGISTER_SIGNATURE_1: await rssm.getConfig("AG_REGISTER_SIGNATURE_1"),
-                AG_REGISTER_SIGNATURE_2: await rssm.getConfig("AG_REGISTER_SIGNATURE_2"),
+                AG_REGISTER_SIGNATURE_1: rssm.configFile.get("signaturefile_1"),
+                AG_REGISTER_SIGNATURE_2: rssm.configFile.get("signaturefile_2"),
                 ADDRESS_POS_LEFT: rssm.configFile.get("addresspos_left"),
                 ADDRESS_POS_TOP: rssm.configFile.get("addresspos_top"),
             })
