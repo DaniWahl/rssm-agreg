@@ -201,7 +201,7 @@ async function saveSettings(e, data) {
         log.info("saved new person for second signature: " + data.AG_REGISTER_PERSON_2)
     }
     if (data.ADDRESS_POS_LEFT) {
-        rssm.setConfig("ADDRESS_POS_LEFT", data.ADDRESS_POS_LEFT)
+        rssm.configFile.save("addresspos_left", data.ADDRESS_POS_LEFT)
         mainWindow.webContents.send(
             "toast:show",
             "linke Adressfeldposition gespeichert (" + data.ADDRESS_POS_LEFT + ")"
@@ -209,7 +209,7 @@ async function saveSettings(e, data) {
         log.info("saved new left position for address field: " + data.ADDRESS_POS_LEFT)
     }
     if (data.ADDRESS_POS_TOP) {
-        rssm.setConfig("ADDRESS_POS_TOP", data.ADDRESS_POS_TOP)
+        rssm.configFile.save("addresspos_top", data.ADDRESS_POS_TOP)
         mainWindow.webContents.send("toast:show", "obere Adressfeldposition gespeichert (" + data.ADDRESS_POS_TOP + ")")
         log.info("saved new top position for address field: " + data.ADDRESS_POS_TOP)
     }
@@ -761,13 +761,13 @@ async function loadContentData(e, element_id) {
                 log_file: log.transports.file.getFile().path,
                 log_level: log.transports.file.level,
                 db_version: await rssm.getConfig("VERSION"),
-                // TODO: these should go to local configFile
                 AG_REGISTER_PERSON_1: await rssm.getConfig("AG_REGISTER_PERSON_1"),
                 AG_REGISTER_PERSON_2: await rssm.getConfig("AG_REGISTER_PERSON_2"),
+                // TODO: signature files should go to local configFile
                 AG_REGISTER_SIGNATURE_1: await rssm.getConfig("AG_REGISTER_SIGNATURE_1"),
                 AG_REGISTER_SIGNATURE_2: await rssm.getConfig("AG_REGISTER_SIGNATURE_2"),
-                ADDRESS_POS_LEFT: await rssm.getConfig("ADDRESS_POS_LEFT"),
-                ADDRESS_POS_TOP: await rssm.getConfig("ADDRESS_POS_TOP"),
+                ADDRESS_POS_LEFT: rssm.configFile.get("addresspos_left"),
+                ADDRESS_POS_TOP: rssm.configFile.get("addresspos_top"),
             })
             break
     }
