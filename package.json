@@ -22,7 +22,7 @@
     "dependencies": {
         "chart.js": "^3.9.1",
         "chartjs-adapter-date-fns": "^2.0.0",
-        "crypto-js": "^4.1.1",
+        "crypto-js": "^4.2.0",
         "datatables.net-dt": "^1.12.1",
         "datatables.net-fixedheader-dt": "^3.2.4",
         "datatables.net-rowgroup-dt": "^1.2.0",
