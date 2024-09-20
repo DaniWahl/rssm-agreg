@@ -1,6 +1,6 @@
 const electron = require("electron")
 const { autoUpdater } = require("electron-updater")
-const log = require("electron-log")
+const log = require("electron-log/main")
 const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = electron
 const fs = require("fs")
 const path = require("path")
@@ -82,7 +82,7 @@ async function app_init() {
 
     // setup logging
     log.transports.file.level = app.isPackaged ? "info" : "debug"
-    log.transports.file.resolvePath = () => path.join(app.getPath("userData"), "logs", `${configSet}.log`)
+    log.transports.file.resolvePathFn = () => path.join(app.getPath("userData"), "logs", `${configSet}.log`)
     log.info("AktienregisterRSSM initializing ...")
 
     // initialize main RSSMShares object
