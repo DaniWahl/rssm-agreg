@@ -418,6 +418,12 @@ share-dd-item p img {
     width: 100%;
 }
 
+#shares-chart {
+    width: 100% !important;
+    object-fit: contain !important;
+    display: inline !important;
+}
+
 /** Settings table **/
 
 table.settings tr {
@@ -495,4 +501,9 @@ table.dataTable.compact tbody td {
     width: 12rem;
     height: 3rem;
     border: 1px solid var(--action-item-blue-dark);
+}
+
+
+.debug {
+    border: solid red 1px !important;
 }

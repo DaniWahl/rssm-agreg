@@ -1,9 +1,10 @@
-const Chart = require("chart.js")
+const Chart = require("chart.js/auto")
 const { startOfDay } = require("date-fns")
 const { dash } = require("pdfkit")
 require("chartjs-adapter-date-fns")
 let dashChart = undefined
 let chartStates = undefined
+
 
 document.getElementById("chart-container").addEventListener("click", toggleChartScale)
 
@@ -166,6 +167,8 @@ function drawShareChart(journal, series, inStock, total) {
             ],
         },
         options: {
+            resizeDelay: 200,
+            maintainAspectRation: false,
             plugins: {
                 decimation: {
                     enabled: false,
