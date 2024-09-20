@@ -20,7 +20,7 @@
         "deploy-mac": "electron-builder build --mac --publish always"
     },
     "dependencies": {
-        "chart.js": "^3.9.1",
+        "chart.js": "^4.4.4",
         "chartjs-adapter-date-fns": "^2.0.0",
         "crypto-js": "^4.2.0",
         "datatables.net-dt": "^1.12.1",
